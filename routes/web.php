@@ -28,6 +28,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('landing');
 })->name('landing');
+// ==============================
+// PUBLIC CATALOG (Tanpa Login)
+// ==============================
+Route::get('/catalog', [App\Http\Controllers\CatalogController::class, 'index'])->name('catalog');
+Route::get('/catalog/detail/{id}', [App\Http\Controllers\CatalogController::class, 'detail'])->name('catalog.detail');
+Route::get('/catalog/search', [App\Http\Controllers\CatalogController::class, 'search'])->name('catalog.search');
 
 // ============================================
 // AUTH ROUTES
@@ -55,6 +61,16 @@ Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function
     Route::post('/change-password', [ProfileController::class, 'updatePassword'])->name('update_password');
     Route::post('/update-photo', [ProfileController::class, 'updatePhoto'])->name('update_photo');
     Route::delete('/delete-photo', [ProfileController::class, 'deletePhoto'])->name('delete_photo');
+});
+
+// ============================================
+// NOTIFICATION ROUTES  <-- TAMBAHKAN INI
+// ============================================
+Route::middleware(['auth'])->prefix('notifications')->name('notifications.')->group(function () {
+    Route::get('/', [App\Http\Controllers\NotificationController::class, 'index'])->name('index');
+    Route::get('/unread-count', [App\Http\Controllers\NotificationController::class, 'unreadCount'])->name('unread-count');
+    Route::post('/mark-as-read/{id}', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('mark-as-read');
+    Route::post('/mark-all-as-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
 });
 
 // ============================================

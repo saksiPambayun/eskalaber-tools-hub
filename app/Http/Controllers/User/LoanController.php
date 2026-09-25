@@ -8,6 +8,7 @@ use App\Models\Tool;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Helpers\ActivityHelper;
+use App\Models\Notification;
 
 class LoanController extends Controller
 {
@@ -68,7 +69,7 @@ class LoanController extends Controller
     $loan = Loan::where('user_id', auth()->id())
         ->where('status', 'pending')
         ->findOrFail($id);
-    
+
     $loan->update(['status' => 'rejected']);
 
     // Log activity
@@ -76,4 +77,21 @@ class LoanController extends Controller
 
     return redirect()->route('user.loans.index')->with('success', 'Peminjaman dibatalkan!');
 }
+public function doCreate(Request $request)
+{
+    // ... validasi ...
+
+    $loan = Loan::create([...]);
+
+    // Kirim notifikasi ke semua toolsman
+    Notification::sendToToolsmans(
+        'Peminjaman Baru',
+        auth()->user()->name . ' mengajukan peminjaman ' . $tool->name,
+        'warning',
+        route('toolsman.loans.index')
+    );
+
+    return redirect()->route('user.loans.index')->with('success', 'Peminjaman diajukan!');
+}
+
 }

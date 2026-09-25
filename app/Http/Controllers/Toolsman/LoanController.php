@@ -11,22 +11,23 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LoansExport;
 use App\Helpers\ActivityHelper;
+use App\Models\Notification;
 
 class LoanController extends Controller
 {
     public function index(Request $request)
     {
         $status = $request->get('status', 'all');
-        
+
         $query = Loan::with(['user', 'tool']);
-        
+
         if ($status != 'all') {
             $query->where('status', $status);
         }
-        
+
         $loans = $query->latest()->paginate(10);
         $statuses = ['all', 'pending', 'approved', 'borrowed', 'returned', 'rejected'];
-        
+
         return view('toolsman.loans.index', compact('loans', 'status', 'statuses'));
     }
 
@@ -39,7 +40,7 @@ class LoanController extends Controller
     public function approve($id)
     {
         $loan = Loan::findOrFail($id);
-        
+
         // Update status loan
         $loan->update([
             'status' => 'approved'
@@ -48,7 +49,7 @@ class LoanController extends Controller
         // Kurangi stock tool
         $tool = Tool::find($loan->tool_id);
         $tool->decrement('stock', 1);
-        
+
         // Update status tool jika stock 0
         if ($tool->stock == 0) {
             $tool->update(['status' => 'borrowed']);
@@ -74,7 +75,7 @@ class LoanController extends Controller
     public function returned($id)
     {
         $loan = Loan::findOrFail($id);
-        
+
         // Update status loan
         $loan->update([
             'status' => 'returned',
@@ -89,7 +90,7 @@ class LoanController extends Controller
         // Cek keterlambatan
         $lateDays = $loan->return_date->diffInDays(now(), false);
         $fineCreated = false;
-        
+
         if ($lateDays > 0) {
             // Buat denda
             $fineAmount = $lateDays * 10000; // Rp 10.000 per hari
@@ -142,6 +143,34 @@ class LoanController extends Controller
     return redirect()->route('admin.loans.index')->with('success', 'Status peminjaman berhasil diupdate!');
 }
 
+public function approve($id)
+{
+    $loan = Loan::findOrFail($id);
+    $loan->update(['status' => 'approved']);
+
+    // Kirim notifikasi ke user
+    Notification::send(
+        $loan->user_id,
+        'Peminjaman Disetujui',
+        'Peminjaman alat ' . $loan->tool->name . ' telah disetujui.',
+        'success',
+        route('user.loans.detail', $loan->id)
+    );
+
+    // Kirim notifikasi ke admin
+    Notification::sendToAdmins(
+        'Peminjaman Baru Disetujui',
+        $loan->user->name . ' meminjam ' . $loan->tool->name,
+        'info',
+        route('admin.loans.detail', $loan->id)
+    );
+
+    ActivityHelper::log('approve_loan', 'Menyetujui peminjaman #' . $loan->id);
+
+    return redirect()->route('toolsman.loans.index')->with('success', 'Peminjaman disetujui!');
+}
+
+
 public function delete($id)
 {
     $loan = Loan::findOrFail($id);
@@ -152,4 +181,5 @@ public function delete($id)
 
     return redirect()->route('admin.loans.index')->with('success', 'Data peminjaman berhasil dihapus!');
 }
+
 }

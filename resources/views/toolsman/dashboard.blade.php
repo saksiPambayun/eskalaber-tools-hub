@@ -5,6 +5,11 @@
 
 @section('sidebar')
     <li class="nav-item">
+        <a href="/" class="nav-link" target="_blank">
+            <i class="nav-icon fas fa-globe"></i>
+            <p>Landing Page</p>
+        </a>
+    <li class="nav-item">
         <a href="{{ route('toolsman.dashboard') }}" class="nav-link active">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>Dashboard</p>

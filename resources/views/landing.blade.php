@@ -494,6 +494,441 @@
             margin-top: 30px;
         }
 
+        /* ============================================ */
+        /* DARK MODE */
+        /* ============================================ */
+        body.dark-mode {
+            background: #0f0f1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .navbar-custom {
+            background: rgba(15, 15, 26, 0.95);
+            box-shadow: 0 2px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .navbar-custom .navbar-brand {
+            color: #fff;
+        }
+
+        body.dark-mode .navbar-custom .nav-link {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .navbar-custom .nav-link:hover {
+            color: #E85D04;
+        }
+
+        body.dark-mode .hero-section {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+        }
+
+        body.dark-mode .hero-title {
+            color: #fff;
+        }
+
+        body.dark-mode .hero-subtitle {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .hero-badge {
+            background: rgba(232, 93, 4, 0.15);
+        }
+
+        body.dark-mode .stats-section {
+            background: #1a1a2e;
+        }
+
+        body.dark-mode .stat-number {
+            color: #fff;
+        }
+
+        body.dark-mode .stat-label {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .features-section {
+            background: #0f0f1a;
+        }
+
+        body.dark-mode .section-title {
+            color: #fff;
+        }
+
+        body.dark-mode .section-subtitle {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .feature-card {
+            background: #1a1a2e;
+            border-color: #2d2d44;
+        }
+
+        body.dark-mode .feature-card:hover {
+            border-color: #E85D04;
+            box-shadow: 0 20px 50px rgba(232, 93, 4, 0.15);
+        }
+
+        body.dark-mode .feature-title {
+            color: #fff;
+        }
+
+        body.dark-mode .feature-desc {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .why-section {
+            background: #1a1a2e;
+        }
+
+        body.dark-mode .why-text h5 {
+            color: #fff;
+        }
+
+        body.dark-mode .why-text p {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .testimonials-section {
+            background: #0f0f1a;
+        }
+
+        body.dark-mode .testimonial-card {
+            background: #1a1a2e;
+            border-color: #2d2d44;
+        }
+
+        body.dark-mode .testimonial-card:hover {
+            border-color: #E85D04;
+        }
+
+        body.dark-mode .testimonial-text {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .testimonial-name {
+            color: #fff;
+        }
+
+        body.dark-mode .testimonial-role {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .footer {
+            background: #0a0a15;
+        }
+
+        body.dark-mode .footer-text {
+            color: #b0b0b0;
+        }
+
+        /* Dark Mode Toggle Button */
+        .dark-mode-toggle {
+            background: rgba(232, 93, 4, 0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: #E85D04;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+        }
+
+        .dark-mode-toggle:hover {
+            background: #E85D04;
+            color: #fff;
+            transform: rotate(20deg);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            background: rgba(232, 93, 4, 0.2);
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background: #E85D04;
+        }
+
+        /* Dark Mode - Statistik di Hero */
+        body.dark-mode .hero-content .text-dark {
+            color: #fff !important;
+        }
+
+        body.dark-mode .hero-content .text-muted {
+            color: #b0b0b0 !important;
+        }
+
+        /* Dark Mode - Statistik di Section Stats */
+        body.dark-mode .stat-number span {
+            color: #E85D04 !important;
+        }
+
+        body.dark-mode .stat-label {
+            color: #b0b0b0 !important;
+        }
+
+        /* Statistik Hero */
+        .stat-hero-number {
+            color: var(--dark);
+            transition: color 0.3s ease;
+        }
+
+        .stat-hero-label {
+            color: var(--gray);
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .stat-hero-number {
+            color: #fff;
+        }
+
+        body.dark-mode .stat-hero-label {
+            color: #b0b0b0;
+        }
+
+        /* ============================================ */
+        /* GEAR ANIMATION - HERO IMAGE */
+        /* ============================================ */
+        .gear-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Gear Umum */
+        .gear {
+            position: absolute;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Gear 1 - Besar, searah jarum jam */
+        .gear-1 {
+            font-size: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: spinClockwise 20s linear infinite;
+            color: #E85D04;
+            opacity: 0.15;
+        }
+
+        /* Gear 2 - Sedang, berlawanan */
+        .gear-2 {
+            font-size: 200px;
+            top: 15%;
+            right: -5%;
+            animation: spinCounterClockwise 15s linear infinite;
+            color: #F48C06;
+            opacity: 0.2;
+        }
+
+        /* Gear 3 - Kecil, cepat */
+        .gear-3 {
+            font-size: 130px;
+            bottom: 15%;
+            left: -5%;
+            animation: spinClockwise 10s linear infinite;
+            color: #DC2F02;
+            opacity: 0.25;
+        }
+
+        /* Gambar Utama di Tengah */
+        .main-image {
+            position: relative;
+            z-index: 10;
+            width: 250px;
+            height: 250px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 30px 80px rgba(232, 93, 4, 0.25);
+            border: 6px solid var(--primary-bg);
+            padding: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .main-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        /* Animasi Gear Berputar */
+        @keyframes spinClockwise {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes spinCounterClockwise {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+
+        /* Animasi Gambar Utama (Floating) */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Dark Mode - Gear */
+        body.dark-mode .gear-1 {
+            color: #E85D04;
+            opacity: 0.1;
+        }
+
+        body.dark-mode .gear-2 {
+            color: #F48C06;
+            opacity: 0.15;
+        }
+
+        body.dark-mode .gear-3 {
+            color: #DC2F02;
+            opacity: 0.2;
+        }
+
+        body.dark-mode .main-image {
+            background: #1a1a2e;
+            border-color: #2d2d44;
+            box-shadow: 0 30px 80px rgba(232, 93, 4, 0.15);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .gear-container {
+                width: 280px;
+                height: 280px;
+            }
+
+            .gear-1 {
+                font-size: 200px;
+            }
+
+            .gear-2 {
+                font-size: 130px;
+            }
+
+            .gear-3 {
+                font-size: 90px;
+            }
+
+            .main-image {
+                width: 180px;
+                height: 180px;
+            }
+        }
+
+        /* Animasi Gear Berputar */
+        @keyframes spinClockwise {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes spinCounterClockwise {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+
+        /* Animasi Gambar Utama (Floating) */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* ============================================ */
+        /* DARK MODE - GEAR */
+        /* ============================================ */
+        body.dark-mode .gear-1 {
+            color: #E85D04;
+            opacity: 0.15;
+        }
+
+        body.dark-mode .gear-2 {
+            color: #F48C06;
+            opacity: 0.2;
+        }
+
+        body.dark-mode .gear-3 {
+            color: #DC2F02;
+            opacity: 0.25;
+        }
+
+        body.dark-mode .main-image {
+            background: #1a1a2e;
+            border-color: #2d2d44;
+            box-shadow: 0 30px 80px rgba(232, 93, 4, 0.15);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .gear-container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .gear-1 {
+                font-size: 220px;
+            }
+
+            .gear-2 {
+                font-size: 140px;
+            }
+
+            .gear-3 {
+                font-size: 100px;
+            }
+
+            .main-image {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .hero-title {
@@ -538,16 +973,26 @@
                     <li class="nav-item"><a class="nav-link" href="#features">Fitur</a></li>
                     <li class="nav-item"><a class="nav-link" href="#why">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="#testimonials">Testimoni</a></li>
+
+                    <!-- MENU CATALOG - BARU -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('catalog') }}">
+                            <i class="fas fa-th-large me-1"></i> Katalog
+                        </a>
+                    </li>
+
+                    <!-- Tombol Dark Mode -->
+                    <li class="nav-item">
+                        <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                            <i class="fas fa-moon" id="darkModeIcon"></i>
+                        </button>
+                    </li>
+
                     <li class="nav-item ms-lg-2">
                         @auth
                             @php
                                 $role = strtolower(auth()->user()->role);
-                                // Mapping role ke route prefix yang benar
-                                $routeMap = [
-                                    'superadmin' => 'admin',
-                                    'toolsman' => 'toolsman',
-                                    'user' => 'user'
-                                ];
+                                $routeMap = ['superadmin' => 'admin', 'toolsman' => 'toolsman', 'user' => 'user'];
                                 $prefix = $routeMap[$role] ?? 'admin';
                                 $dashboardRoute = $prefix . '.dashboard';
                             @endphp
@@ -574,6 +1019,7 @@
     <!-- ========================================== -->
     <!-- HERO -->
     <!-- ========================================== -->
+    <!-- HERO -->
     <section class="hero-section" id="home">
         <div class="container">
             <div class="row align-items-center">
@@ -589,8 +1035,8 @@
                         peminjaman, dan perawatan alat secara profesional.
                     </p>
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="{{ route('login') }}" class="btn-orange">
-                            <i class="fas fa-rocket me-2"></i> Mulai Sekarang
+                        <a href="{{ route('catalog') }}" class="btn-orange">
+                            <i class="fas fa-th-large me-2"></i> Lihat Katalog
                         </a>
                         <a href="#features" class="btn-outline-orange">
                             <i class="fas fa-play-circle me-2"></i> Lihat Fitur
@@ -598,25 +1044,46 @@
                     </div>
                     <div class="mt-4 d-flex gap-4">
                         <div>
-                            <span class="fw-bold text-dark fs-4">100+</span>
-                            <span class="text-muted d-block">Alat Terdaftar</span>
+                            <span class="fw-bold fs-4 stat-hero-number">100+</span>
+                            <span class="d-block stat-hero-label">Alat Terdaftar</span>
                         </div>
                         <div>
-                            <span class="fw-bold text-dark fs-4">50+</span>
-                            <span class="text-muted d-block">User Aktif</span>
+                            <span class="fw-bold fs-4 stat-hero-number">50+</span>
+                            <span class="d-block stat-hero-label">User Aktif</span>
                         </div>
                         <div>
-                            <span class="fw-bold text-dark fs-4">95%</span>
-                            <span class="text-muted d-block">Kepuasan</span>
+                            <span class="fw-bold fs-4 stat-hero-number">95%</span>
+                            <span class="d-block stat-hero-label">Kepuasan</span>
                         </div>
                     </div>
                 </div>
+
+                <!-- HERO IMAGE WITH GEAR ANIMATION -->
                 <div class="col-lg-6 hero-image text-center">
-                    <img src="{{ asset('images/hero-tools.svg') }}" alt="Tools Management"
-                        onerror="this.src='https://placehold.co/600x400/FFF3E8/E85D04?text=Eskalaber+Tools'">
+                    <div class="gear-container">
+                        <!-- Gear Besar Berputar Searah Jarum Jam -->
+                        <div class="gear gear-1">
+                            <i class="fas fa-cog"></i>
+                        </div>
+
+                        <!-- Gear Sedang Berputar Berlawanan -->
+                        <div class="gear gear-2">
+                            <i class="fas fa-cog"></i>
+                        </div>
+
+                        <!-- Gear Kecil Berputar Cepat -->
+                        <div class="gear gear-3">
+                            <i class="fas fa-cog"></i>
+                        </div>
+
+                        <!-- Gambar Utama di Tengah -->
+                        <div class="main-image">
+                            <img src="{{ asset('images/hero-tools.png') }}" alt="Eskalaber Tools"
+                                onerror="this.src='https://placehold.co/300x300/FFF3E8/E85D04?text=Eskalaber+Tools'">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
     </section>
 
     <!-- ========================================== -->
@@ -913,6 +1380,45 @@
                 }
             });
         });
+        document.addEventListener('DOMContentLoaded', function () {
+            const darkMode = localStorage.getItem('darkMode');
+            const icon = document.getElementById('darkModeIcon');
+
+            if (darkMode === 'true') {
+                document.body.classList.add('dark-mode');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        });
+
+        // Toggle dark mode
+        document.getElementById('darkModeToggle')?.addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+
+            const icon = document.getElementById('darkModeIcon');
+            if (isDark) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
     </script>
 </body>
 
