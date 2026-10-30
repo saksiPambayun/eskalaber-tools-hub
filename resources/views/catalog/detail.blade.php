@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
@@ -38,7 +40,9 @@
             color: var(--dark);
         }
 
-        .navbar-catalog .navbar-brand span { color: var(--primary); }
+        .navbar-catalog .navbar-brand span {
+            color: var(--primary);
+        }
 
         .tool-detail {
             padding: 60px 0;
@@ -149,7 +153,9 @@
             border-bottom: 1px solid #f0f0f0;
         }
 
-        .spec-item:last-child { border-bottom: none; }
+        .spec-item:last-child {
+            border-bottom: none;
+        }
 
         .spec-label {
             color: var(--gray);
@@ -219,19 +225,53 @@
         }
 
         /* Dark Mode */
-        body.dark-mode { background: #0f0f1a; color: #e0e0e0; }
-        body.dark-mode .navbar-catalog { background: rgba(15, 15, 26, 0.95); }
-        body.dark-mode .navbar-catalog .navbar-brand { color: #fff; }
-        body.dark-mode .tool-detail-image { background: #1a1a2e; }
-        body.dark-mode .qr-section { background: #1a1a2e; }
-        body.dark-mode .tool-info h1 { color: #fff; }
-        body.dark-mode .tool-specs { background: #1a1a2e; }
-        body.dark-mode .spec-item { border-color: #2d2d44; }
-        body.dark-mode .spec-value { color: #fff; }
-        body.dark-mode .related-tools { background: #0f0f1a; }
-        body.dark-mode .related-tools h3 { color: #fff; }
+        body.dark-mode {
+            background: #0f0f1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .navbar-catalog {
+            background: rgba(15, 15, 26, 0.95);
+        }
+
+        body.dark-mode .navbar-catalog .navbar-brand {
+            color: #fff;
+        }
+
+        body.dark-mode .tool-detail-image {
+            background: #1a1a2e;
+        }
+
+        body.dark-mode .qr-section {
+            background: #1a1a2e;
+        }
+
+        body.dark-mode .tool-info h1 {
+            color: #fff;
+        }
+
+        body.dark-mode .tool-specs {
+            background: #1a1a2e;
+        }
+
+        body.dark-mode .spec-item {
+            border-color: #2d2d44;
+        }
+
+        body.dark-mode .spec-value {
+            color: #fff;
+        }
+
+        body.dark-mode .related-tools {
+            background: #0f0f1a;
+        }
+
+        body.dark-mode .related-tools h3 {
+            color: #fff;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- NAVBAR -->
@@ -263,11 +303,11 @@
                     </div>
 
                     @if($tool->qr_code)
-                    <div class="qr-section">
-                        <h6 class="fw-bold mb-3">QR Code</h6>
-                        <img src="{{ asset($tool->qr_code) }}" alt="QR Code">
-                        <p class="text-muted mt-2 mb-0" style="font-size: 13px;">Scan untuk detail alat</p>
-                    </div>
+                        <div class="qr-section">
+                            <h6 class="fw-bold mb-3">QR Code</h6>
+                            <img src="{{ asset($tool->qr_code) }}" alt="QR Code">
+                            <p class="text-muted mt-2 mb-0" style="font-size: 13px;">Scan untuk detail alat</p>
+                        </div>
                     @endif
                 </div>
 
@@ -332,8 +372,20 @@
                         <div class="mt-4">
                             @auth
                                 @if(auth()->user()->role === 'USER')
-                                    <a href="{{ route('user.loans.add', ['tool_id' => $tool->id]) }}" class="btn-login-to-borrow">
+                                    <a href="{{ route('user.loans.add', ['tool_id' => $tool->id]) }}"
+                                        class="btn-login-to-borrow">
                                         <i class="fas fa-hand-holding"></i> Pinjam Alat
+                                    </a>
+                                @else
+                                    {{-- Jika Admin atau Toolsman yang login --}}
+                                    <div class="alert alert-warning" style="border-radius: 10px; font-size: 14px;">
+                                        <i class="fas fa-info-circle"></i> Anda login sebagai
+                                        <strong>{{ auth()->user()->role }}</strong>. Hanya akun
+                                        <strong>User</strong> yang dapat meminjam alat.
+                                    </div>
+                                    <a href="{{ route('admin.dashboard') }}" class="btn-login-to-borrow"
+                                        style="background: #6c757d;">
+                                        <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
                                     </a>
                                 @endif
                             @else
@@ -350,33 +402,37 @@
 
     <!-- RELATED TOOLS -->
     @if($relatedTools->count() > 0)
-    <section class="related-tools">
-        <div class="container">
-            <h3>Alat Serupa</h3>
-            <div class="row g-4">
-                @foreach($relatedTools as $related)
-                <div class="col-md-6 col-lg-3">
-                    <div class="tool-card" style="background: var(--primary-bg); border-radius: 16px; overflow: hidden; transition: all 0.3s ease;">
-                        <div style="height: 150px; display: flex; align-items: center; justify-content: center; background: #fff;">
-                            @if($related->image)
-                                <img src="{{ asset($related->image) }}" alt="{{ $related->name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                            @else
-                                <i class="fas fa-tools" style="font-size: 50px; color: var(--primary); opacity: 0.3;"></i>
-                            @endif
+        <section class="related-tools">
+            <div class="container">
+                <h3>Alat Serupa</h3>
+                <div class="row g-4">
+                    @foreach($relatedTools as $related)
+                        <div class="col-md-6 col-lg-3">
+                            <div class="tool-card"
+                                style="background: var(--primary-bg); border-radius: 16px; overflow: hidden; transition: all 0.3s ease;">
+                                <div
+                                    style="height: 150px; display: flex; align-items: center; justify-content: center; background: #fff;">
+                                    @if($related->image)
+                                        <img src="{{ asset($related->image) }}" alt="{{ $related->name }}"
+                                            style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                    @else
+                                        <i class="fas fa-tools" style="font-size: 50px; color: var(--primary); opacity: 0.3;"></i>
+                                    @endif
+                                </div>
+                                <div style="padding: 15px;">
+                                    <h6 style="font-weight: 700; color: var(--dark);">{{ $related->name }}</h6>
+                                    <p class="text-muted mb-2" style="font-size: 13px;">Stok: {{ $related->stock }}</p>
+                                    <a href="{{ route('catalog.detail', $related->id) }}"
+                                        style="color: var(--primary); font-weight: 600; font-size: 13px; text-decoration: none;">
+                                        Lihat Detail <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div style="padding: 15px;">
-                            <h6 style="font-weight: 700; color: var(--dark);">{{ $related->name }}</h6>
-                            <p class="text-muted mb-2" style="font-size: 13px;">Stok: {{ $related->stock }}</p>
-                            <a href="{{ route('catalog.detail', $related->id) }}" style="color: var(--primary); font-weight: 600; font-size: 13px; text-decoration: none;">
-                                Lihat Detail <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
-        </div>
-    </section>
+        </section>
     @endif
 
     <!-- FOOTER -->
@@ -388,4 +444,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

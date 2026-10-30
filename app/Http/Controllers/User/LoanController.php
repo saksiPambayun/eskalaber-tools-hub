@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Loan;
 use App\Models\Tool;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use App\Helpers\ActivityHelper;
 use App\Models\Notification;
 
@@ -23,12 +22,14 @@ class LoanController extends Controller
 
     public function add(Request $request)
     {
+        // Ambil semua alat yang tersedia dan stoknya lebih dari 0
         $tools = Tool::where('status', 'available')->where('stock', '>', 0)->get();
         return view('user.loans.add', compact('tools'));
     }
 
     public function doCreate(Request $request)
     {
+        // 1. Validasi Input
         $request->validate([
             'tool_id' => 'required|exists:tools,id',
             'loan_date' => 'required|date',
@@ -36,13 +37,14 @@ class LoanController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        // Cek ketersediaan tool
-        $tool = Tool::find($request->tool_id);
+        // 2. Cek Stok Tool
+        $tool = Tool::findOrFail($request->tool_id);
         if ($tool->stock <= 0) {
             return back()->with('error', 'Stock tool tidak mencukupi!');
         }
 
-        Loan::create([
+        // 3. Simpan Data Peminjaman
+        $loan = Loan::create([
             'user_id' => auth()->id(),
             'tool_id' => $request->tool_id,
             'loan_date' => $request->loan_date,
@@ -51,8 +53,18 @@ class LoanController extends Controller
             'notes' => $request->notes,
         ]);
 
-        ActivityHelper::log('create_loan', 'Mengajukan peminjaman alat ' . ($tool->name ?? 'Tool'));
+        // 4. Kirim Notifikasi ke Toolsman (HANYA SEKALI)
+        Notification::sendToToolsmans(
+            'Peminjaman Baru',
+            auth()->user()->name . ' mengajukan peminjaman ' . $tool->name,
+            'warning',
+            route('toolsman.loans.index')
+        );
 
+        // 5. Catat Log Aktivitas
+        ActivityHelper::log('create_loan', 'Mengajukan peminjaman alat ' . $tool->name);
+
+        // 6. Redirect ke Halaman Peminjaman Saya
         return redirect()->route('user.loans.index')->with('success', 'Peminjaman berhasil diajukan!');
     }
 
@@ -64,34 +76,17 @@ class LoanController extends Controller
         return view('user.loans.detail', compact('loan'));
     }
 
-   public function cancel($id)
-{
-    $loan = Loan::where('user_id', auth()->id())
-        ->where('status', 'pending')
-        ->findOrFail($id);
+    public function cancel($id)
+    {
+        $loan = Loan::where('user_id', auth()->id())
+            ->where('status', 'pending')
+            ->findOrFail($id);
 
-    $loan->update(['status' => 'rejected']);
+        $loan->update(['status' => 'rejected']);
 
-    // Log activity
-    ActivityHelper::log('cancel_loan', 'Membatalkan peminjaman #' . $loan->id);
+        // Catat Log Aktivitas
+        ActivityHelper::log('cancel_loan', 'Membatalkan peminjaman #' . $loan->id);
 
-    return redirect()->route('user.loans.index')->with('success', 'Peminjaman dibatalkan!');
-}
-public function doCreate(Request $request)
-{
-    // ... validasi ...
-
-    $loan = Loan::create([...]);
-
-    // Kirim notifikasi ke semua toolsman
-    Notification::sendToToolsmans(
-        'Peminjaman Baru',
-        auth()->user()->name . ' mengajukan peminjaman ' . $tool->name,
-        'warning',
-        route('toolsman.loans.index')
-    );
-
-    return redirect()->route('user.loans.index')->with('success', 'Peminjaman diajukan!');
-}
-
+        return redirect()->route('user.loans.index')->with('success', 'Peminjaman dibatalkan!');
+    }
 }

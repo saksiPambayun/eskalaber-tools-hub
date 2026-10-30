@@ -361,6 +361,108 @@
             background: #1a1a2e;
             color: #e0e0e0;
         }
+
+        /* ============================================ */
+        /* FIX TAMPILAN MOBILE (HP) */
+        /* ============================================ */
+        @media (max-width: 768px) {
+
+            /* Paksa konten agar tidak lebih lebar dari layar HP */
+            .content-wrapper,
+            .main-footer,
+            .main-header {
+                margin-left: 0 !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+            }
+
+            /* Hilangkan padding bawaan AdminLTE yang bikin geser */
+            .content-wrapper {
+                padding: 10px !important;
+            }
+
+            /* Perbaiki layout grid Bootstrap (kartu statistik) */
+            .row>[class*="col-"] {
+                width: 100% !important;
+                float: none !important;
+            }
+
+            /* Perbaiki Chart agar tidak melebar */
+            canvas {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+        }
+
+        /* ============================================ */
+        /* PAKSA LAYAR HP 100% (HILANGKAN GESER KE KANAN) */
+        /* ============================================ */
+        @media (max-width: 768px) {
+
+            html,
+            body {
+                overflow-x: hidden !important;
+                /* Kunci agar tidak bisa digeser ke kanan */
+                width: 100% !important;
+                max-width: 100vw !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .wrapper,
+            .content-wrapper {
+                overflow-x: hidden !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+                margin-left: 0 !important;
+            }
+
+            /* Sembunyikan garis/ruang sisa dari sidebar */
+            .main-sidebar {
+                box-shadow: none !important;
+            }
+        }
+
+        /* ============================================ */
+        /* FIX DROPDOWN NAVBAR DI HP */
+        /* ============================================ */
+        @media (max-width: 768px) {
+
+            /* 1. Paksa Navbar untuk membungkus item dengan rapi */
+            .navbar-nav {
+                flex-direction: row !important;
+                align-items: center;
+            }
+
+            /* 2. Ubah Dropdown menjadi Menu Vertikal Penuh di HP */
+            .navbar-nav .dropdown-menu {
+                position: absolute !important;
+                top: 100% !important;
+                /* Tepat di bawah navbar */
+                left: 0 !important;
+                right: 0 !important;
+                width: 100vw !important;
+                /* Lebar penuh layar */
+                max-width: 100vw !important;
+                margin: 0 !important;
+                border-radius: 0 0 15px 15px !important;
+                /* Melengkung di bawah */
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+                border: none !important;
+                z-index: 1050 !important;
+            }
+
+            /* 3. Sesuaikan jarak icon dan teks di dalam dropdown */
+            .navbar-nav .dropdown-item {
+                padding: 12px 20px !important;
+                font-size: 15px !important;
+            }
+
+            /* 4. Sembunyikan nama user di navbar HP agar tidak mendorong layar (jika kepanjangan) */
+            .navbar-nav .dropdown-toggle span.ml-2 {
+                display: none !important;
+            }
+        }
     </style>
 
     @stack('styles')
@@ -373,6 +475,7 @@
         <!-- NAVBAR -->
         <!-- ============================================ -->
         <nav class="main-header navbar navbar-expand navbar-dark">
+            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button">
@@ -383,6 +486,8 @@
                     <a href="{{ route('admin.dashboard') }}" class="nav-link">Home</a>
                 </li>
             </ul>
+
+            <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Toggle Dark Mode -->
                 <li class="nav-item">
@@ -391,7 +496,7 @@
                     </a>
                 </li>
 
-                <!-- Notifikasi - HANYA 1 -->
+                <!-- Notifikasi -->
                 <li class="nav-item dropdown" id="notificationDropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#" role="button" id="notificationBell">
                         <i class="fas fa-bell"></i>
@@ -412,36 +517,36 @@
                     </div>
                 </li>
 
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
-                            @if(auth()->user()->photo)
-                                <img src="{{ asset(auth()->user()->photo) }}" class="rounded-circle"
-                                    style="width: 32px; height: 32px; object-fit: cover; border: 2px solid #fff;">
-                            @else
-                                <i class="fas fa-user-circle fa-lg"></i>
-                            @endif
-                            <span class="ml-2">{{ auth()->user()->name }}</span>
-                            <span class="badge badge-warning ml-2">{{ auth()->user()->role }}</span>
+                <!-- Profile Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
+                        @if(auth()->user()->photo)
+                            <img src="{{ asset(auth()->user()->photo) }}" class="rounded-circle"
+                                style="width: 32px; height: 32px; object-fit: cover; border: 2px solid #fff;">
+                        @else
+                            <i class="fas fa-user-circle fa-lg"></i>
+                        @endif
+                        <span class="ml-2">{{ auth()->user()->name }}</span>
+                        <span class="badge badge-warning ml-2">{{ auth()->user()->role }}</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="{{ route('profile.index') }}" class="dropdown-item">
+                            <i class="fas fa-user"></i> My Profile
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ route('profile.index') }}" class="dropdown-item">
-                                <i class="fas fa-user"></i> My Profile
-                            </a>
-                            <a href="{{ route('profile.change_password') }}" class="dropdown-item">
-                                <i class="fas fa-key"></i> Change Password
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fas fa-sign-out-alt"></i> Logout
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
-                    </li>
-                </ul>
+                        <a href="{{ route('profile.change_password') }}" class="dropdown-item">
+                            <i class="fas fa-key"></i> Change Password
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+            </ul>
         </nav>
         <!-- END NAVBAR -->
 
