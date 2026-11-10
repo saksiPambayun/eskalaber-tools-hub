@@ -6,12 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Loan;
 use App\Models\Tool;
 use App\Models\Fine;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\LoansExport;
-use App\Helpers\ActivityHelper;
 use App\Models\Notification;
+use Illuminate\Http\Request;
+use App\Helpers\ActivityHelper;
 
 class LoanController extends Controller
 {
@@ -42,9 +39,7 @@ class LoanController extends Controller
         $loan = Loan::findOrFail($id);
 
         // Update status loan
-        $loan->update([
-            'status' => 'approved'
-        ]);
+        $loan->update(['status' => 'approved']);
 
         // Kurangi stock tool
         $tool = Tool::find($loan->tool_id);
@@ -55,8 +50,17 @@ class LoanController extends Controller
             $tool->update(['status' => 'borrowed']);
         }
 
+        // Kirim Notifikasi ke User
+        Notification::send(
+            $loan->user_id,
+            'Peminjaman Disetujui',
+            'Peminjaman alat ' . $loan->tool->name . ' telah disetujui.',
+            'success',
+            route('user.loans.detail', $loan->id)
+        );
+
         // Log activity
-        ActivityHelper::log('approve_loan', 'Menyetujui peminjaman #' . $loan->id . ' oleh ' . ($loan->user->name ?? 'User') . ' untuk alat ' . ($loan->tool->name ?? 'Tool'));
+        ActivityHelper::log('approve_loan', 'Menyetujui peminjaman #' . $loan->id . ' oleh ' . ($loan->user->name ?? 'User'));
 
         return redirect()->route('toolsman.loans.index')->with('success', 'Peminjaman berhasil disetujui!');
     }
@@ -65,6 +69,15 @@ class LoanController extends Controller
     {
         $loan = Loan::findOrFail($id);
         $loan->update(['status' => 'rejected']);
+
+        // Kirim Notifikasi ke User
+        Notification::send(
+            $loan->user_id,
+            'Peminjaman Ditolak',
+            'Peminjaman alat ' . $loan->tool->name . ' ditolak.',
+            'danger',
+            route('user.loans.detail', $loan->id)
+        );
 
         // Log activity
         ActivityHelper::log('reject_loan', 'Menolak peminjaman #' . $loan->id . ' oleh ' . ($loan->user->name ?? 'User'));
@@ -92,7 +105,6 @@ class LoanController extends Controller
         $fineCreated = false;
 
         if ($lateDays > 0) {
-            // Buat denda
             $fineAmount = $lateDays * 10000; // Rp 10.000 per hari
             Fine::create([
                 'loan_id' => $loan->id,
@@ -103,6 +115,15 @@ class LoanController extends Controller
                 'status' => 'unpaid',
             ]);
             $fineCreated = true;
+
+            // Kirim Notifikasi Denda ke User
+            Notification::send(
+                $loan->user_id,
+                'Denda Keterlambatan',
+                'Anda mendapat denda Rp ' . number_format($fineAmount, 0, ',', '.') . ' karena terlambat mengembalikan alat.',
+                'warning',
+                route('user.fines.index')
+            );
         }
 
         // Log activity
@@ -114,72 +135,4 @@ class LoanController extends Controller
 
         return redirect()->route('toolsman.loans.index')->with('success', 'Alat berhasil dikembalikan!');
     }
-
-    public function exportExcel()
-    {
-        // Log activity
-        ActivityHelper::log('export_loans', 'Mengekspor data peminjaman ke Excel');
-
-        return Excel::download(new LoansExport(), 'loans_' . date('Y-m-d') . '.xlsx');
-    }
-    public function updateStatus(Request $request, $id)
-{
-    $loan = Loan::findOrFail($id);
-    $loan->update([
-        'status' => $request->status
-    ]);
-
-    if ($request->status == 'approved') {
-        $tool = Tool::find($loan->tool_id);
-        $tool->decrement('stock', 1);
-        if ($tool->stock == 0) {
-            $tool->update(['status' => 'borrowed']);
-        }
-    }
-
-    // Log activity
-    ActivityHelper::log('update_loan_status', 'Mengubah status peminjaman #' . $loan->id . ' menjadi ' . $request->status);
-
-    return redirect()->route('admin.loans.index')->with('success', 'Status peminjaman berhasil diupdate!');
-}
-
-public function approve($id)
-{
-    $loan = Loan::findOrFail($id);
-    $loan->update(['status' => 'approved']);
-
-    // Kirim notifikasi ke user
-    Notification::send(
-        $loan->user_id,
-        'Peminjaman Disetujui',
-        'Peminjaman alat ' . $loan->tool->name . ' telah disetujui.',
-        'success',
-        route('user.loans.detail', $loan->id)
-    );
-
-    // Kirim notifikasi ke admin
-    Notification::sendToAdmins(
-        'Peminjaman Baru Disetujui',
-        $loan->user->name . ' meminjam ' . $loan->tool->name,
-        'info',
-        route('admin.loans.detail', $loan->id)
-    );
-
-    ActivityHelper::log('approve_loan', 'Menyetujui peminjaman #' . $loan->id);
-
-    return redirect()->route('toolsman.loans.index')->with('success', 'Peminjaman disetujui!');
-}
-
-
-public function delete($id)
-{
-    $loan = Loan::findOrFail($id);
-    $loan->delete();
-
-    // Log activity
-    ActivityHelper::log('delete_loan', 'Menghapus peminjaman #' . $loan->id);
-
-    return redirect()->route('admin.loans.index')->with('success', 'Data peminjaman berhasil dihapus!');
-}
-
 }
