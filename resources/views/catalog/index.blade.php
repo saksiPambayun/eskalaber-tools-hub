@@ -547,7 +547,7 @@
             <!-- Search Bar -->
             <div class="search-container">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" id="searchInput"
+                <input type="text" class="search-input" id="searchInput" value="{{ $query ?? '' }}"
                     placeholder="Cari alat berdasarkan nama, kode, atau deskripsi...">
                 <i class="fas fa-times search-clear" id="searchClear"></i>
             </div>
@@ -559,15 +559,15 @@
         <div class="container">
             <h5 class="filter-title">Kategori</h5>
             <div class="category-scroll" id="categoryFilter">
-                <a href="{{ route('catalog') }}" class="category-btn {{ !request('category') ? 'active' : '' }}">
+                <a href="{{ route('catalog') }}" class="category-btn {{ !$category ? 'active' : '' }}">
                     <i class="fas fa-th-large"></i> Semua
-                    <span class="count">{{ $tools->total() }}</span>
+                    <span class="count">{{ $totalAvailable }}</span>
                 </a>
-                @foreach($categories as $category)
-                    <a href="{{ route('catalog', ['category' => $category->id]) }}"
-                        class="category-btn {{ request('category') == $category->id ? 'active' : '' }}">
-                        <i class="fas fa-folder"></i> {{ $category->name }}
-                        <span class="count">{{ $category->tools_count }}</span>
+                @foreach($categories as $categoryItem)
+                    <a href="{{ route('catalog', ['category' => $categoryItem->id]) }}"
+                        class="category-btn {{ $category == $categoryItem->id ? 'active' : '' }}">
+                        <i class="fas fa-folder"></i> {{ $categoryItem->name }}
+                        <span class="count">{{ $categoryItem->tools_count }}</span>
                     </a>
                 @endforeach
             </div>
@@ -615,7 +615,7 @@
                         <div class="empty-state">
                             <i class="fas fa-box-open"></i>
                             <h4>Tidak Ada Alat</h4>
-                            <p>Belum ada alat yang tersedia saat ini.</p>
+                            <p>{{ $category || $query ? 'Tidak ada alat yang cocok dengan filter yang dipilih.' : 'Belum ada alat yang tersedia saat ini.' }}</p>
                         </div>
                     </div>
                 @endforelse
@@ -683,6 +683,13 @@
         const searchClear = document.getElementById('searchClear');
         const toolsGrid = document.getElementById('toolsGrid');
 
+        // Pertahankan filter kategori/tipe yang sedang aktif saat mencari.
+        const activeFilters = new URLSearchParams(window.location.search);
+
+        if (searchInput?.value.length > 0) {
+            searchClear.style.display = 'block';
+        }
+
         searchInput?.addEventListener('input', function () {
             const query = this.value;
 
@@ -693,7 +700,16 @@
             }
 
             if (query.length >= 2) {
-                fetch(`{{ route('catalog.search') }}?q=${encodeURIComponent(query)}`)
+                const params = new URLSearchParams({ q: query });
+
+                ['category', 'type'].forEach(key => {
+                    const value = activeFilters.get(key);
+                    if (value) {
+                        params.set(key, value);
+                    }
+                });
+
+                fetch(`{{ route('catalog.search') }}?${params.toString()}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {

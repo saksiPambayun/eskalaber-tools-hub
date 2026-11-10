@@ -9,18 +9,56 @@ use Illuminate\Http\Request;
 
 class CatalogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tools = Tool::with(['category', 'type', 'place'])
+        $query = trim((string) $request->get('q', ''));
+        $category = $request->get('category');
+        $type = $request->get('type');
+
+        // Hanya tampilkan alat yang benar-benar bisa dipinjam.
+        $baseQuery = Tool::query()
             ->where('status', 'available')
-            ->where('stock', '>', 0)
-            ->latest()
-            ->paginate(12);
+            ->where('stock', '>', 0);
 
-        $categories = Category::withCount('tools')->get();
-        $types = Type::withCount('tools')->get();
+        $totalAvailable = (clone $baseQuery)->count();
 
-        return view('catalog.index', compact('tools', 'categories', 'types'));
+        $tools = (clone $baseQuery)->with(['category', 'type', 'place']);
+
+        // Filter kategori; abaikan nilai yang tidak valid.
+        if ($category && Category::whereKey($category)->exists()) {
+            $tools->where('category_id', $category);
+        } else {
+            $category = null;
+        }
+
+        // Filter tipe; abaikan nilai yang tidak valid.
+        if ($type && Type::whereKey($type)->exists()) {
+            $tools->where('type_id', $type);
+        } else {
+            $type = null;
+        }
+
+        // Pencarian berdasarkan nama, kode, atau deskripsi.
+        if ($query !== '') {
+            $tools->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                    ->orWhere('code', 'like', "%{$query}%")
+                    ->orWhere('description', 'like', "%{$query}%");
+            });
+        }
+
+        $tools = $tools->latest()->paginate(12)->withQueryString();
+
+        // Hitung hanya alat yang tersedia agar angka pada kategori sesuai hasil filter.
+        $categories = Category::withCount(['tools' => function ($q) {
+            $q->where('status', 'available')->where('stock', '>', 0);
+        }])->orderBy('name')->get();
+
+        $types = Type::withCount(['tools' => function ($q) {
+            $q->where('status', 'available')->where('stock', '>', 0);
+        }])->orderBy('name')->get();
+
+        return view('catalog.index', compact('tools', 'categories', 'types', 'totalAvailable', 'query', 'category', 'type'));
     }
 
     public function detail($id)
@@ -36,7 +74,7 @@ class CatalogController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->get('q');
+        $query = trim((string) $request->get('q', ''));
         $category = $request->get('category');
         $type = $request->get('type');
 
@@ -44,19 +82,19 @@ class CatalogController extends Controller
             ->where('status', 'available')
             ->where('stock', '>', 0);
 
-        if ($query) {
-            $tools->where(function($q) use ($query) {
+        if ($query !== '') {
+            $tools->where(function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
-                  ->orWhere('code', 'like', "%{$query}%")
-                  ->orWhere('description', 'like', "%{$query}%");
+                    ->orWhere('code', 'like', "%{$query}%")
+                    ->orWhere('description', 'like', "%{$query}%");
             });
         }
 
-        if ($category) {
+        if ($category && Category::whereKey($category)->exists()) {
             $tools->where('category_id', $category);
         }
 
-        if ($type) {
+        if ($type && Type::whereKey($type)->exists()) {
             $tools->where('type_id', $type);
         }
 
