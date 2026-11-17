@@ -10,16 +10,12 @@
 
     <!-- Bootstrap 4 (Konsisten dengan AdminLTE 3) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <!-- AdminLTE -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
-
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
@@ -346,17 +342,14 @@
             background: #1a1a2e;
         }
 
-        /* Sidebar tetap gelap */
         body.dark-mode .main-sidebar {
             background: #0a0a15 !important;
         }
 
-        /* Navbar tetap gradient orange */
         body.dark-mode .main-header {
             background: linear-gradient(135deg, #E85D04, #DC2F02) !important;
         }
 
-        /* Toastr Dark Mode */
         body.dark-mode #toast-container>div {
             background: #1a1a2e;
             color: #e0e0e0;
@@ -367,7 +360,6 @@
         /* ============================================ */
         @media (max-width: 768px) {
 
-            /* Paksa konten agar tidak lebih lebar dari layar HP */
             .content-wrapper,
             .main-footer,
             .main-header {
@@ -376,33 +368,26 @@
                 max-width: 100vw !important;
             }
 
-            /* Hilangkan padding bawaan AdminLTE yang bikin geser */
             .content-wrapper {
                 padding: 10px !important;
             }
 
-            /* Perbaiki layout grid Bootstrap (kartu statistik) */
             .row>[class*="col-"] {
                 width: 100% !important;
                 float: none !important;
             }
 
-            /* Perbaiki Chart agar tidak melebar */
             canvas {
                 max-width: 100% !important;
                 height: auto !important;
             }
         }
 
-        /* ============================================ */
-        /* PAKSA LAYAR HP 100% (HILANGKAN GESER KE KANAN) */
-        /* ============================================ */
         @media (max-width: 768px) {
 
             html,
             body {
                 overflow-x: hidden !important;
-                /* Kunci agar tidak bisa digeser ke kanan */
                 width: 100% !important;
                 max-width: 100vw !important;
                 margin: 0 !important;
@@ -417,50 +402,80 @@
                 margin-left: 0 !important;
             }
 
-            /* Sembunyikan garis/ruang sisa dari sidebar */
             .main-sidebar {
                 box-shadow: none !important;
             }
         }
 
-        /* ============================================ */
-        /* FIX DROPDOWN NAVBAR DI HP */
-        /* ============================================ */
         @media (max-width: 768px) {
-
-            /* 1. Paksa Navbar untuk membungkus item dengan rapi */
             .navbar-nav {
                 flex-direction: row !important;
                 align-items: center;
             }
 
-            /* 2. Ubah Dropdown menjadi Menu Vertikal Penuh di HP */
             .navbar-nav .dropdown-menu {
                 position: absolute !important;
                 top: 100% !important;
-                /* Tepat di bawah navbar */
                 left: 0 !important;
                 right: 0 !important;
                 width: 100vw !important;
-                /* Lebar penuh layar */
                 max-width: 100vw !important;
                 margin: 0 !important;
                 border-radius: 0 0 15px 15px !important;
-                /* Melengkung di bawah */
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
                 border: none !important;
                 z-index: 1050 !important;
             }
 
-            /* 3. Sesuaikan jarak icon dan teks di dalam dropdown */
             .navbar-nav .dropdown-item {
                 padding: 12px 20px !important;
                 font-size: 15px !important;
             }
 
-            /* 4. Sembunyikan nama user di navbar HP agar tidak mendorong layar (jika kepanjangan) */
             .navbar-nav .dropdown-toggle span.ml-2 {
                 display: none !important;
+            }
+        }
+
+        /* --- FIX TOMBOL KEMBALI KE BERANDA SAAT SIDEBAR MINI --- */
+        @media (min-width: 992px) {
+            .sidebar-mini.sidebar-collapse .main-sidebar .nav-sidebar .nav-item>.nav-link.kembali-beranda {
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                padding: 10px 0 !important;
+                margin: 0 auto !important;
+                width: 45px !important;
+                height: 45px !important;
+            }
+
+            .sidebar-mini.sidebar-collapse .main-sidebar .nav-sidebar .nav-item>.nav-link.kembali-beranda span {
+                display: none !important;
+            }
+
+            .sidebar-mini.sidebar-collapse .main-sidebar .nav-sidebar .nav-item>.nav-link.kembali-beranda i {
+                margin: 0 !important;
+            }
+        }
+
+        /* --- FIX TOMBOL BURGER (HAMBURGER) DI HP --- */
+        @media (max-width: 768px) {
+            .main-header .navbar-nav .nav-item .nav-link[data-widget="pushmenu"] {
+                color: #1a1a2e !important;
+                font-size: 22px !important;
+                padding: 10px 15px !important;
+                background: rgba(255, 255, 255, 0.2) !important;
+                border-radius: 8px !important;
+                margin-right: 10px !important;
+                margin-top: 5px !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+
+            .main-header .navbar-nav .nav-item .nav-link[data-widget="pushmenu"] i {
+                color: #1a1a2e !important;
+                display: inline-block !important;
             }
         }
     </style>
@@ -471,11 +486,8 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
-        <!-- ============================================ -->
         <!-- NAVBAR -->
-        <!-- ============================================ -->
         <nav class="main-header navbar navbar-expand navbar-dark">
-            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button">
@@ -483,13 +495,11 @@
                     </a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link">Home</a>
+                    <a href="{{ url('/') }}" class="nav-link">Home</a>
                 </li>
             </ul>
 
-            <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Toggle Dark Mode -->
                 <li class="nav-item">
                     <a class="nav-link" href="#" id="darkModeToggle" role="button" title="Toggle Dark Mode">
                         <i class="fas fa-moon" id="darkModeIcon"></i>
@@ -548,11 +558,8 @@
                 </li>
             </ul>
         </nav>
-        <!-- END NAVBAR -->
 
-        <!-- ============================================ -->
         <!-- SIDEBAR -->
-        <!-- ============================================ -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <a href="#" class="brand-link">
                 <span class="brand-text font-weight-light">Eskalaber Tools</span>
@@ -567,17 +574,115 @@
                 </div>
 
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-                        @yield('sidebar')
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+
+                        <!-- MENU KHUSUS ADMIN (OTOMATIS MUNCUL DI SEMUA HALAMAN ADMIN) -->
+                        @if(auth()->user()->role === 'SUPERADMIN')
+                            <li class="nav-item">
+                                <a href="{{ route('admin.dashboard') }}"
+                                    class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-header">MANAGEMENT</li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.users.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>Users</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.toolsmans.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.toolsmans.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-user-cog"></i>
+                                    <p>Toolsman</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.loans.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.loans.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-hand-holding"></i>
+                                    <p>Loans</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.fines.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.fines.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-money-bill-wave"></i>
+                                    <p>Fines</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.activity_logs.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.activity_logs.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-history"></i>
+                                    <p>Activity Logs</p>
+                                </a>
+                            </li>
+                            <li class="nav-header">MASTER DATA</li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.departments.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.departments.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-building"></i>
+                                    <p>Departments</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.places.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.places.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-map-marker-alt"></i>
+                                    <p>Places</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.types.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.types.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-tag"></i>
+                                    <p>Types</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.categories.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-folder"></i>
+                                    <p>Categories</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.tools.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.tools.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-tools"></i>
+                                    <p>Tools</p>
+                                </a>
+                            </li>
+                        @endif
+
+                        <!-- MENU UNTUK USER & TOOLSMAN (DARI FILE MASING-MASING) -->
+                        @hasSection('sidebar')
+                            @yield('sidebar')
+                        @endif
+
+                        <!-- TOMBOL KEMBALI KE BERANDA (HANYA 1 SAJA) -->
+                        <li class="nav-item mt-4" style="padding: 0 10px;">
+                            <a href="{{ url('/') }}" class="nav-link kembali-beranda"
+                                style="background-color: rgba(232, 93, 4, 0.15) !important; border: 1px dashed #E85D04 !important; border-radius: 8px !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 10px 0 !important; width: 100% !important; margin: 0 !important;">
+                                <i class="fas fa-home"
+                                    style="color: #E85D04 !important; font-size: 16px !important; margin: 0 !important;"></i>
+                                <span class="ml-2"
+                                    style="color: #E85D04 !important; font-weight: 700 !important; font-size: 14px !important; line-height: 1 !important;">Kembali
+                                    ke Beranda</span>
+                            </a>
+                        </li>
+
                     </ul>
                 </nav>
             </div>
         </aside>
-        <!-- END SIDEBAR -->
 
-        <!-- ============================================ -->
         <!-- CONTENT WRAPPER -->
-        <!-- ============================================ -->
         <div class="content-wrapper">
             <div class="content-header">
                 <div class="container-fluid">
@@ -596,30 +701,21 @@
 
             <section class="content">
                 <div class="container-fluid">
-                    <!-- ALERT BIASA DIHAPUS - PAKAI TOASTR SAJA -->
                     @yield('content')
                 </div>
             </section>
         </div>
-        <!-- END CONTENT WRAPPER -->
 
-        <!-- ============================================ -->
         <!-- FOOTER -->
-        <!-- ============================================ -->
         <footer class="main-footer">
             <div class="float-right d-none d-sm-block">
                 <b>Version</b> 1.0
             </div>
             <strong>&copy; {{ date('Y') }} Eskalaber Tools Hub.</strong> All rights reserved.
         </footer>
-        <!-- END FOOTER -->
-
     </div>
-    <!-- END WRAPPER -->
 
-    <!-- ============================================ -->
     <!-- SCRIPTS -->
-    <!-- ============================================ -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
@@ -627,47 +723,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
-        // ============================================
         // TOASTR CONFIG
-        // ============================================
         toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "3000",
-            "preventDuplicates": true,
-            "maxOpened": 2,
-            "newestOnTop": true,
+            "closeButton": true, "progressBar": true, "positionClass": "toast-top-right",
+            "timeOut": "3000", "preventDuplicates": true, "maxOpened": 2, "newestOnTop": true,
         };
 
-        // Tampilkan notifikasi session SEKALI saja
         @if(session('success'))
             toastr.success('{{ session('success') }}');
             @php session()->forget('success'); @endphp
         @endif
-
         @if(session('error'))
             toastr.error('{{ session('error') }}');
             @php session()->forget('error'); @endphp
         @endif
-
         @if(session('warning'))
             toastr.warning('{{ session('warning') }}');
             @php session()->forget('warning'); @endphp
         @endif
-
         @if(session('info'))
             toastr.info('{{ session('info') }}');
             @php session()->forget('info'); @endphp
         @endif
 
-        // ============================================
         // DARK MODE
-        // ============================================
         document.addEventListener('DOMContentLoaded', function () {
             const darkMode = localStorage.getItem('darkMode');
             const icon = document.getElementById('darkModeIcon');
-
             if (darkMode === 'true') {
                 document.body.classList.add('dark-mode');
                 icon.classList.remove('fa-moon');
@@ -678,10 +760,8 @@
         document.getElementById('darkModeToggle')?.addEventListener('click', function (e) {
             e.preventDefault();
             document.body.classList.toggle('dark-mode');
-
             const isDark = document.body.classList.contains('dark-mode');
             localStorage.setItem('darkMode', isDark);
-
             const icon = document.getElementById('darkModeIcon');
             if (isDark) {
                 icon.classList.remove('fa-moon');
@@ -692,9 +772,7 @@
             }
         });
 
-        // ============================================
         // NOTIFIKASI REAL-TIME
-        // ============================================
         function loadNotifications() {
             fetch('{{ route("notifications.index") }}')
                 .then(response => response.json())
@@ -704,41 +782,28 @@
                         list.innerHTML = '<div class="text-center py-3 text-muted"><i class="fas fa-inbox"></i> Tidak ada notifikasi</div>';
                         return;
                     }
-
                     let html = '';
                     data.forEach(notif => {
                         const bgColor = notif.is_read ? '#fff' : '#FFF3E8';
                         const iconMap = {
-                            'info': 'fa-info-circle text-info',
-                            'success': 'fa-check-circle text-success',
-                            'warning': 'fa-exclamation-triangle text-warning',
-                            'danger': 'fa-times-circle text-danger'
+                            'info': 'fa-info-circle text-info', 'success': 'fa-check-circle text-success',
+                            'warning': 'fa-exclamation-triangle text-warning', 'danger': 'fa-times-circle text-danger'
                         };
                         const icon = iconMap[notif.type] || 'fa-bell text-primary';
-
                         html += `
-                        <a href="${notif.url || '#'}" class="dropdown-item py-2"
-                           style="background: ${bgColor}; border-bottom: 1px solid #f0f0f0; white-space: normal;"
-                           onclick="markAsRead(${notif.id}, event)">
+                        <a href="${notif.url || '#'}" class="dropdown-item py-2" style="background: ${bgColor}; border-bottom: 1px solid #f0f0f0; white-space: normal;" onclick="markAsRead(${notif.id}, event)">
                             <div class="d-flex">
-                                <div class="mr-2">
-                                    <i class="fas ${icon}" style="font-size: 20px;"></i>
-                                </div>
+                                <div class="mr-2"><i class="fas ${icon}" style="font-size: 20px;"></i></div>
                                 <div class="flex-grow-1">
                                     <strong style="font-size: 13px;">${notif.title}</strong>
                                     <p class="mb-0 text-muted" style="font-size: 12px;">${notif.message}</p>
                                     <small class="text-muted" style="font-size: 11px;">${timeAgo(notif.created_at)}</small>
                                 </div>
                             </div>
-                        </a>
-                    `;
+                        </a>`;
                     });
-
                     list.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error loading notifications:', error);
-                });
+                }).catch(error => console.error('Error loading notifications:', error));
         }
 
         function checkUnreadCount() {
@@ -752,50 +817,28 @@
                     } else {
                         badge.style.display = 'none';
                     }
-                })
-                .catch(error => console.error('Error:', error));
+                }).catch(error => console.error('Error:', error));
         }
 
         function markAsRead(id, event) {
             event.preventDefault();
             fetch(`/notifications/mark-as-read/${id}`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        checkUnreadCount();
-                    }
-                });
+                method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' }
+            }).then(response => response.json()).then(data => { if (data.success) { checkUnreadCount(); } });
         }
 
         document.getElementById('markAllRead')?.addEventListener('click', function (e) {
             e.preventDefault();
             fetch('{{ route("notifications.mark-all-as-read") }}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        loadNotifications();
-                        checkUnreadCount();
-                    }
-                });
+                method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' }
+            }).then(response => response.json()).then(data => {
+                if (data.success) { loadNotifications(); checkUnreadCount(); }
+            });
         });
 
         function timeAgo(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
+            const date = new Date(dateString); const now = new Date();
             const diff = Math.floor((now - date) / 1000);
-
             if (diff < 60) return 'Baru saja';
             if (diff < 3600) return Math.floor(diff / 60) + ' menit lalu';
             if (diff < 86400) return Math.floor(diff / 3600) + ' jam lalu';
@@ -803,16 +846,9 @@
             return date.toLocaleDateString('id-ID');
         }
 
-        // Load notifikasi saat dropdown dibuka
-        document.getElementById('notificationBell')?.addEventListener('click', function () {
-            loadNotifications();
-        });
-
-        // Cek unread count setiap 30 detik (bukan 10 detik)
-        checkUnreadCount();
-        setInterval(checkUnreadCount, 30000);
+        document.getElementById('notificationBell')?.addEventListener('click', function () { loadNotifications(); });
+        checkUnreadCount(); setInterval(checkUnreadCount, 30000);
     </script>
-
     @stack('scripts')
 </body>
 

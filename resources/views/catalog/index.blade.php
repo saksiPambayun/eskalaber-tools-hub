@@ -615,7 +615,8 @@
                         <div class="empty-state">
                             <i class="fas fa-box-open"></i>
                             <h4>Tidak Ada Alat</h4>
-                            <p>{{ $category || $query ? 'Tidak ada alat yang cocok dengan filter yang dipilih.' : 'Belum ada alat yang tersedia saat ini.' }}</p>
+                            <p>{{ $category || $query ? 'Tidak ada alat yang cocok dengan filter yang dipilih.' : 'Belum ada alat yang tersedia saat ini.' }}
+                            </p>
                         </div>
                     </div>
                 @endforelse

@@ -42,14 +42,6 @@
                     @endif
                 </div>
             </div>
-            @if($tool->qr_code)
-                <div class="card mt-3">
-                    <div class="card-body text-center">
-                        <h6>QR Code</h6>
-                        <img src="{{ asset($tool->qr_code) }}" style="max-width: 150px;">
-                    </div>
-                </div>
-            @endif
         </div>
 
         <div class="col-md-8">

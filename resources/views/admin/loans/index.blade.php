@@ -3,56 +3,34 @@
 @section('title', 'Loan Management')
 @section('page-title', 'Loan Management')
 
-@section('sidebar')
-    <li class="nav-item">
-        <a href="{{ route('admin.dashboard') }}" class="nav-link">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
-        </a>
-    </li>
-    <li class="nav-header">MANAGEMENT</li>
-    <li class="nav-item">
-        <a href="{{ route('admin.loans.index') }}" class="nav-link active">
-            <i class="nav-icon fas fa-hand-holding"></i>
-            <p>Loans</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.fines.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>Fines</p>
-        </a>
-    </li>
-@endsection
-
 @section('content')
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Daftar Peminjaman</h3>
-        <div class="card-tools">
-            <div class="btn-group">
-                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                    <i class="fas fa-file-excel"></i> Export
-                </button>
-                <div class="dropdown-menu">
-                    <a href="{{ route('admin.loans.export-csv') }}" class="dropdown-item">
-                        <i class="fas fa-file-csv"></i> Semua Data
-                    </a>
-                    <a href="{{ route('admin.loans.export-csv') }}?status=pending" class="dropdown-item">
-                        <i class="fas fa-file-csv"></i> Pending
-                    </a>
-                    <a href="{{ route('admin.loans.export-csv') }}?status=approved" class="dropdown-item">
-                        <i class="fas fa-file-csv"></i> Approved
-                    </a>
-                    <a href="{{ route('admin.loans.export-csv') }}?status=borrowed" class="dropdown-item">
-                        <i class="fas fa-file-csv"></i> Borrowed
-                    </a>
-                    <a href="{{ route('admin.loans.export-csv') }}?status=returned" class="dropdown-item">
-                        <i class="fas fa-file-csv"></i> Returned
-                    </a>
+            <div class="card-tools">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+                        <i class="fas fa-file-excel"></i> Export
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="{{ route('admin.loans.export-csv') }}" class="dropdown-item">
+                            <i class="fas fa-file-csv"></i> Semua Data
+                        </a>
+                        <a href="{{ route('admin.loans.export-csv') }}?status=pending" class="dropdown-item">
+                            <i class="fas fa-file-csv"></i> Pending
+                        </a>
+                        <a href="{{ route('admin.loans.export-csv') }}?status=approved" class="dropdown-item">
+                            <i class="fas fa-file-csv"></i> Approved
+                        </a>
+                        <a href="{{ route('admin.loans.export-csv') }}?status=borrowed" class="dropdown-item">
+                            <i class="fas fa-file-csv"></i> Borrowed
+                        </a>
+                        <a href="{{ route('admin.loans.export-csv') }}?status=returned" class="dropdown-item">
+                            <i class="fas fa-file-csv"></i> Returned
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
         <div class="card-body">
             @if(session('success'))

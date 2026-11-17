@@ -3,28 +3,6 @@
 @section('title', 'Fine Management')
 @section('page-title', 'Fine Management')
 
-@section('sidebar')
-    <li class="nav-item">
-        <a href="{{ route('admin.dashboard') }}" class="nav-link">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
-        </a>
-    </li>
-    <li class="nav-header">MANAGEMENT</li>
-    <li class="nav-item">
-        <a href="{{ route('admin.loans.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-hand-holding"></i>
-            <p>Loans</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.fines.index') }}" class="nav-link active">
-            <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>Fines</p>
-        </a>
-    </li>
-@endsection
-
 @section('content')
     <div class="card">
         <div class="card-header">

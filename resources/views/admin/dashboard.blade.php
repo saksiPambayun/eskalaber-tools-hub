@@ -3,83 +3,6 @@
 @section('title', 'Admin Dashboard')
 @section('page-title', 'Dashboard')
 
-@section('sidebar')
-    <li class="nav-item">
-        <a href="/" class="nav-link">
-            <i class="nav-icon fas fa-home"></i>
-            <p>Landing Page</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.dashboard') }}" class="nav-link active">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
-        </a>
-    </li>
-    <li class="nav-header">MANAGEMENT</li>
-    <li class="nav-item">
-        <a href="{{ route('admin.users.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-users"></i>
-            <p>Users</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.toolsmans.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-user-cog"></i>
-            <p>Toolsman</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.loans.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-hand-holding"></i>
-            <p>Loans</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.fines.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>Fines</p>
-        </a>
-    </li>
-    <li class="nav-header">MASTER DATA</li>
-    <li class="nav-item">
-        <a href="{{ route('admin.departments.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-building"></i>
-            <p>Departments</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.places.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-map-marker-alt"></i>
-            <p>Places</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.types.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-tag"></i>
-            <p>Types</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.categories.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-folder"></i>
-            <p>Categories</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.tools.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-tools"></i>
-            <p>Tools</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.activity_logs.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-history"></i>
-            <p>Activity Logs</p>
-        </a>
-    </li>
-@endsection
-
 @section('content')
     <!-- Statistik Cards -->
     <div class="row">
@@ -199,10 +122,10 @@
                         datasets: [{
                             label: 'Jumlah',
                             data: [
-                                        {{ $pendingLoans ?? 0 }},
-                                        {{ $approvedLoans ?? 0 }},
-                                        {{ $borrowedLoans ?? 0 }},
-                                        {{ $returnedLoans ?? 0 }},
+                                                {{ $pendingLoans ?? 0 }},
+                                                {{ $approvedLoans ?? 0 }},
+                                                {{ $borrowedLoans ?? 0 }},
+                                                {{ $returnedLoans ?? 0 }},
                                 {{ $rejectedLoans ?? 0 }}
                             ],
                             backgroundColor: ['#ffc107', '#007bff', '#17a2b8', '#28a745', '#dc3545'],

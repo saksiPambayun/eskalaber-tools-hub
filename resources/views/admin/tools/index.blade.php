@@ -3,71 +3,6 @@
 @section('title', 'Tools')
 @section('page-title', 'Tools Management')
 
-@section('sidebar')
-    <li class="nav-item">
-        <a href="{{ route('admin.dashboard') }}" class="nav-link">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
-        </a>
-    </li>
-    <li class="nav-header">MANAGEMENT</li>
-    <li class="nav-item">
-        <a href="{{ route('admin.users.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-users"></i>
-            <p>Users</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.toolsmans.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-user-cog"></i>
-            <p>Toolsman</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.loans.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-hand-holding"></i>
-            <p>Loans</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.fines.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>Fines</p>
-        </a>
-    </li>
-    <li class="nav-header">MASTER DATA</li>
-    <li class="nav-item">
-        <a href="{{ route('admin.departments.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-building"></i>
-            <p>Departments</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.places.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-map-marker-alt"></i>
-            <p>Places</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.types.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-tag"></i>
-            <p>Types</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.categories.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-folder"></i>
-            <p>Categories</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.tools.index') }}" class="nav-link active">
-            <i class="nav-icon fas fa-tools"></i>
-            <p>Tools</p>
-        </a>
-    </li>
-@endsection
-
 @section('content')
     <div class="card">
         <div class="card-header">
@@ -97,7 +32,6 @@
                             <th>Category</th>
                             <th>Stock</th>
                             <th>Status</th>
-                            <th>QR</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -122,19 +56,6 @@
                                         class="badge bg-{{ $tool->status == 'available' ? 'success' : ($tool->status == 'borrowed' ? 'warning' : 'danger') }}">
                                         {{ ucfirst($tool->status) }}
                                     </span>
-                                </td>
-                                <td>
-                                    @if($tool->qr_code)
-                                        <a href="{{ route('admin.tools.preview-qr', $tool->id) }}" class="btn btn-info btn-sm"
-                                            target="_blank">
-                                            <i class="fas fa-qrcode"></i>
-                                        </a>
-                                    @else
-                                        <a href="{{ route('admin.tools.generate-qr', $tool->id) }}"
-                                            class="btn btn-secondary btn-sm">
-                                            <i class="fas fa-plus"></i> Generate
-                                        </a>
-                                    @endif
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.tools.detail', $tool->id) }}" class="btn btn-info btn-sm">

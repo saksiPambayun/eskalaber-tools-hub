@@ -80,14 +80,7 @@
                     @endif
                 </div>
             </div>
-            @if($tool->qr_code)
-                <div class="card mt-3">
-                    <div class="card-body text-center">
-                        <h6>QR Code</h6>
-                        <img src="{{ asset($tool->qr_code) }}" style="max-width: 150px;">
-                    </div>
-                </div>
-            @endif
+
         </div>
 
         <div class="col-md-8">
@@ -143,12 +136,6 @@
                     <div class="mt-3">
                         <a href="{{ route('admin.tools.update', $tool->id) }}" class="btn btn-warning">
                             <i class="fas fa-edit me-2"></i> Edit
-                        </a>
-                        <a href="{{ route('admin.tools.generate-qr', $tool->id) }}" class="btn btn-info">
-                            <i class="fas fa-qrcode me-2"></i> Generate QR
-                        </a>
-                        <a href="{{ route('admin.tools.preview-qr', $tool->id) }}" class="btn btn-secondary">
-                            <i class="fas fa-eye me-2"></i> Preview QR
                         </a>
                         <a href="{{ route('admin.tools.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left me-2"></i> Kembali

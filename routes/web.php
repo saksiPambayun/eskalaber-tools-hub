@@ -151,8 +151,6 @@ Route::middleware(['auth', 'role:SUPERADMIN'])->prefix('admin')->name('admin.')-
         Route::get('/update/{id}', [ToolController::class, 'update'])->name('update');
         Route::post('/update/{id}', [ToolController::class, 'doUpdate'])->name('doUpdate');
         Route::delete('/delete/{id}', [ToolController::class, 'delete'])->name('delete');
-        Route::get('/generate-qr/{id}', [ToolController::class, 'generateQR'])->name('generate-qr');
-        Route::get('/preview-qr/{id}', [ToolController::class, 'previewQR'])->name('preview-qr');
     });
 
     // Loans

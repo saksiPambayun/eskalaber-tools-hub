@@ -3,33 +3,6 @@
 @section('title', 'Departments')
 @section('page-title', 'Departments Management')
 
-@section('sidebar')
-    <li class="nav-item">
-        <a href="{{ route('admin.dashboard') }}" class="nav-link">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.users.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-users"></i>
-            <p>Users</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.toolsmans.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-user-cog"></i>
-            <p>Toolsman</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.departments.index') }}" class="nav-link active">
-            <i class="nav-icon fas fa-building"></i>
-            <p>Departments</p>
-        </a>
-    </li>
-@endsection
-
 @section('content')
     <div class="card">
         <div class="card-header">

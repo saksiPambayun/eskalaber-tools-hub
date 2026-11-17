@@ -8,7 +8,6 @@ use App\Models\Category;
 use App\Models\Type;
 use App\Models\Place;
 use Illuminate\Http\Request;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ToolController extends Controller
 {
@@ -50,9 +49,6 @@ class ToolController extends Controller
         }
 
         $tool = Tool::create($data);
-
-        // Generate QR Code Otomatis saat alat dibuat
-        $this->generateToolQRCode($tool);
 
         return redirect()->route('admin.tools.index')->with('success', 'Tool berhasil ditambahkan!');
     }
@@ -122,58 +118,10 @@ class ToolController extends Controller
         unlink(public_path($tool->image));
     }
 
-    // 3. Hapus QR Code jika ada
-    if ($tool->qr_code && file_exists(public_path($tool->qr_code))) {
-        unlink(public_path($tool->qr_code));
-    }
-
     // 4. Hapus dari database
     $tool->delete();
 
     return redirect()->route('admin.tools.index')->with('success', 'Tool berhasil dihapus!');
 }
 
-    public function generateQR($id)
-    {
-        $tool = Tool::findOrFail($id);
-
-        // Panggil fungsi private untuk generate QR
-        $this->generateToolQRCode($tool);
-
-        return redirect()->route('admin.tools.preview-qr', $tool->id)->with('success', 'QR Code berhasil digenerate!');
-    }
-
-    public function previewQR($id)
-    {
-        $tool = Tool::findOrFail($id);
-        return view('admin.tools.preview-qr', compact('tool'));
-    }
-
-    /**
-     * Fungsi Private untuk membuat QR Code secara dinamis
-     * Otomatis mendeteksi apakah sedang diakses via Ngrok, IP LAN, atau Localhost
-     */
-   private function generateToolQRCode($tool)
-{
-    // GANTI DENGAN URL NGROK YANG MUNCUL DI TERMINAL ANDA SAAT INI
-    $baseUrl = 'https://basis-designed-antsy.ngrok-free.dev';
-
-    // URL katalog publik
-    $catalogUrl = $baseUrl . '/catalog/detail/' . $tool->id;
-
-    // Generate QR Code (SVG)
-    $qrCode = QrCode::size(300)->generate($catalogUrl);
-
-    $qrFileName = 'qr_' . $tool->id . '.svg';
-
-    if (!file_exists(public_path('uploads/qr'))) {
-        mkdir(public_path('uploads/qr'), 0777, true);
-    }
-
-    file_put_contents(public_path('uploads/qr/' . $qrFileName), $qrCode);
-
-    $tool->update([
-        'qr_code' => 'uploads/qr/' . $qrFileName
-    ]);
-}
 }
