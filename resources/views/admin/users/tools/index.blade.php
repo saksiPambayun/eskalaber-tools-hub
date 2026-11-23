@@ -5,13 +5,13 @@
 
 @section('sidebar')
     <li class="nav-item">
-        <a href="{{ route('user.dashboard') }}" class="nav-link">
+        <a href="{{ route('admin.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>Dashboard</p>
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('user.tools.index') }}" class="nav-link active">
+        <a href="{{ route('admin.tools.index') }}" class="nav-link active">
             <i class="nav-icon fas fa-tools"></i>
             <p>Tools</p>
         </a>
@@ -43,7 +43,7 @@
                                 </span>
                             </div>
                             <div class="card-footer text-center">
-                                <a href="{{ route('user.tools.detail', $tool->id) }}" class="btn btn-info btn-sm">
+                                <a href="{{ route('admin.tools.detail', $tool->id) }}" class="btn btn-info btn-sm">
                                     <i class="fas fa-eye"></i> Detail
                                 </a>
                             </div>

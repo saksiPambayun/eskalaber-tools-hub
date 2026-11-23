@@ -31,10 +31,14 @@ class FineController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        $validated = $request->validate([
+            'status' => 'required|in:unpaid,paid,cancelled',
+        ]);
+
         $fine = Fine::findOrFail($id);
         $fine->update([
-            'status' => $request->status,
-            'payment_date' => $request->status == 'paid' ? now() : null
+            'status' => $validated['status'],
+            'payment_date' => $validated['status'] == 'paid' ? now() : null
         ]);
 
         return redirect()->route('admin.fines.index')->with('success', 'Status denda berhasil diupdate!');

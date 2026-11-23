@@ -85,6 +85,12 @@ class UserController extends Controller
     public function delete($id)
     {
         $user = User::findOrFail($id);
+
+        if ($user->loans()->exists()) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Gagal menghapus! User ini memiliki riwayat peminjaman.');
+        }
+
         $user->delete();
 
         return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus!');

@@ -13,13 +13,24 @@ use App\Http\Controllers\Admin\ToolController;
 use App\Http\Controllers\Admin\LoanController;
 use App\Http\Controllers\Admin\FineController;
 use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\LogoSettingController as AdminLogoSettingController;
 use App\Http\Controllers\Toolsman\DashboardController as ToolsmanDashboardController;
 use App\Http\Controllers\Toolsman\LoanController as ToolsmanLoanController;
 use App\Http\Controllers\Toolsman\FineController as ToolsmanFineController;
+use App\Http\Controllers\Toolsman\LogoSettingController as ToolsmanLogoSettingController;
+use App\Http\Controllers\Toolsman\UserController as ToolsmanUserController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\ToolController as UserToolController;
 use App\Http\Controllers\User\LoanController as UserLoanController;
 use App\Http\Controllers\User\FineController as UserFineController;
+use App\Http\Controllers\User\UserController as UserUserController;
+use App\Http\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 // ============================================
@@ -28,6 +39,36 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('landing');
 })->name('landing');
+
+// Named dashboard untuk redirect scaffold Breeze.
+Route::middleware(['auth'])->get('/dashboard', function () {
+    return match (auth()->user()->role) {
+        'SUPERADMIN' => redirect()->route('admin.dashboard'),
+        'TOOLSMAN' => redirect()->route('toolsman.dashboard'),
+        default => redirect()->route('user.dashboard'),
+    };
+})->name('dashboard');
+
+// Password reset & verifikasi email (view Breeze yang sudah ada).
+Route::middleware('guest')->group(function () {
+    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.store');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/verify-email', EmailVerificationPromptController::class)->name('verification.notice');
+    Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
+    Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+        ->middleware('throttle:6,1')
+        ->name('verification.send');
+    Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
+    Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store']);
+});
+
 // ==============================
 // PUBLIC CATALOG (Tanpa Login)
 // ==============================
@@ -49,7 +90,7 @@ Route::post('/register', [AuthController::class, 'doRegister'])->name('register.
 // ============================================
 // PROFILE ROUTES
 // ============================================
-Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function () {
+Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function () {    
     Route::get('/', function () {
         return view('profile.index');
     })->name('index');
@@ -61,7 +102,13 @@ Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function
     Route::post('/change-password', [ProfileController::class, 'updatePassword'])->name('update_password');
     Route::post('/update-photo', [ProfileController::class, 'updatePhoto'])->name('update_photo');
     Route::delete('/delete-photo', [ProfileController::class, 'deletePhoto'])->name('delete_photo');
+
+    // Endpoint standar Breeze (dipakai oleh scaffold test & view).
+    Route::patch('/', [ProfileController::class, 'update'])->name('update');
+    Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
 });
+
+Route::middleware(['auth'])->put('/password', [PasswordController::class, 'update'])->name('password.update');
 
 // ============================================
 // NOTIFICATION ROUTES  <-- TAMBAHKAN INI
@@ -175,6 +222,12 @@ Route::middleware(['auth', 'role:SUPERADMIN'])->prefix('admin')->name('admin.')-
     Route::prefix('activity_logs')->name('activity_logs.')->group(function () {
         Route::get('/', [ActivityLogController::class, 'index'])->name('index');
     });
+
+    // Logo Setting (global)
+    Route::prefix('logo-setting')->name('logo-setting.')->group(function () {
+        Route::get('/', [AdminLogoSettingController::class, 'index'])->name('index');
+        Route::post('/update', [AdminLogoSettingController::class, 'update'])->name('update');
+    });
 });
 
 // ============================================
@@ -197,6 +250,19 @@ Route::middleware(['auth', 'role:TOOLSMAN'])->prefix('toolsman')->name('toolsman
         Route::get('/', [ToolsmanFineController::class, 'index'])->name('index');
         Route::post('/paid/{id}', [ToolsmanFineController::class, 'paid'])->name('paid');
         Route::get('/export', [ToolsmanFineController::class, 'exportExcel'])->name('export');
+    });
+
+    // Logo Setting (global)
+    Route::prefix('logo-setting')->name('logo-setting.')->group(function () {
+        Route::get('/', [ToolsmanLogoSettingController::class, 'index'])->name('index');
+        Route::post('/update', [ToolsmanLogoSettingController::class, 'update'])->name('update');
+    });
+
+    // Profile toolsman
+    Route::get('/profile', fn () => view('toolsman.profile'))->name('profile');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/change-password', [ToolsmanUserController::class, 'changePassword'])->name('change_password');
+        Route::post('/change-password', [ToolsmanUserController::class, 'doChangePassword'])->name('do_change_password');
     });
 });
 
@@ -224,6 +290,13 @@ Route::middleware(['auth', 'role:USER'])->prefix('user')->name('user.')->group(f
     // Fines
     Route::prefix('fines')->name('fines.')->group(function () {
         Route::get('/', [UserFineController::class, 'index'])->name('index');
+    });
+
+    // Profile user
+    Route::get('/profile', fn () => view('user.profile'))->name('profile');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/change-password', [UserUserController::class, 'changePassword'])->name('change_password');
+        Route::post('/change-password', [UserUserController::class, 'doChangePassword'])->name('do_change_password');
     });
 });
 

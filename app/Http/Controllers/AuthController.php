@@ -24,15 +24,8 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            $user = Auth::user();
-
-            if ($user->role === 'SUPERADMIN') {
-                return redirect()->route('admin.dashboard');
-            } elseif ($user->role === 'TOOLSMAN') {
-                return redirect()->route('toolsman.dashboard');
-            } else {
-                return redirect()->route('user.dashboard');
-            }
+            // Route 'dashboard' mengalihkan lagi sesuai role user.
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors([
@@ -62,7 +55,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('user.dashboard')->with('success', 'Registrasi berhasil!');
+        return redirect()->route('dashboard')->with('success', 'Registrasi berhasil!');
     }
 
     public function logout(Request $request)

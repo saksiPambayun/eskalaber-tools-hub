@@ -50,7 +50,15 @@ class TypeController extends Controller
 
     public function delete($id)
     {
-        Type::findOrFail($id)->delete();
+        $type = Type::findOrFail($id);
+
+        if ($type->tools()->exists()) {
+            return redirect()->route('admin.types.index')
+                ->with('error', 'Gagal menghapus! Type ini masih digunakan oleh alat.');
+        }
+
+        $type->delete();
+
         return redirect()->route('admin.types.index')->with('success', 'Type berhasil dihapus!');
     }
 }

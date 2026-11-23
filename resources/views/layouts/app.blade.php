@@ -622,6 +622,13 @@
                                     <p>Activity Logs</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.logo-setting.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.logo-setting.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-image"></i>
+                                    <p>Pengaturan Logo</p>
+                                </a>
+                            </li>
                             <li class="nav-header">MASTER DATA</li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.departments.index') }}"

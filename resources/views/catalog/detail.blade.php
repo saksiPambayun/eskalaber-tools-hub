@@ -570,9 +570,10 @@
 
                     <!-- 2. Animasi Logo -->
                     <div class="logo-sarpras-container">
-                        <h6 class="fw-bold mb-1" style="font-size: 14px;">Sarana & Prasarana</h6>
-                        <img src="{{ asset('images/download.jpeg') }}" alt="Logo Sarpras">
-                        <p class="text-muted mt-1 mb-0" style="font-size: 12px; font-weight: 600;">Eskalaber Tools Hub
+                        <h6 class="fw-bold mb-1" style="font-size: 14px;">{{ $logoSetting->titleText() }}</h6>
+                        <img src="{{ $logoSetting->imageUrl() }}" alt="{{ $logoSetting->titleText() }}">
+                        <p class="text-muted mt-1 mb-0" style="font-size: 12px; font-weight: 600;">
+                            {{ $logoSetting->subtitleText() }}
                         </p>
                     </div>
 
@@ -607,9 +608,7 @@
                                 </div>
 
                                 <div class="status-area">
-                                    <div class="live-indicator">
-                                        <span class="live-dot"></span> Live
-                                    </div>
+
                                     @if($tool->stock > 5)
                                         <span class="stock-badge available">
                                             <i class="fas fa-check-circle me-1"></i> Tersedia ({{ $tool->stock }})

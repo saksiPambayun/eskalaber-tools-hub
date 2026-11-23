@@ -50,7 +50,15 @@ class CategoryController extends Controller
 
     public function delete($id)
     {
-        Category::findOrFail($id)->delete();
+        $category = Category::findOrFail($id);
+
+        if ($category->tools()->exists()) {
+            return redirect()->route('admin.categories.index')
+                ->with('error', 'Gagal menghapus! Category ini masih digunakan oleh alat.');
+        }
+
+        $category->delete();
+
         return redirect()->route('admin.categories.index')->with('success', 'Category berhasil dihapus!');
     }
 }

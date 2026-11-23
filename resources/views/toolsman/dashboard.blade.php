@@ -27,6 +27,12 @@
             <p>Fines</p>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ route('toolsman.logo-setting.index') }}" class="nav-link">
+            <i class="nav-icon fas fa-image"></i>
+            <p>Pengaturan Logo</p>
+        </a>
+    </li>
 @endsection
 
 @section('content')

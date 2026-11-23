@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tool;
 use App\Models\Category;
+use App\Models\LogoSetting;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -69,7 +70,9 @@ class CatalogController extends Controller
             ->take(4)
             ->get();
 
-        return view('catalog.detail', compact('tool', 'relatedTools'));
+        $logoSetting = LogoSetting::current();
+
+        return view('catalog.detail', compact('tool', 'relatedTools', 'logoSetting'));
     }
 
     public function search(Request $request)

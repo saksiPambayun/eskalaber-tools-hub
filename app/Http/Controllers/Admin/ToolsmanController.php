@@ -85,6 +85,12 @@ class ToolsmanController extends Controller
     public function delete($id)
     {
         $user = User::findOrFail($id);
+
+        if ($user->loans()->exists()) {
+            return redirect()->route('admin.toolsmans.index')
+                ->with('error', 'Gagal menghapus! Toolsman ini memiliki riwayat peminjaman.');
+        }
+
         $user->delete();
 
         return redirect()->route('admin.toolsmans.index')->with('success', 'Toolsman berhasil dihapus!');

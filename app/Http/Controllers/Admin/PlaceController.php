@@ -50,7 +50,15 @@ class PlaceController extends Controller
 
     public function delete($id)
     {
-        Place::findOrFail($id)->delete();
+        $place = Place::findOrFail($id);
+
+        if ($place->tools()->exists()) {
+            return redirect()->route('admin.places.index')
+                ->with('error', 'Gagal menghapus! Place ini masih digunakan oleh alat.');
+        }
+
+        $place->delete();
+
         return redirect()->route('admin.places.index')->with('success', 'Place berhasil dihapus!');
     }
 }

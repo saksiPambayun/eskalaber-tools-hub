@@ -5,13 +5,13 @@
 
 @section('sidebar')
     <li class="nav-item">
-        <a href="{{ route('user.dashboard') }}" class="nav-link">
+        <a href="{{ route('admin.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>Dashboard</p>
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('user.tools.index') }}" class="nav-link active">
+        <a href="{{ route('admin.tools.index') }}" class="nav-link active">
             <i class="nav-icon fas fa-tools"></i>
             <p>Tools</p>
         </a>
@@ -87,7 +87,7 @@
                     </table>
 
                     <div class="mt-3">
-                        <a href="{{ route('user.dashboard') }}" class="btn btn-secondary">
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left me-2"></i> Kembali
                         </a>
                     </div>
