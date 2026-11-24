@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Tool;
 use App\Models\Loan;
 use App\Models\Fine;
+use App\Models\FineSetting;
 
 class DashboardController extends Controller
 {
@@ -17,6 +18,7 @@ class DashboardController extends Controller
             'totalTools' => Tool::count(),
             'totalLoans' => Loan::count(),
             'totalFines' => Fine::where('status', 'unpaid')->sum('amount'),
+            'fineRate' => FineSetting::rate(),
 
             // Data untuk chart
             'pendingLoans' => Loan::where('status', 'pending')->count(),

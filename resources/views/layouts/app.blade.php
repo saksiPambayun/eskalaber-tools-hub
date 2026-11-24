@@ -623,6 +623,20 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('admin.payment-methods.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.payment-methods.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-credit-card"></i>
+                                    <p>Metode Pembayaran</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.fine-setting.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.fine-setting.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-gavel"></i>
+                                    <p>Pengaturan Denda</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('admin.logo-setting.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.logo-setting.*') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-image"></i>

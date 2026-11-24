@@ -23,7 +23,19 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('toolsman.logo-setting.index') }}" class="nav-link">
+        <a href="{{ route('toolsman.payment-methods.index') }}" class="nav-link {{ request()->routeIs('toolsman.payment-methods.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-credit-card"></i>
+            <p>Metode Pembayaran</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('toolsman.fine-setting.index') }}" class="nav-link {{ request()->routeIs('toolsman.fine-setting.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-gavel"></i>
+            <p>Pengaturan Denda</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('toolsman.logo-setting.index') }}" class="nav-link {{ request()->routeIs('toolsman.logo-setting.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-image"></i>
             <p>Pengaturan Logo</p>
         </a>
@@ -40,6 +52,12 @@
                 <div class="alert alert-success alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     {{ session('success') }}
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ session('error') }}
                 </div>
             @endif
 
@@ -59,9 +77,9 @@
                             class="btn btn-sm {{ $status == 'approved' ? 'btn-primary' : 'btn-outline-primary' }}">
                             <i class="fas fa-check"></i> Approved
                         </a>
-                        <a href="{{ route('toolsman.loans.index', ['status' => 'borrowed']) }}"
-                            class="btn btn-sm {{ $status == 'borrowed' ? 'btn-info' : 'btn-outline-info' }}">
-                            <i class="fas fa-hand-holding"></i> Borrowed
+                        <a href="{{ route('toolsman.loans.index', ['status' => 'cancelled']) }}"
+                            class="btn btn-sm {{ $status == 'cancelled' ? 'btn-secondary' : 'btn-outline-secondary' }}">
+                            <i class="fas fa-ban"></i> Cancelled
                         </a>
                         <a href="{{ route('toolsman.loans.index', ['status' => 'returned']) }}"
                             class="btn btn-sm {{ $status == 'returned' ? 'btn-success' : 'btn-outline-success' }}">
@@ -96,10 +114,16 @@
                                 <td>{{ $loan->loan_date->format('d M Y') }}</td>
                                 <td>{{ $loan->return_date->format('d M Y') }}</td>
                                 <td>
-                                    <span
-                                        class="badge bg-{{ $loan->status == 'pending' ? 'warning' : ($loan->status == 'approved' ? 'primary' : ($loan->status == 'borrowed' ? 'info' : ($loan->status == 'returned' ? 'success' : 'danger'))) }}">
-                                        {{ ucfirst($loan->status) }}
-                                    </span>
+                                    @php
+                                        $badge = match($loan->status) {
+                                            'pending' => 'warning',
+                                            'approved', 'borrowed' => 'primary',
+                                            'returned' => 'success',
+                                            'rejected', 'cancelled' => 'danger',
+                                            default => 'secondary',
+                                        };
+                                    @endphp
+                                    <span class="badge bg-{{ $badge }}">{{ ucfirst($loan->status) }}</span>
                                 </td>
                                 <td>
                                     <a href="{{ route('toolsman.loans.detail', $loan->id) }}" class="btn btn-info btn-sm">

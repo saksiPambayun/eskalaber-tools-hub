@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Toolsman;
 
 use App\Http\Controllers\Controller;
 use App\Models\Loan;
-use App\Models\Tool;
-use App\Models\Fine;
-use App\Models\Notification;
+use App\Services\LoanWorkflowService;
 use Illuminate\Http\Request;
-use App\Helpers\ActivityHelper;
+use Illuminate\Validation\ValidationException;
 
 class LoanController extends Controller
 {
@@ -34,105 +32,53 @@ class LoanController extends Controller
         return view('toolsman.loans.detail', compact('loan'));
     }
 
-    public function approve($id)
+    public function approve($id, LoanWorkflowService $workflow)
     {
-        $loan = Loan::findOrFail($id);
-
-        // Update status loan
-        $loan->update(['status' => 'approved']);
-
-        // Kurangi stock tool
-        $tool = Tool::find($loan->tool_id);
-        $tool->decrement('stock', 1);
-
-        // Update status tool jika stock 0
-        if ($tool->stock == 0) {
-            $tool->update(['status' => 'borrowed']);
+        try {
+            $workflow->approve(Loan::findOrFail($id), auth()->user());
+        } catch (ValidationException $e) {
+            return back()->with('error', collect($e->errors())->flatten()->first());
         }
-
-        // Kirim Notifikasi ke User
-        Notification::send(
-            $loan->user_id,
-            'Peminjaman Disetujui',
-            'Peminjaman alat ' . $loan->tool->name . ' telah disetujui.',
-            'success',
-            route('user.loans.detail', $loan->id)
-        );
-
-        // Log activity
-        ActivityHelper::log('approve_loan', 'Menyetujui peminjaman #' . $loan->id . ' oleh ' . ($loan->user->name ?? 'User'));
 
         return redirect()->route('toolsman.loans.index')->with('success', 'Peminjaman berhasil disetujui!');
     }
 
-    public function reject($id)
+    public function reject($id, LoanWorkflowService $workflow)
     {
-        $loan = Loan::findOrFail($id);
-        $loan->update(['status' => 'rejected']);
-
-        // Kirim Notifikasi ke User
-        Notification::send(
-            $loan->user_id,
-            'Peminjaman Ditolak',
-            'Peminjaman alat ' . $loan->tool->name . ' ditolak.',
-            'danger',
-            route('user.loans.detail', $loan->id)
-        );
-
-        // Log activity
-        ActivityHelper::log('reject_loan', 'Menolak peminjaman #' . $loan->id . ' oleh ' . ($loan->user->name ?? 'User'));
+        try {
+            $workflow->reject(Loan::findOrFail($id), auth()->user());
+        } catch (ValidationException $e) {
+            return back()->with('error', collect($e->errors())->flatten()->first());
+        }
 
         return redirect()->route('toolsman.loans.index')->with('success', 'Peminjaman ditolak!');
     }
 
-    public function returned($id)
+    public function returned($id, LoanWorkflowService $workflow)
     {
-        $loan = Loan::findOrFail($id);
-
-        // Update status loan
-        $loan->update([
-            'status' => 'returned',
-            'actual_return_date' => now()
-        ]);
-
-        // Tambah stock tool
-        $tool = Tool::find($loan->tool_id);
-        $tool->increment('stock', 1);
-        $tool->update(['status' => 'available']);
-
-        // Cek keterlambatan
-        $lateDays = $loan->return_date->diffInDays(now(), false);
-        $fineCreated = false;
-
-        if ($lateDays > 0) {
-            $fineAmount = $lateDays * 10000; // Rp 10.000 per hari
-            Fine::create([
-                'loan_id' => $loan->id,
-                'user_id' => $loan->user_id,
-                'amount' => $fineAmount,
-                'description' => 'Denda keterlambatan ' . $lateDays . ' hari',
-                'late_days' => $lateDays,
-                'status' => 'unpaid',
-            ]);
-            $fineCreated = true;
-
-            // Kirim Notifikasi Denda ke User
-            Notification::send(
-                $loan->user_id,
-                'Denda Keterlambatan',
-                'Anda mendapat denda Rp ' . number_format($fineAmount, 0, ',', '.') . ' karena terlambat mengembalikan alat.',
-                'warning',
-                route('user.fines.index')
-            );
+        try {
+            $workflow->returnLoan(Loan::findOrFail($id), auth()->user());
+        } catch (ValidationException $e) {
+            return back()->with('error', collect($e->errors())->flatten()->first());
         }
-
-        // Log activity
-        $logMessage = 'Mengembalikan alat ' . ($loan->tool->name ?? 'Tool') . ' dari peminjaman #' . $loan->id;
-        if ($fineCreated) {
-            $logMessage .= ' (Denda Rp ' . number_format($fineAmount, 0, ',', '.') . ' dibuat)';
-        }
-        ActivityHelper::log('return_loan', $logMessage);
 
         return redirect()->route('toolsman.loans.index')->with('success', 'Alat berhasil dikembalikan!');
+    }
+
+    public function testReturn(Request $request, $id, LoanWorkflowService $workflow)
+    {
+        abort_unless(app()->environment(['local', 'testing']), 404);
+
+        $validated = $request->validate([
+            'actual_return_date' => 'required|date',
+        ]);
+
+        try {
+            $workflow->returnLoan(Loan::findOrFail($id), auth()->user(), \Carbon\Carbon::parse($validated['actual_return_date']));
+        } catch (ValidationException $e) {
+            return back()->with('error', collect($e->errors())->flatten()->first());
+        }
+
+        return back()->with('success', 'Simulasi pengembalian berhasil diproses.');
     }
 }

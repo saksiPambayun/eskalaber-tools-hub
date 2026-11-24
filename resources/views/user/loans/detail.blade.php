@@ -27,10 +27,16 @@
                         <tr>
                             <th>Status</th>
                             <td>
-                                <span
-                                    class="badge bg-{{ $loan->status == 'pending' ? 'warning' : ($loan->status == 'approved' ? 'primary' : ($loan->status == 'borrowed' ? 'info' : ($loan->status == 'returned' ? 'success' : 'danger'))) }}">
-                                    {{ ucfirst($loan->status) }}
-                                </span>
+                                @php
+                                    $badge = match($loan->status) {
+                                        'pending' => 'warning',
+                                        'approved', 'borrowed' => 'primary',
+                                        'returned' => 'success',
+                                        'rejected', 'cancelled' => 'danger',
+                                        default => 'secondary',
+                                    };
+                                @endphp
+                                <span class="badge bg-{{ $badge }}">{{ ucfirst($loan->status) }}</span>
                             </td>
                         </tr>
                         <tr>

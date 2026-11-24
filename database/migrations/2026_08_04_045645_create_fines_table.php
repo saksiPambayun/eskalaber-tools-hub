@@ -20,13 +20,19 @@ return new class extends Migration
             $table->text('description')->nullable(); // <-- TAMBAH: deskripsi denda
             $table->integer('late_days')->default(0); // <-- TAMBAH: jumlah hari telat
             
-            // Status
-            $table->enum('status', ['unpaid', 'paid', 'cancelled'])->default('unpaid'); // <-- TAMBAH: cancelled
-            
-            // Payment
+            // Status: unpaid -> pending_verification -> paid / rejected (can resubmit)
+            $table->string('status', 32)->default('unpaid');
+
+            // Payment / verification
+            $table->unsignedBigInteger('payment_method_id')->nullable();
+            $table->string('payment_method')->nullable(); // snapshot nama metode
+            $table->string('payment_reference')->nullable();
+            $table->string('proof_image')->nullable();
+            $table->timestamp('submitted_at')->nullable();
             $table->date('payment_date')->nullable();
-            $table->string('payment_method')->nullable(); // <-- TAMBAH: method pembayaran (cash, transfer, midtrans)
-            $table->string('payment_reference')->nullable(); // <-- TAMBAH: referensi pembayaran (MIDTRANS order_id)
+            $table->foreignId('reviewed_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamp('reviewed_at')->nullable();
+            $table->text('review_note')->nullable();
             
             // Timestamps
             $table->timestamps();

@@ -39,6 +39,12 @@
                     {{ session('success') }}
                 </div>
             @endif
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ session('error') }}
+                </div>
+            @endif
 
             <!-- Filter Status -->
             <div class="row mb-3">
@@ -56,9 +62,9 @@
                             class="btn btn-sm {{ $status == 'approved' ? 'btn-primary' : 'btn-outline-primary' }}">
                             <i class="fas fa-check"></i> Approved
                         </a>
-                        <a href="{{ route('admin.loans.index', ['status' => 'borrowed']) }}"
-                            class="btn btn-sm {{ $status == 'borrowed' ? 'btn-info' : 'btn-outline-info' }}">
-                            <i class="fas fa-hand-holding"></i> Borrowed
+                        <a href="{{ route('admin.loans.index', ['status' => 'cancelled']) }}"
+                            class="btn btn-sm {{ $status == 'cancelled' ? 'btn-secondary' : 'btn-outline-secondary' }}">
+                            <i class="fas fa-ban"></i> Cancelled
                         </a>
                         <a href="{{ route('admin.loans.index', ['status' => 'returned']) }}"
                             class="btn btn-sm {{ $status == 'returned' ? 'btn-success' : 'btn-outline-success' }}">
@@ -98,10 +104,16 @@
                                 <td>{{ $loan->loan_date->format('d M Y') }}</td>
                                 <td>{{ $loan->return_date->format('d M Y') }}</td>
                                 <td>
-                                    <span
-                                        class="badge bg-{{ $loan->status == 'pending' ? 'warning' : ($loan->status == 'approved' ? 'primary' : ($loan->status == 'borrowed' ? 'info' : ($loan->status == 'returned' ? 'success' : 'danger'))) }}">
-                                        {{ ucfirst($loan->status) }}
-                                    </span>
+                                    @php
+                                        $badge = match($loan->status) {
+                                            'pending' => 'warning',
+                                            'approved', 'borrowed' => 'primary',
+                                            'returned' => 'success',
+                                            'rejected', 'cancelled' => 'danger',
+                                            default => 'secondary',
+                                        };
+                                    @endphp
+                                    <span class="badge bg-{{ $badge }}">{{ ucfirst($loan->status) }}</span>
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.loans.detail', $loan->id) }}" class="btn btn-info btn-sm">

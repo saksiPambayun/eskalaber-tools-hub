@@ -40,16 +40,31 @@ class Loan extends Model
         return $this->hasOne(Fine::class);
     }
 
-    public function isLate()
+    public function isLate(): bool
     {
-        return $this->status === 'borrowed' && now()->greaterThan($this->return_date);
+        if (!in_array($this->status, ['approved', 'borrowed', 'late'], true)) {
+            return false;
+        }
+
+        if (!$this->return_date) {
+            return false;
+        }
+
+        $compareDate = $this->actual_return_date ?? now();
+        return $compareDate->startOfDay()->gt($this->return_date->startOfDay());
     }
 
-    public function getLateDays()
+    public function getLateDays(): int
     {
-        if ($this->actual_return_date) {
-            return max(0, $this->actual_return_date->diffInDays($this->return_date));
+        if (!$this->return_date) {
+            return 0;
         }
-        return max(0, now()->diffInDays($this->return_date));
+
+        $compareDate = $this->actual_return_date ?? now();
+        if ($compareDate->startOfDay()->lte($this->return_date->startOfDay())) {
+            return 0;
+        }
+
+        return $this->return_date->startOfDay()->diffInDays($compareDate->startOfDay());
     }
 }

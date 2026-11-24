@@ -13,11 +13,15 @@ use App\Http\Controllers\Admin\ToolController;
 use App\Http\Controllers\Admin\LoanController;
 use App\Http\Controllers\Admin\FineController;
 use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\FineSettingController as AdminFineSettingController;
 use App\Http\Controllers\Admin\LogoSettingController as AdminLogoSettingController;
+use App\Http\Controllers\Admin\PaymentMethodController as AdminPaymentMethodController;
 use App\Http\Controllers\Toolsman\DashboardController as ToolsmanDashboardController;
 use App\Http\Controllers\Toolsman\LoanController as ToolsmanLoanController;
 use App\Http\Controllers\Toolsman\FineController as ToolsmanFineController;
+use App\Http\Controllers\Toolsman\FineSettingController as ToolsmanFineSettingController;
 use App\Http\Controllers\Toolsman\LogoSettingController as ToolsmanLogoSettingController;
+use App\Http\Controllers\Toolsman\PaymentMethodController as ToolsmanPaymentMethodController;
 use App\Http\Controllers\Toolsman\UserController as ToolsmanUserController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\ToolController as UserToolController;
@@ -205,6 +209,7 @@ Route::middleware(['auth', 'role:SUPERADMIN'])->prefix('admin')->name('admin.')-
         Route::get('/', [LoanController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [LoanController::class, 'detail'])->name('detail');
         Route::post('/update-status/{id}', [LoanController::class, 'updateStatus'])->name('update-status');
+        Route::post('/test-return/{id}', [LoanController::class, 'testReturn'])->name('test-return');
         Route::delete('/delete/{id}', [LoanController::class, 'delete'])->name('delete');
         Route::get('/export-csv', [LoanController::class, 'exportCSV'])->name('export-csv');
     });
@@ -214,6 +219,7 @@ Route::middleware(['auth', 'role:SUPERADMIN'])->prefix('admin')->name('admin.')-
         Route::get('/', [FineController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [FineController::class, 'detail'])->name('detail');
         Route::post('/update-status/{id}', [FineController::class, 'updateStatus'])->name('update-status');
+        Route::post('/verify/{id}', [FineController::class, 'verify'])->name('verify');
         Route::delete('/delete/{id}', [FineController::class, 'delete'])->name('delete');
         Route::get('/export-csv', [FineController::class, 'exportCSV'])->name('export-csv');
     });
@@ -227,6 +233,22 @@ Route::middleware(['auth', 'role:SUPERADMIN'])->prefix('admin')->name('admin.')-
     Route::prefix('logo-setting')->name('logo-setting.')->group(function () {
         Route::get('/', [AdminLogoSettingController::class, 'index'])->name('index');
         Route::post('/update', [AdminLogoSettingController::class, 'update'])->name('update');
+    });
+
+    // Payment Methods
+    Route::prefix('payment-methods')->name('payment-methods.')->group(function () {
+        Route::get('/', [AdminPaymentMethodController::class, 'index'])->name('index');
+        Route::get('/add', [AdminPaymentMethodController::class, 'add'])->name('add');
+        Route::post('/create', [AdminPaymentMethodController::class, 'create'])->name('create');
+        Route::get('/edit/{id}', [AdminPaymentMethodController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [AdminPaymentMethodController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [AdminPaymentMethodController::class, 'delete'])->name('delete');
+    });
+
+    // Fine Setting (global rate)
+    Route::prefix('fine-setting')->name('fine-setting.')->group(function () {
+        Route::get('/', [AdminFineSettingController::class, 'index'])->name('index');
+        Route::post('/update', [AdminFineSettingController::class, 'update'])->name('update');
     });
 });
 
@@ -243,12 +265,15 @@ Route::middleware(['auth', 'role:TOOLSMAN'])->prefix('toolsman')->name('toolsman
         Route::post('/approve/{id}', [ToolsmanLoanController::class, 'approve'])->name('approve');
         Route::post('/reject/{id}', [ToolsmanLoanController::class, 'reject'])->name('reject');
         Route::post('/returned/{id}', [ToolsmanLoanController::class, 'returned'])->name('returned');
+        Route::post('/test-return/{id}', [ToolsmanLoanController::class, 'testReturn'])->name('test-return');
     });
 
     // Fines
     Route::prefix('fines')->name('fines.')->group(function () {
         Route::get('/', [ToolsmanFineController::class, 'index'])->name('index');
+        Route::get('/detail/{id}', [ToolsmanFineController::class, 'detail'])->name('detail');
         Route::post('/paid/{id}', [ToolsmanFineController::class, 'paid'])->name('paid');
+        Route::post('/verify/{id}', [ToolsmanFineController::class, 'verify'])->name('verify');
         Route::get('/export', [ToolsmanFineController::class, 'exportExcel'])->name('export');
     });
 
@@ -256,6 +281,22 @@ Route::middleware(['auth', 'role:TOOLSMAN'])->prefix('toolsman')->name('toolsman
     Route::prefix('logo-setting')->name('logo-setting.')->group(function () {
         Route::get('/', [ToolsmanLogoSettingController::class, 'index'])->name('index');
         Route::post('/update', [ToolsmanLogoSettingController::class, 'update'])->name('update');
+    });
+
+    // Payment Methods
+    Route::prefix('payment-methods')->name('payment-methods.')->group(function () {
+        Route::get('/', [ToolsmanPaymentMethodController::class, 'index'])->name('index');
+        Route::get('/add', [ToolsmanPaymentMethodController::class, 'add'])->name('add');
+        Route::post('/create', [ToolsmanPaymentMethodController::class, 'create'])->name('create');
+        Route::get('/edit/{id}', [ToolsmanPaymentMethodController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [ToolsmanPaymentMethodController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [ToolsmanPaymentMethodController::class, 'delete'])->name('delete');
+    });
+
+    // Fine Setting (global rate)
+    Route::prefix('fine-setting')->name('fine-setting.')->group(function () {
+        Route::get('/', [ToolsmanFineSettingController::class, 'index'])->name('index');
+        Route::post('/update', [ToolsmanFineSettingController::class, 'update'])->name('update');
     });
 
     // Profile toolsman
@@ -290,6 +331,8 @@ Route::middleware(['auth', 'role:USER'])->prefix('user')->name('user.')->group(f
     // Fines
     Route::prefix('fines')->name('fines.')->group(function () {
         Route::get('/', [UserFineController::class, 'index'])->name('index');
+        Route::get('/detail/{id}', [UserFineController::class, 'detail'])->name('detail');
+        Route::post('/pay/{id}', [UserFineController::class, 'pay'])->name('pay');
     });
 
     // Profile user
@@ -300,8 +343,4 @@ Route::middleware(['auth', 'role:USER'])->prefix('user')->name('user.')->group(f
     });
 });
 
-// Loans Export
-Route::get('/loans/export', [LoanController::class, 'exportExcel'])->name('loans.export');
 
-// Fines Export
-Route::get('/fines/export', [FineController::class, 'exportExcel'])->name('fines.export');

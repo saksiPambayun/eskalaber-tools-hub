@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Loan;
-use App\Models\Tool;
-use Illuminate\Http\Request;
 use App\Helpers\ActivityHelper;
+use App\Models\Fine;
+use App\Models\Loan;
 use App\Models\Notification;
+use App\Models\Tool;
+use App\Services\LoanWorkflowService;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class LoanController extends Controller
 {
@@ -29,21 +32,27 @@ class LoanController extends Controller
 
     public function doCreate(Request $request)
     {
-        // 1. Validasi Input
         $request->validate([
             'tool_id' => 'required|exists:tools,id',
-            'loan_date' => 'required|date',
+            'loan_date' => 'required|date|after_or_equal:today',
             'return_date' => 'required|date|after:loan_date',
-            'notes' => 'nullable|string',
+            'notes' => 'nullable|string|max:1000',
         ]);
 
-        // 2. Cek Stok Tool
         $tool = Tool::findOrFail($request->tool_id);
-        if ($tool->stock <= 0) {
-            return back()->with('error', 'Stock tool tidak mencukupi!');
+        if ($tool->stock <= 0 || $tool->status !== 'available') {
+            return back()->withInput()->with('error', 'Stock tool tidak mencukupi atau tool tidak tersedia!');
         }
 
-        // 3. Simpan Data Peminjaman
+        // User boleh pinjam lagi (alat sama/berbeda, tidak dibatasi jumlahnya).
+        // Yang membatasi hanya stok alat dan denda unpaid/rejected.
+        $blockingFine = Fine::where('user_id', auth()->id())
+            ->whereIn('status', ['unpaid', 'rejected'])
+            ->exists();
+        if ($blockingFine) {
+            return back()->withInput()->with('error', 'Selesaikan denda unpaid/rejected terlebih dahulu sebelum mengajukan pinjaman baru.');
+        }
+
         $loan = Loan::create([
             'user_id' => auth()->id(),
             'tool_id' => $request->tool_id,
@@ -53,7 +62,6 @@ class LoanController extends Controller
             'notes' => $request->notes,
         ]);
 
-        // 4. Kirim Notifikasi ke Toolsman (HANYA SEKALI)
         Notification::sendToToolsmans(
             'Peminjaman Baru',
             auth()->user()->name . ' mengajukan peminjaman ' . $tool->name,
@@ -61,10 +69,8 @@ class LoanController extends Controller
             route('toolsman.loans.index')
         );
 
-        // 5. Catat Log Aktivitas
         ActivityHelper::log('create_loan', 'Mengajukan peminjaman alat ' . $tool->name);
 
-        // 6. Redirect ke Halaman Peminjaman Saya
         return redirect()->route('user.loans.index')->with('success', 'Peminjaman berhasil diajukan!');
     }
 
@@ -76,16 +82,15 @@ class LoanController extends Controller
         return view('user.loans.detail', compact('loan'));
     }
 
-    public function cancel($id)
+    public function cancel($id, LoanWorkflowService $workflow)
     {
-        $loan = Loan::where('user_id', auth()->id())
-            ->where('status', 'pending')
-            ->findOrFail($id);
+        $loan = Loan::where('user_id', auth()->id())->findOrFail($id);
 
-        $loan->update(['status' => 'rejected']);
-
-        // Catat Log Aktivitas
-        ActivityHelper::log('cancel_loan', 'Membatalkan peminjaman #' . $loan->id);
+        try {
+            $workflow->cancel($loan, auth()->user());
+        } catch (ValidationException $e) {
+            return back()->with('error', collect($e->errors())->flatten()->first());
+        }
 
         return redirect()->route('user.loans.index')->with('success', 'Peminjaman dibatalkan!');
     }

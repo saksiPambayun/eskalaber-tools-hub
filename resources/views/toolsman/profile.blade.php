@@ -11,7 +11,19 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('toolsman.logo-setting.index') }}" class="nav-link">
+        <a href="{{ route('toolsman.payment-methods.index') }}" class="nav-link {{ request()->routeIs('toolsman.payment-methods.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-credit-card"></i>
+            <p>Metode Pembayaran</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('toolsman.fine-setting.index') }}" class="nav-link {{ request()->routeIs('toolsman.fine-setting.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-gavel"></i>
+            <p>Pengaturan Denda</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('toolsman.logo-setting.index') }}" class="nav-link {{ request()->routeIs('toolsman.logo-setting.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-image"></i>
             <p>Pengaturan Logo</p>
         </a>

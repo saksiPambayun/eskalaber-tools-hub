@@ -91,9 +91,35 @@
         </div>
     </div>
 
-    <!-- Welcome Card -->
+    <!-- Fine Rate + Welcome -->
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-5">
+            <div class="card card-outline card-danger">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-gavel mr-2"></i>Tarif Denda Global</h3>
+                </div>
+                <div class="card-body">
+                    @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+                    @if($errors->any())<div class="alert alert-danger">{{ $errors->first() }}</div>@endif
+                    <p class="mb-2">Tarif saat ini: <strong>Rp {{ number_format($fineRate ?? 10000, 0, ',', '.') }}/hari</strong></p>
+                    <form action="{{ route('admin.fine-setting.update') }}" method="POST" class="mb-2">
+                        @csrf
+                        <div class="input-group">
+                            <input type="number" name="rate_per_day" min="0" max="1000000" step="1" class="form-control"
+                                   value="{{ old('rate_per_day', $fineRate ?? 10000) }}" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-danger">Simpan</button>
+                            </div>
+                        </div>
+                        <small class="text-muted">Berlaku untuk semua alat & hanya denda baru. Batas Rp 0–1.000.000/hari.</small>
+                    </form>
+                    <a href="{{ route('admin.fine-setting.index') }}" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-history"></i> Lihat Riwayat Tarif
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Welcome to Admin Dashboard</h3>

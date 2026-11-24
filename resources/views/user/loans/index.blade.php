@@ -67,10 +67,16 @@
                             <td>{{ $loan->loan_date->format('d M Y') }}</td>
                             <td>{{ $loan->return_date->format('d M Y') }}</td>
                             <td>
-                                <span
-                                    class="badge bg-{{ $loan->status == 'pending' ? 'warning' : ($loan->status == 'approved' ? 'primary' : ($loan->status == 'borrowed' ? 'info' : ($loan->status == 'returned' ? 'success' : ($loan->status == 'rejected' ? 'danger' : 'secondary')))) }}">
-                                    {{ ucfirst($loan->status) }}
-                                </span>
+                                @php
+                                    $badge = match($loan->status) {
+                                        'pending' => 'warning',
+                                        'approved', 'borrowed' => 'primary',
+                                        'returned' => 'success',
+                                        'rejected', 'cancelled' => 'danger',
+                                        default => 'secondary',
+                                    };
+                                @endphp
+                                <span class="badge bg-{{ $badge }}">{{ ucfirst($loan->status) }}</span>
                             </td>
                             <td>
                                 <a href="{{ route('user.loans.detail', $loan->id) }}" class="btn btn-info btn-sm">
