@@ -577,117 +577,8 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
 
-                        <!-- MENU KHUSUS ADMIN (OTOMATIS MUNCUL DI SEMUA HALAMAN ADMIN) -->
-                        @if(auth()->user()->role === 'SUPERADMIN')
-                            <li class="nav-item">
-                                <a href="{{ route('admin.dashboard') }}"
-                                    class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>Dashboard</p>
-                                </a>
-                            </li>
-                            <li class="nav-header">MANAGEMENT</li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.users.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-users"></i>
-                                    <p>Users</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.toolsmans.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.toolsmans.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-user-cog"></i>
-                                    <p>Toolsman</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.loans.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.loans.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-hand-holding"></i>
-                                    <p>Loans</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.fines.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.fines.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-money-bill-wave"></i>
-                                    <p>Fines</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.activity_logs.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.activity_logs.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-history"></i>
-                                    <p>Activity Logs</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.payment-methods.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.payment-methods.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-credit-card"></i>
-                                    <p>Metode Pembayaran</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.fine-setting.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.fine-setting.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-gavel"></i>
-                                    <p>Pengaturan Denda</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.logo-setting.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.logo-setting.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-image"></i>
-                                    <p>Pengaturan Logo</p>
-                                </a>
-                            </li>
-                            <li class="nav-header">MASTER DATA</li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.departments.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.departments.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-building"></i>
-                                    <p>Departments</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.places.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.places.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-map-marker-alt"></i>
-                                    <p>Places</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.types.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.types.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-tag"></i>
-                                    <p>Types</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.categories.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-folder"></i>
-                                    <p>Categories</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.tools.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.tools.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-tools"></i>
-                                    <p>Tools</p>
-                                </a>
-                            </li>
-                        @endif
-
-                        <!-- MENU UNTUK USER & TOOLSMAN (DARI FILE MASING-MASING) -->
-                        @hasSection('sidebar')
-                            @yield('sidebar')
-                        @endif
-
-                        <!-- TOMBOL KEMBALI KE BERANDA (HANYA 1 SAJA) -->
-                        <li class="nav-item mt-4" style="padding: 0 10px;">
+                        <!-- TOMBOL KEMBALI KE BERANDA (DITARUH PALING ATAS) -->
+                        <li class="nav-item mb-3" style="padding: 0 10px;">
                             <a href="{{ url('/') }}" class="nav-link kembali-beranda"
                                 style="background-color: rgba(232, 93, 4, 0.15) !important; border: 1px dashed #E85D04 !important; border-radius: 8px !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 10px 0 !important; width: 100% !important; margin: 0 !important;">
                                 <i class="fas fa-home"
@@ -697,6 +588,148 @@
                                     ke Beranda</span>
                             </a>
                         </li>
+
+                        <!-- MENU KHUSUS ADMIN -->
+                        @if(auth()->user()->role === 'SUPERADMIN')
+                            <li class="nav-item">
+                                <a href="{{ route('admin.dashboard') }}"
+                                    class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-header">MANAGEMENT</li>
+                            <li class="nav-item"><a href="{{ route('admin.users.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-users"></i>
+                                    <p>Users</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('admin.toolsmans.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.toolsmans.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-user-cog"></i>
+                                    <p>Toolsman</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('admin.loans.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.loans.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-hand-holding"></i>
+                                    <p>Loans</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('admin.fines.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.fines.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-money-bill-wave"></i>
+                                    <p>Fines</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('admin.activity_logs.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.activity_logs.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-history"></i>
+                                    <p>Activity Logs</p>
+                                </a></li>
+
+                            <li class="nav-item"><a href="{{ route('admin.payment-methods.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.payment-methods.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-credit-card"></i>
+                                    <p>Metode Pembayaran</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('admin.fine-setting.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.fine-setting.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-gavel"></i>
+                                    <p>Pengaturan Denda</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('admin.logo-setting.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.logo-setting.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-image"></i>
+                                    <p>Pengaturan Logo</p>
+                                </a></li>
+
+                            <li class="nav-header">MASTER DATA</li>
+                            <li class="nav-item"><a href="{{ route('admin.departments.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.departments.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-building"></i>
+                                    <p>Departments</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('admin.places.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.places.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-map-marker-alt"></i>
+                                    <p>Places</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('admin.types.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.types.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-tag"></i>
+                                    <p>Types</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('admin.categories.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-folder"></i>
+                                    <p>Categories</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('admin.tools.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.tools.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-tools"></i>
+                                    <p>Tools</p>
+                                </a></li>
+                        @endif
+
+                        <!-- MENU KHUSUS TOOLSMAN -->
+                        @if(auth()->user()->role === 'TOOLSMAN')
+                            <li class="nav-item">
+                                <a href="{{ route('toolsman.dashboard') }}"
+                                    class="nav-link {{ request()->routeIs('toolsman.dashboard') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item"><a href="{{ route('toolsman.loans.index') }}"
+                                    class="nav-link {{ request()->routeIs('toolsman.loans.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-hand-holding"></i>
+                                    <p>Loans</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('toolsman.fines.index') }}"
+                                    class="nav-link {{ request()->routeIs('toolsman.fines.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-money-bill-wave"></i>
+                                    <p>Fines</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('toolsman.payment-methods.index') }}"
+                                    class="nav-link {{ request()->routeIs('toolsman.payment-methods.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-credit-card"></i>
+                                    <p>Metode Pembayaran</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('toolsman.fine-setting.index') }}"
+                                    class="nav-link {{ request()->routeIs('toolsman.fine-setting.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-gavel"></i>
+                                    <p>Pengaturan Denda</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('toolsman.logo-setting.index') }}"
+                                    class="nav-link {{ request()->routeIs('toolsman.logo-setting.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-image"></i>
+                                    <p>Pengaturan Logo</p>
+                                </a></li>
+                        @endif
+
+                        <!-- MENU KHUSUS USER -->
+                        @if(auth()->user()->role === 'USER')
+                            <li class="nav-item">
+                                <a href="{{ route('user.dashboard') }}"
+                                    class="nav-link {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item"><a href="{{ route('user.tools.index') }}"
+                                    class="nav-link {{ request()->routeIs('user.tools.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-tools"></i>
+                                    <p>Tools</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('user.loans.index') }}"
+                                    class="nav-link {{ request()->routeIs('user.loans.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-hand-holding"></i>
+                                    <p>My Loans</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('user.fines.index') }}"
+                                    class="nav-link {{ request()->routeIs('user.fines.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-money-bill-wave"></i>
+                                    <p>My Fines</p>
+                                </a></li>
+                        @endif
 
                     </ul>
                 </nav>

@@ -21,49 +21,54 @@
                 </div>
             @endif
 
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Department</th>
-                        <th>Phone</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($users as $index => $user)
+            <!-- TAMBAHAN: table-responsive biar di HP bisa di-scroll -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->department->name ?? '-' }}</td>
-                            <td>{{ $user->phone ?? '-' }}</td>
-                            <td>
-                                <a href="{{ route('admin.users.detail', $user->id) }}" class="btn btn-info btn-sm">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="{{ route('admin.users.update', $user->id) }}" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" class="d-inline"
-                                    onsubmit="return confirm('Yakin hapus data ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Phone</th>
+                            <th>Aksi</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center">Belum ada data user</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse($users as $index => $user)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->department->name ?? '-' }}</td>
+                                <td>{{ $user->phone ?? '-' }}</td>
+                                <td>
+                                    <a href="{{ route('admin.users.detail', $user->id) }}" class="btn btn-info btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ route('admin.users.update', $user->id) }}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" class="d-inline"
+                                        onsubmit="return confirm('Yakin hapus data ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">Belum ada data user</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <!-- BATAS TAMBAHAN -->
+
         </div>
     </div>
 @endsection
