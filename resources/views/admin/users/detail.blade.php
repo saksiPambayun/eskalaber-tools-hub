@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Detail User')
-@section('page-title', 'Detail User')
+@section('title', 'Detail Pengguna')
+@section('page-title', 'Detail Pengguna')
 
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Detail User</h5>
+                    <h5 class="card-title">Detail Pengguna</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -21,11 +21,11 @@
                             <td>{{ $user->email }}</td>
                         </tr>
                         <tr>
-                            <th>Role</th>
+                            <th>Peran</th>
                             <td><span class="badge bg-primary">{{ $user->role }}</span></td>
                         </tr>
                         <tr>
-                            <th>Department</th>
+                            <th>Departemen</th>
                             <td>{{ $user->department->name ?? '-' }}</td>
                         </tr>
                         <tr>
@@ -44,7 +44,7 @@
 
                     <div class="mt-3">
                         <a href="{{ route('admin.users.update', $user->id) }}" class="btn btn-warning">
-                            <i class="fas fa-edit me-2"></i> Edit
+                            <i class="fas fa-edit me-2"></i> Ubah
                         </a>
                         <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left me-2"></i> Kembali

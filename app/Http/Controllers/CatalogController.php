@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Tool;
 use App\Models\Category;
 use App\Models\LogoSetting;
-use App\Models\Type;
 use Illuminate\Http\Request;
 
 class CatalogController extends Controller
@@ -14,7 +13,6 @@ class CatalogController extends Controller
     {
         $query = trim((string) $request->get('q', ''));
         $category = $request->get('category');
-        $type = $request->get('type');
 
         // Hanya tampilkan alat yang benar-benar bisa dipinjam.
         $baseQuery = Tool::query()
@@ -23,20 +21,13 @@ class CatalogController extends Controller
 
         $totalAvailable = (clone $baseQuery)->count();
 
-        $tools = (clone $baseQuery)->with(['category', 'type', 'place']);
+        $tools = (clone $baseQuery)->with(['category', 'place']);
 
         // Filter kategori; abaikan nilai yang tidak valid.
         if ($category && Category::whereKey($category)->exists()) {
             $tools->where('category_id', $category);
         } else {
             $category = null;
-        }
-
-        // Filter tipe; abaikan nilai yang tidak valid.
-        if ($type && Type::whereKey($type)->exists()) {
-            $tools->where('type_id', $type);
-        } else {
-            $type = null;
         }
 
         // Pencarian berdasarkan nama, kode, atau deskripsi.
@@ -48,23 +39,19 @@ class CatalogController extends Controller
             });
         }
 
-        $tools = $tools->latest()->paginate(12)->withQueryString();
+       $tools = $tools->latest()->paginate(6)->withQueryString();
 
         // Hitung hanya alat yang tersedia agar angka pada kategori sesuai hasil filter.
         $categories = Category::withCount(['tools' => function ($q) {
             $q->where('status', 'available')->where('stock', '>', 0);
         }])->orderBy('name')->get();
 
-        $types = Type::withCount(['tools' => function ($q) {
-            $q->where('status', 'available')->where('stock', '>', 0);
-        }])->orderBy('name')->get();
-
-        return view('catalog.index', compact('tools', 'categories', 'types', 'totalAvailable', 'query', 'category', 'type'));
+        return view('catalog.index', compact('tools', 'categories', 'totalAvailable', 'query', 'category'));
     }
 
     public function detail($id)
     {
-        $tool = Tool::with(['category', 'type', 'place'])->findOrFail($id);
+        $tool = Tool::with(['category', 'place'])->findOrFail($id);
         $relatedTools = Tool::where('category_id', $tool->category_id)
             ->where('id', '!=', $tool->id)
             ->take(4)
@@ -79,9 +66,8 @@ class CatalogController extends Controller
     {
         $query = trim((string) $request->get('q', ''));
         $category = $request->get('category');
-        $type = $request->get('type');
 
-        $tools = Tool::with(['category', 'type', 'place'])
+        $tools = Tool::with(['category', 'place'])
             ->where('status', 'available')
             ->where('stock', '>', 0);
 
@@ -95,10 +81,6 @@ class CatalogController extends Controller
 
         if ($category && Category::whereKey($category)->exists()) {
             $tools->where('category_id', $category);
-        }
-
-        if ($type && Type::whereKey($type)->exists()) {
-            $tools->where('type_id', $type);
         }
 
         $tools = $tools->latest()->paginate(12);

@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Places')
-@section('page-title', 'Places Management')
+@section('title', 'Lokasi')
+@section('page-title', 'Manajemen Lokasi')
 
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Daftar Places</h3>
+            <h3 class="card-title">Daftar Lokasi</h3>
             <div class="card-tools">
                 <a href="{{ route('admin.places.add') }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus"></i> Tambah Place
+                    <i class="fas fa-plus"></i> Tambah Lokasi
                 </a>
             </div>
         </div>
@@ -22,8 +22,8 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Place</th>
-                        <th>Created At</th>
+                        <th>Nama Lokasi</th>
+                        <th>Dibuat Pada</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>

@@ -7,7 +7,6 @@ use App\Models\Fine;
 use App\Models\Loan;
 use App\Models\Place;
 use App\Models\Tool;
-use App\Models\Type;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -20,11 +19,10 @@ class AdminMasterDataTest extends TestCase
     {
         $admin = User::factory()->create(['role' => 'SUPERADMIN']);
         $category = Category::create(['name' => 'Kategori Uji']);
-        $type = Type::create(['name' => 'Tipe Uji']);
         $fine = $this->makeFine();
 
         $this->actingAs($admin)
-            ->get('/admin/categories/add')->assertOk()->assertSee('Form Tambah Category');
+            ->get('/admin/categories/add')->assertOk()->assertSee('Form Tambah Kategori');
 
         $this->actingAs($admin)
             ->get('/admin/categories/update/' . $category->id)
@@ -32,20 +30,12 @@ class AdminMasterDataTest extends TestCase
             ->assertSee('Kategori Uji');
 
         $this->actingAs($admin)
-            ->get('/admin/types/add')->assertOk()->assertSee('Form Tambah Type');
-
-        $this->actingAs($admin)
-            ->get('/admin/types/update/' . $type->id)
-            ->assertOk()
-            ->assertSee('Tipe Uji');
-
-        $this->actingAs($admin)
             ->get('/admin/fines/detail/' . $fine->id)
             ->assertOk()
-            ->assertSee('Detail Denda #' . $fine->id);
+            ->assertSee('Detail Pembayaran #' . $fine->id);
     }
 
-    public function test_admin_can_create_and_update_category_and_type(): void
+    public function test_admin_can_create_and_update_category(): void
     {
         $admin = User::factory()->create(['role' => 'SUPERADMIN']);
 
@@ -57,29 +47,18 @@ class AdminMasterDataTest extends TestCase
         $this->actingAs($admin)->post('/admin/categories/update/' . $category->id, ['name' => 'Kategori Diubah'])
             ->assertRedirect('/admin/categories');
         $this->assertDatabaseHas('categories', ['name' => 'Kategori Diubah']);
-
-        $this->actingAs($admin)->post('/admin/types/create', ['name' => 'Tipe Baru'])
-            ->assertRedirect('/admin/types');
-        $this->assertDatabaseHas('types', ['name' => 'Tipe Baru']);
-
-        $type = Type::where('name', 'Tipe Baru')->firstOrFail();
-        $this->actingAs($admin)->post('/admin/types/update/' . $type->id, ['name' => 'Tipe Diubah'])
-            ->assertRedirect('/admin/types');
-        $this->assertDatabaseHas('types', ['name' => 'Tipe Diubah']);
     }
 
     public function test_delete_master_data_used_by_tool_is_blocked(): void
     {
         $admin = User::factory()->create(['role' => 'SUPERADMIN']);
         $category = Category::create(['name' => 'Kategori Dipakai']);
-        $type = Type::create(['name' => 'Tipe Dipakai']);
         $place = Place::create(['name' => 'Place Dipakai']);
 
         Tool::create([
             'name' => 'Alat Uji',
             'code' => 'TEST-' . uniqid(),
             'category_id' => $category->id,
-            'type_id' => $type->id,
             'place_id' => $place->id,
             'stock' => 1,
             'status' => 'available',
@@ -87,13 +66,10 @@ class AdminMasterDataTest extends TestCase
 
         $this->actingAs($admin)->delete('/admin/categories/delete/' . $category->id)
             ->assertRedirect('/admin/categories')->assertSessionHas('error');
-        $this->actingAs($admin)->delete('/admin/types/delete/' . $type->id)
-            ->assertRedirect('/admin/types')->assertSessionHas('error');
         $this->actingAs($admin)->delete('/admin/places/delete/' . $place->id)
             ->assertRedirect('/admin/places')->assertSessionHas('error');
 
         $this->assertDatabaseHas('categories', ['id' => $category->id]);
-        $this->assertDatabaseHas('types', ['id' => $type->id]);
         $this->assertDatabaseHas('places', ['id' => $place->id]);
 
         $unused = Category::create(['name' => 'Kategori Kosong']);
@@ -138,14 +114,12 @@ class AdminMasterDataTest extends TestCase
     {
         $borrower = User::factory()->create(['role' => 'USER']);
         $category = Category::create(['name' => 'Kategori Denda']);
-        $type = Type::create(['name' => 'Tipe Denda']);
         $place = Place::create(['name' => 'Place Denda']);
 
         $tool = Tool::create([
             'name' => 'Alat Denda',
             'code' => 'FINE-' . uniqid(),
             'category_id' => $category->id,
-            'type_id' => $type->id,
             'place_id' => $place->id,
             'stock' => 1,
             'status' => 'available',

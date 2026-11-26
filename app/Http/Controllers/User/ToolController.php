@@ -15,7 +15,7 @@ class ToolController extends Controller
 
     public function detail($id)
     {
-        $tool = Tool::with(['category', 'type', 'place'])->findOrFail($id);
+        $tool = Tool::with(['category', 'place'])->findOrFail($id);
         return view('user.tools.detail', compact('tool'));
     }
 }

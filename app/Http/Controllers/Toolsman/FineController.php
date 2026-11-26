@@ -40,7 +40,7 @@ class FineController extends Controller
         $fine = Fine::with('user')->findOrFail($id);
 
         if ($fine->status !== 'pending_verification') {
-            return back()->with('error', 'Hanya denda dengan bukti menunggu verifikasi yang bisa diproses.');
+            return back()->with('error', 'Hanya pembayaran dengan bukti menunggu verifikasi yang bisa diproses.');
         }
 
         if ($validated['action'] === 'approve') {
@@ -52,9 +52,9 @@ class FineController extends Controller
                 'review_note' => $validated['review_note'] ?? null,
             ]);
 
-            Notification::send($fine->user_id, 'Pembayaran Denda Diterima', 'Bukti pembayaran denda #' . $fine->id . ' diterima.', 'success', route('user.fines.detail', $fine->id));
-            ActivityHelper::log('verify_fine', 'Menerima pembayaran denda #' . $fine->id);
-            return back()->with('success', 'Pembayaran denda diterima.');
+            Notification::send($fine->user_id, 'Pembayaran Diterima', 'Bukti pembayaran #' . $fine->id . ' diterima.', 'success', route('user.fines.detail', $fine->id));
+            ActivityHelper::log('verify_fine', 'Menerima pembayaran #' . $fine->id);
+            return back()->with('success', 'Pembayaran diterima.');
         }
 
         $fine->update([
@@ -64,10 +64,10 @@ class FineController extends Controller
             'review_note' => $validated['review_note'] ?? null,
         ]);
 
-        Notification::send($fine->user_id, 'Pembayaran Denda Ditolak', 'Bukti pembayaran denda #' . $fine->id . ' ditolak. ' . ($validated['review_note'] ?? 'Silakan unggah ulang bukti yang valid.'), 'danger', route('user.fines.detail', $fine->id));
-        ActivityHelper::log('verify_fine', 'Menolak pembayaran denda #' . $fine->id);
+        Notification::send($fine->user_id, 'Pembayaran Ditolak', 'Bukti pembayaran #' . $fine->id . ' ditolak. ' . ($validated['review_note'] ?? 'Silakan unggah ulang bukti yang valid.'), 'danger', route('user.fines.detail', $fine->id));
+        ActivityHelper::log('verify_fine', 'Menolak pembayaran #' . $fine->id);
 
-        return back()->with('success', 'Pembayaran denda ditolak.');
+        return back()->with('success', 'Pembayaran ditolak.');
     }
 
     public function paid($id)
@@ -75,7 +75,7 @@ class FineController extends Controller
         $fine = Fine::findOrFail($id);
 
         if (!in_array($fine->status, ['unpaid', 'pending_verification', 'rejected'], true)) {
-            return back()->with('error', 'Status denda tidak dapat diubah menjadi paid.');
+            return back()->with('error', 'Status pembayaran tidak dapat diubah menjadi lunas.');
         }
 
         $fine->update([
@@ -86,10 +86,10 @@ class FineController extends Controller
             'reviewed_at' => now(),
         ]);
 
-        Notification::send($fine->user_id, 'Denda Ditandai Lunas', 'Denda #' . $fine->id . ' telah ditandai lunas oleh petugas.', 'success', route('user.fines.detail', $fine->id));
-        ActivityHelper::log('pay_fine', 'Menandai lunas denda #' . $fine->id);
+        Notification::send($fine->user_id, 'Pembayaran Ditandai Lunas', 'Pembayaran #' . $fine->id . ' telah ditandai lunas oleh petugas.', 'success', route('user.fines.detail', $fine->id));
+        ActivityHelper::log('pay_fine', 'Menandai lunas pembayaran #' . $fine->id);
 
-        return redirect()->route('toolsman.fines.index')->with('success', 'Denda sudah dibayar!');
+        return redirect()->route('toolsman.fines.index')->with('success', 'Pembayaran sudah lunas!');
     }
 
     public function exportExcel(Request $request)
@@ -105,7 +105,7 @@ class FineController extends Controller
         return response()->stream(function () use ($fines) {
             $file = fopen('php://output', 'w');
             fwrite($file, "\xEF\xBB\xBF");
-            fputcsv($file, ['No', 'User', 'Loan ID', 'Amount', 'Late Days', 'Status', 'Payment Method', 'Payment Date']);
+            fputcsv($file, ['No', 'Pengguna', 'ID Pinjaman', 'Jumlah', 'Hari Keterlambatan', 'Status', 'Metode Pembayaran', 'Tanggal Bayar']);
             foreach ($fines as $i => $fine) {
                 fputcsv($file, [
                     $i + 1,
@@ -113,7 +113,7 @@ class FineController extends Controller
                     $fine->loan_id,
                     $fine->amount,
                     $fine->late_days,
-                    $fine->status,
+                    match($fine->status) { 'unpaid' => 'Belum Lunas', 'pending_verification' => 'Menunggu Verifikasi', 'paid' => 'Lunas', 'rejected' => 'Ditolak', default => $fine->status },
                     $fine->payment_method ?? '-',
                     $fine->payment_date ? $fine->payment_date->format('d-m-Y') : '-',
                 ]);

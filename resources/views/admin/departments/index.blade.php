@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Departments')
-@section('page-title', 'Departments Management')
+@section('title', 'Departemen')
+@section('page-title', 'Manajemen Departemen')
 
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Daftar Departments</h3>
+            <h3 class="card-title">Daftar Departemen</h3>
             <div class="card-tools">
                 <a href="{{ route('admin.departments.add') }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus"></i> Tambah Department
+                    <i class="fas fa-plus"></i> Tambah Departemen
                 </a>
             </div>
         </div>
@@ -22,8 +22,8 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Department</th>
-                        <th>Created At</th>
+                        <th>Nama Departemen</th>
+                        <th>Dibuat Pada</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>

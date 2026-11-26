@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Dashboard')
-@section('page-title', 'Dashboard')
+@section('title', 'Dasbor Admin')
+@section('page-title', 'Dasbor')
 
 @section('content')
     <!-- Statistik Cards -->
@@ -11,7 +11,7 @@
                 style="background: linear-gradient(135deg, #E85D04, #DC2F02); color: #fff; border-radius: 15px; overflow: hidden;">
                 <div class="inner">
                     <h3 style="color: #fff; font-weight: 800;">{{ $totalUsers ?? 0 }}</h3>
-                    <p style="color: rgba(255,255,255,0.9);">Total Users</p>
+                    <p style="color: rgba(255,255,255,0.9);">Total Pengguna</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-users" style="color: rgba(255,255,255,0.3); font-size: 70px;"></i>
@@ -28,7 +28,7 @@
                 style="background: linear-gradient(135deg, #F48C06, #E85D04); color: #fff; border-radius: 15px; overflow: hidden;">
                 <div class="inner">
                     <h3 style="color: #fff; font-weight: 800;">{{ $totalTools ?? 0 }}</h3>
-                    <p style="color: rgba(255,255,255,0.9);">Total Tools</p>
+                    <p style="color: rgba(255,255,255,0.9);">Total Alat</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-tools" style="color: rgba(255,255,255,0.3); font-size: 70px;"></i>
@@ -45,7 +45,7 @@
                 style="background: linear-gradient(135deg, #FFB347, #F48C06); color: #fff; border-radius: 15px; overflow: hidden;">
                 <div class="inner">
                     <h3 style="color: #fff; font-weight: 800;">{{ $totalLoans ?? 0 }}</h3>
-                    <p style="color: rgba(255,255,255,0.9);">Total Loans</p>
+                    <p style="color: rgba(255,255,255,0.9);">Total Pinjaman</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-hand-holding" style="color: rgba(255,255,255,0.3); font-size: 70px;"></i>
@@ -62,7 +62,7 @@
                 style="background: linear-gradient(135deg, #DC2F02, #B71C1C); color: #fff; border-radius: 15px; overflow: hidden;">
                 <div class="inner">
                     <h3 style="color: #fff; font-weight: 800;">Rp {{ number_format($totalFines ?? 0, 0, ',', '.') }}</h3>
-                    <p style="color: rgba(255,255,255,0.9);">Total Fines</p>
+                    <p style="color: rgba(255,255,255,0.9);">Total Pembayaran</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-money-bill-wave" style="color: rgba(255,255,255,0.3); font-size: 70px;"></i>
@@ -115,7 +115,7 @@
                             <i class="fas fa-user-shield" style="color: #fff; font-size: 24px;"></i>
                         </div>
                         <div>
-                            <h4 style="font-weight: 800; color: #1a1a2e; margin: 0;">Welcome to Admin Dashboard</h4>
+                            <h4 style="font-weight: 800; color: #1a1a2e; margin: 0;">Selamat Datang di Dasbor Admin</h4>
                             <p style="color: #666; margin: 5px 0 0;">
                                 Selamat datang, <strong style="color: #E85D04;">{{ auth()->user()->name }}</strong>!
                                 Anda login sebagai <span class="badge"
@@ -139,7 +139,7 @@
                 new Chart(ctx1, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Pending', 'Approved', 'Borrowed', 'Returned', 'Rejected'],
+                        labels: ['Menunggu', 'Disetujui', 'Dipinjam', 'Dikembalikan', 'Ditolak'],
                         datasets: [{
                             label: 'Jumlah',
                             data: [

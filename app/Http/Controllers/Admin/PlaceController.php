@@ -27,7 +27,7 @@ class PlaceController extends Controller
 
         Place::create(['name' => $request->name]);
 
-        return redirect()->route('admin.places.index')->with('success', 'Place berhasil ditambahkan!');
+        return redirect()->route('admin.places.index')->with('success', 'Lokasi berhasil ditambahkan!');
     }
 
     public function update($id)
@@ -45,7 +45,7 @@ class PlaceController extends Controller
         $place = Place::findOrFail($id);
         $place->update(['name' => $request->name]);
 
-        return redirect()->route('admin.places.index')->with('success', 'Place berhasil diupdate!');
+        return redirect()->route('admin.places.index')->with('success', 'Lokasi berhasil diperbarui!');
     }
 
     public function delete($id)
@@ -54,11 +54,11 @@ class PlaceController extends Controller
 
         if ($place->tools()->exists()) {
             return redirect()->route('admin.places.index')
-                ->with('error', 'Gagal menghapus! Place ini masih digunakan oleh alat.');
+                ->with('error', 'Gagal menghapus! Lokasi ini masih digunakan oleh alat.');
         }
 
         $place->delete();
 
-        return redirect()->route('admin.places.index')->with('success', 'Place berhasil dihapus!');
+        return redirect()->route('admin.places.index')->with('success', 'Lokasi berhasil dihapus!');
     }
 }

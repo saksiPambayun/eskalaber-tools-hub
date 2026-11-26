@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Update User')
-@section('page-title', 'Update User')
+@section('title', 'Ubah Pengguna')
+@section('page-title', 'Ubah Pengguna')
 
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Form Update User</h5>
+                    <h5 class="card-title">Form Ubah Pengguna</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.users.doUpdate', $user->id) }}" method="POST">
@@ -33,11 +33,11 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="department_id" class="form-label">Department <span
+                            <label for="department_id" class="form-label">Departemen <span
                                     class="text-danger">*</span></label>
                             <select class="form-control @error('department_id') is-invalid @enderror" id="department_id"
                                 name="department_id" required>
-                                <option value="">Pilih Department</option>
+                                <option value="">Pilih Departemen</option>
                                 @foreach($departments as $dept)
                                     <option value="{{ $dept->id }}" {{ old('department_id', $user->department_id) == $dept->id ? 'selected' : '' }}>
                                         {{ $dept->name }}
@@ -63,7 +63,7 @@
 
                         <div class="mt-3">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i> Update
+                                <i class="fas fa-save me-2"></i> Ubah
                             </button>
                             <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-2"></i> Kembali

@@ -43,7 +43,7 @@ class ToolsmanController extends Controller
             'address' => $request->address,
         ]);
 
-        return redirect()->route('admin.toolsmans.index')->with('success', 'Toolsman berhasil ditambahkan!');
+        return redirect()->route('admin.toolsmans.index')->with('success', 'Petugas Alat berhasil ditambahkan!');
     }
 
     public function detail($id)
@@ -79,7 +79,7 @@ class ToolsmanController extends Controller
             'address' => $request->address,
         ]);
 
-        return redirect()->route('admin.toolsmans.index')->with('success', 'Toolsman berhasil diupdate!');
+        return redirect()->route('admin.toolsmans.index')->with('success', 'Petugas Alat berhasil diperbarui!');
     }
 
     public function delete($id)
@@ -88,11 +88,11 @@ class ToolsmanController extends Controller
 
         if ($user->loans()->exists()) {
             return redirect()->route('admin.toolsmans.index')
-                ->with('error', 'Gagal menghapus! Toolsman ini memiliki riwayat peminjaman.');
+                ->with('error', 'Gagal menghapus! Petugas Alat ini memiliki riwayat peminjaman.');
         }
 
         $user->delete();
 
-        return redirect()->route('admin.toolsmans.index')->with('success', 'Toolsman berhasil dihapus!');
+        return redirect()->route('admin.toolsmans.index')->with('success', 'Petugas Alat berhasil dihapus!');
     }
 }

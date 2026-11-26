@@ -1,25 +1,25 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Denda')
-@section('page-title', 'Detail Denda')
+@section('title', 'Detail Pembayaran')
+@section('page-title', 'Detail Pembayaran')
 
 @section('sidebar')
-    <li class="nav-item"><a href="{{ route('user.dashboard') }}" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>
-    <li class="nav-item"><a href="{{ route('user.tools.index') }}" class="nav-link"><i class="nav-icon fas fa-tools"></i><p>Tools</p></a></li>
-    <li class="nav-item"><a href="{{ route('user.loans.index') }}" class="nav-link"><i class="nav-icon fas fa-hand-holding"></i><p>My Loans</p></a></li>
-    <li class="nav-item"><a href="{{ route('user.fines.index') }}" class="nav-link active"><i class="nav-icon fas fa-money-bill-wave"></i><p>My Fines</p></a></li>
+    <li class="nav-item"><a href="{{ route('user.dashboard') }}" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dasbor</p></a></li>
+    <li class="nav-item"><a href="{{ route('user.tools.index') }}" class="nav-link"><i class="nav-icon fas fa-tools"></i><p>Alat</p></a></li>
+    <li class="nav-item"><a href="{{ route('user.loans.index') }}" class="nav-link"><i class="nav-icon fas fa-hand-holding"></i><p>Peminjaman Saya</p></a></li>
+    <li class="nav-item"><a href="{{ route('user.fines.index') }}" class="nav-link active"><i class="nav-icon fas fa-money-bill-wave"></i><p>Pembayaran Saya</p></a></li>
 @endsection
 
 @section('content')
 <div class="row">
     <div class="col-md-5">
         <div class="card">
-            <div class="card-header"><h3 class="card-title">Informasi Denda</h3></div>
+            <div class="card-header"><h3 class="card-title">Informasi Pembayaran</h3></div>
             <div class="card-body">
                 @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
                 @if(session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
                 <table class="table table-sm table-bordered">
-                    <tr><th>Loan</th><td>#{{ $fine->loan_id }} - {{ $fine->loan->tool->name ?? '-' }}</td></tr>
+                    <tr><th>Pinjaman</th><td>#{{ $fine->loan_id }} - {{ $fine->loan->tool->name ?? '-' }}</td></tr>
                     <tr><th>Jumlah</th><td>Rp {{ number_format($fine->amount, 0, ',', '.') }}</td></tr>
                     <tr><th>Hari Telat</th><td>{{ $fine->late_days }} hari</td></tr>
                     <tr><th>Status</th>
@@ -33,7 +33,7 @@
                                     'cancelled' => 'secondary',
                                     default => 'secondary',
                                 };
-                                $label = str_replace('_', ' ', ucfirst($fine->status));
+                                $label = match($fine->status) { 'unpaid' => 'Belum Lunas', 'pending_verification' => 'Menunggu Verifikasi', 'paid' => 'Lunas', 'rejected' => 'Ditolak', default => str_replace('_', ' ', ucfirst($fine->status)) };
                             @endphp
                             <span class="badge bg-{{ $badge }}">{{ $label }}</span>
                         </td>
@@ -57,7 +57,7 @@
 
     <div class="col-md-7">
         <div class="card">
-            <div class="card-header"><h3 class="card-title">Bayar Denda</h3></div>
+            <div class="card-header"><h3 class="card-title">Lakukan Pembayaran</h3></div>
             <div class="card-body">
                 @if(in_array($fine->status, ['unpaid', 'rejected']))
                     @if($fine->status === 'rejected')
@@ -70,7 +70,7 @@
                             @forelse($paymentMethods as $pm)
                                 <div class="col-md-6 mb-2">
                                     <div class="border rounded p-2 h-100">
-                                        <div class="font-weight-bold">{{ $pm->name }} <small class="text-muted">({{ strtoupper($pm->type) }})</small></div>
+                                        <div class="font-weight-bold">{{ $pm->name }} <small class="text-muted">({{ match($pm->type) { 'bank' => 'BANK', 'ewallet' => 'DOMPET DIGITAL', 'qris' => 'QRIS', 'other' => 'LAINNYA', default => strtoupper($pm->type) } }})</small></div>
                                         @if($pm->account_number)<div>No: {{ $pm->account_number }}</div>@endif
                                         @if($pm->account_name)<div>A/N: {{ $pm->account_name }}</div>@endif
                                         @if($pm->qr_image)
@@ -113,9 +113,9 @@
                 @elseif($fine->status === 'pending_verification')
                     <div class="alert alert-info mb-0">Bukti pembayaran sudah dikirim dan sedang menunggu verifikasi admin/petugas.</div>
                 @elseif($fine->status === 'paid')
-                    <div class="alert alert-success mb-0">Denda sudah lunas. Terima kasih.</div>
+                    <div class="alert alert-success mb-0">Pembayaran sudah lunas. Terima kasih.</div>
                 @else
-                    <div class="alert alert-secondary mb-0">Status denda: {{ $fine->status }}.</div>
+                    <div class="alert alert-secondary mb-0">Status pembayaran: {{ match($fine->status) { 'unpaid' => 'Belum Lunas', 'pending_verification' => 'Menunggu Verifikasi', 'paid' => 'Lunas', 'rejected' => 'Ditolak', default => $fine->status } }}.</div>
                 @endif
             </div>
         </div>

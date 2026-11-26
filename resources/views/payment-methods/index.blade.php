@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
 @section('title', 'Metode Pembayaran')
-@section('page-title', 'Metode Pembayaran Denda')
+@section('page-title', 'Metode Pembayaran')
 
 @if($panel === 'toolsman')
     @section('sidebar')
         <li class="nav-item"><a href="{{ route('toolsman.dashboard') }}" class="nav-link"><i
                     class="nav-icon fas fa-tachometer-alt"></i>
-                <p>Dashboard</p>
+                <p>Dasbor</p>
             </a></li>
         <li class="nav-item"><a href="{{ route('toolsman.loans.index') }}" class="nav-link"><i
                     class="nav-icon fas fa-hand-holding"></i>
-                <p>Loans</p>
+                <p>Pinjaman</p>
             </a></li>
         <li class="nav-item"><a href="{{ route('toolsman.fines.index') }}" class="nav-link"><i
                     class="nav-icon fas fa-money-bill-wave"></i>
-                <p>Fines</p>
+                <p>Pembayaran</p>
             </a></li>
         <li class="nav-item"><a href="{{ route('toolsman.payment-methods.index') }}" class="nav-link active"><i
                     class="nav-icon fas fa-credit-card"></i>
@@ -57,7 +57,7 @@
                         @forelse($methods as $method)
                             <tr>
                                 <td>{{ $method->name }}</td>
-                                <td>{{ strtoupper($method->type) }}</td>
+                                <td>{{ match($method->type) { 'bank' => 'BANK', 'ewallet' => 'DOMPET DIGITAL', 'qris' => 'QRIS', 'other' => 'LAINNYA', default => strtoupper($method->type) } }}</td>
                                 <td>{{ $method->account_number ?? '-' }}</td>
                                 <td>{{ $method->account_name ?? '-' }}</td>
                                 <td>

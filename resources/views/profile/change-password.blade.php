@@ -1,25 +1,25 @@
 @extends('layouts.app')
 
-@section('title', 'Change Password')
-@section('page-title', 'Change Password')
+@section('title', 'Ubah Kata Sandi')
+@section('page-title', 'Ubah Kata Sandi')
 
 @section('sidebar')
     <li class="nav-item">
         <a href="{{ route('admin.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('profile.index') }}" class="nav-link">
             <i class="nav-icon fas fa-user"></i>
-            <p>My Profile</p>
+            <p>Profil Saya</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('profile.change_password') }}" class="nav-link active">
             <i class="nav-icon fas fa-key"></i>
-            <p>Change Password</p>
+            <p>Ubah Kata Sandi</p>
         </a>
     </li>
 @endsection
@@ -29,7 +29,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Ubah Password</h5>
+                    <h5 class="card-title">Ubah Kata Sandi</h5>
                 </div>
                 <div class="card-body">
                     @if(session('success'))
@@ -39,17 +39,17 @@
                     <form action="{{ route('profile.update_password') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="current_password" class="form-label">Password Saat Ini</label>
+                            <label for="current_password" class="form-label">Kata Sandi Saat Ini</label>
                             <input type="password" class="form-control" id="current_password" name="current_password"
                                 required>
                         </div>
                         <div class="mb-3">
-                            <label for="new_password" class="form-label">Password Baru</label>
+                            <label for="new_password" class="form-label">Kata Sandi Baru</label>
                             <input type="password" class="form-control" id="new_password" name="new_password" required
                                 minlength="8">
                         </div>
                         <div class="mb-3">
-                            <label for="new_password_confirmation" class="form-label">Konfirmasi Password</label>
+                            <label for="new_password_confirmation" class="form-label">Konfirmasi Kata Sandi</label>
                             <input type="password" class="form-control" id="new_password_confirmation"
                                 name="new_password_confirmation" required>
                         </div>

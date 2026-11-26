@@ -1,31 +1,31 @@
 @extends('layouts.app')
 
-@section('title', 'User Dashboard')
-@section('page-title', 'Dashboard')
+@section('title', 'Dasbor Pengguna')
+@section('page-title', 'Dasbor')
 
 @section('sidebar')
     <li class="nav-item">
         <a href="{{ route('user.dashboard') }}" class="nav-link active">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('user.tools.index') }}" class="nav-link">
             <i class="nav-icon fas fa-tools"></i>
-            <p>Tools</p>
+            <p>Alat</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('user.loans.index') }}" class="nav-link">
             <i class="nav-icon fas fa-hand-holding"></i>
-            <p>My Loans</p>
+            <p>Peminjaman Saya</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('user.fines.index') }}" class="nav-link">
             <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>My Fines</p>
+            <p>Pembayaran Saya</p>
         </a>
     </li>
 @endsection
@@ -36,7 +36,7 @@
             <div class="small-box bg-primary">
                 <div class="inner">
                     <h3>{{ $activeLoans ?? 0 }}</h3>
-                    <p>Active Loans</p>
+                    <p>Peminjaman Aktif</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-hand-holding"></i>
@@ -51,7 +51,7 @@
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ $totalLoans ?? 0 }}</h3>
-                    <p>Total Loans</p>
+                    <p>Total Pinjaman</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-list"></i>
@@ -66,7 +66,7 @@
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3>Rp {{ number_format($totalFines ?? 0, 0, ',', '.') }}</h3>
-                    <p>My Fines</p>
+                    <p>Pembayaran Saya</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-money-bill-wave"></i>
@@ -82,7 +82,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Welcome User</h3>
+                    <h3 class="card-title">Selamat Datang, Pengguna</h3>
                 </div>
                 <div class="card-body">
                     <p>Selamat datang di dashboard user.</p>

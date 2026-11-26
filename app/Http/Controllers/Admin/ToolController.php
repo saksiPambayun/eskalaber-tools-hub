@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Tool;
 use App\Models\Category;
-use App\Models\Type;
 use App\Models\Place;
 use Illuminate\Http\Request;
 
@@ -13,16 +12,15 @@ class ToolController extends Controller
 {
     public function index()
     {
-        $tools = Tool::with(['category', 'type', 'place'])->get();
+        $tools = Tool::with(['category', 'place'])->get();
         return view('admin.tools.index', compact('tools'));
     }
 
     public function add()
     {
         $categories = Category::all();
-        $types = Type::all();
         $places = Place::all();
-        return view('admin.tools.add', compact('categories', 'types', 'places'));
+        return view('admin.tools.add', compact('categories', 'places'));
     }
 
     public function doCreate(Request $request)
@@ -32,7 +30,6 @@ class ToolController extends Controller
             'code' => 'required|string|unique:tools',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'type_id' => 'required|exists:types,id',
             'place_id' => 'required|exists:places,id',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -50,12 +47,12 @@ class ToolController extends Controller
 
         $tool = Tool::create($data);
 
-        return redirect()->route('admin.tools.index')->with('success', 'Tool berhasil ditambahkan!');
+        return redirect()->route('admin.tools.index')->with('success', 'Alat berhasil ditambahkan!');
     }
 
     public function detail($id)
     {
-        $tool = Tool::with(['category', 'type', 'place'])->findOrFail($id);
+        $tool = Tool::with(['category', 'place'])->findOrFail($id);
         return view('admin.tools.detail', compact('tool'));
     }
 
@@ -63,9 +60,8 @@ class ToolController extends Controller
     {
         $tool = Tool::findOrFail($id);
         $categories = Category::all();
-        $types = Type::all();
         $places = Place::all();
-        return view('admin.tools.update', compact('tool', 'categories', 'types', 'places'));
+        return view('admin.tools.update', compact('tool', 'categories', 'places'));
     }
 
     public function doUpdate(Request $request, $id)
@@ -77,7 +73,6 @@ class ToolController extends Controller
             'code' => 'required|string|unique:tools,code,' . $id,
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'type_id' => 'required|exists:types,id',
             'place_id' => 'required|exists:places,id',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -99,29 +94,67 @@ class ToolController extends Controller
 
         $tool->update($data);
 
-        return redirect()->route('admin.tools.index')->with('success', 'Tool berhasil diupdate!');
+        return redirect()->route('admin.tools.index')->with('success', 'Alat berhasil diperbarui!');
     }
 
- public function delete($id)
-{
-    $tool = Tool::findOrFail($id);
+    // FUNGSI EXPORT YANG SUDAH DIPERBAIKI (TANPA RELASI 'type')
+    public function exportCSV()
+    {
+        $tools = \App\Models\Tool::with(['category', 'place'])->get(); // Hanya panggil yang ada
+        $filename = "data_tools_" . date('Y-m-d_H-i-s') . ".csv";
 
-    // 1. Cek apakah alat ini pernah/sedang dipinjam
-    $cekPinjaman = \App\Models\Loan::where('tool_id', $id)->exists();
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
 
-    if ($cekPinjaman) {
-        return redirect()->route('admin.tools.index')->with('error', 'Gagal menghapus! Alat ini memiliki riwayat peminjaman.');
+        // Kolom 'Tipe' dihapus
+        $columns = ['No', 'Kode', 'Nama', 'Kategori', 'Lokasi', 'Stok', 'Status'];
+
+        $callback = function() use($tools, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            $no = 1;
+            foreach ($tools as $tool) {
+                fputcsv($file, [
+                    $no++,
+                    $tool->code,
+                    $tool->name,
+                    $tool->category->name ?? '-',
+                    $tool->place->name ?? '-',
+                    $tool->stock,
+                    match($tool->status) { 'available' => 'Tersedia', 'borrowed' => 'Dipinjam', 'broken' => 'Rusak', 'maintenance' => 'Perawatan', default => ucfirst($tool->status) }
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
-    // 2. Hapus image jika ada
-    if ($tool->image && file_exists(public_path($tool->image))) {
-        unlink(public_path($tool->image));
+    public function delete($id)
+    {
+        $tool = Tool::findOrFail($id);
+
+        // 1. Cek apakah alat ini pernah/sedang dipinjam
+        $cekPinjaman = \App\Models\Loan::where('tool_id', $id)->exists();
+
+        if ($cekPinjaman) {
+            return redirect()->route('admin.tools.index')->with('error', 'Gagal menghapus! Alat ini memiliki riwayat peminjaman.');
+        }
+
+        // 2. Hapus image jika ada
+        if ($tool->image && file_exists(public_path($tool->image))) {
+            unlink(public_path($tool->image));
+        }
+
+        // 3. Hapus dari database
+        $tool->delete();
+
+        return redirect()->route('admin.tools.index')->with('success', 'Alat berhasil dihapus!');
     }
-
-    // 4. Hapus dari database
-    $tool->delete();
-
-    return redirect()->route('admin.tools.index')->with('success', 'Tool berhasil dihapus!');
-}
-
 }

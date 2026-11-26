@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Tool')
-@section('page-title', 'Detail Tool')
+@section('title', 'Detail Alat')
+@section('page-title', 'Detail Alat')
 
 @section('sidebar')
     <li class="nav-item">
         <a href="{{ route('admin.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.tools.index') }}" class="nav-link active">
             <i class="nav-icon fas fa-tools"></i>
-            <p>Tools</p>
+            <p>Alat</p>
         </a>
     </li>
 @endsection
@@ -33,7 +33,7 @@
             @if($tool->qr_code)
                 <div class="card mt-3">
                     <div class="card-body text-center">
-                        <h6>QR Code</h6>
+                        <h6>Kode QR</h6>
                         <img src="{{ asset($tool->qr_code) }}" style="max-width: 150px;">
                     </div>
                 </div>
@@ -43,7 +43,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Detail Tool</h5>
+                    <h5 class="card-title">Detail Alat</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -60,19 +60,15 @@
                             <td>{{ $tool->description ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Category</th>
+                            <th>Kategori</th>
                             <td>{{ $tool->category->name ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Type</th>
-                            <td>{{ $tool->type->name ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Place</th>
+                            <th>Lokasi</th>
                             <td>{{ $tool->place->name ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Stock</th>
+                            <th>Stok</th>
                             <td>{{ $tool->stock }}</td>
                         </tr>
                         <tr>
@@ -80,7 +76,7 @@
                             <td>
                                 <span
                                     class="badge bg-{{ $tool->status == 'available' ? 'success' : ($tool->status == 'borrowed' ? 'warning' : 'danger') }}">
-                                    {{ ucfirst($tool->status) }}
+                                    {{ match($tool->status) { 'available' => 'Tersedia', 'borrowed' => 'Dipinjam', 'broken' => 'Rusak', 'maintenance' => 'Perawatan', default => ucfirst($tool->status) } }}
                                 </span>
                             </td>
                         </tr>

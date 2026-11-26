@@ -1,25 +1,25 @@
 @extends('layouts.app')
 
-@section('title', 'My Profile')
-@section('page-title', 'My Profile')
+@section('title', 'Profil Saya')
+@section('page-title', 'Profil Saya')
 
 @section('sidebar')
     <li class="nav-item">
         <a href="{{ route('admin.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('profile.index') }}" class="nav-link active">
             <i class="nav-icon fas fa-user"></i>
-            <p>My Profile</p>
+            <p>Profil Saya</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('profile.change_password') }}" class="nav-link">
             <i class="nav-icon fas fa-key"></i>
-            <p>Change Password</p>
+            <p>Ubah Kata Sandi</p>
         </a>
     </li>
 @endsection
@@ -29,7 +29,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body text-center">
-                    <!-- Photo Profile -->
+                    <!-- Photo Profil -->
                     <div class="position-relative d-inline-block">
                         @if(auth()->user()->photo)
                             <img src="{{ asset(auth()->user()->photo) }}" class="rounded-circle"
@@ -38,14 +38,14 @@
                             <i class="fas fa-user-circle fa-8x text-primary" style="font-size: 150px;"></i>
                         @endif
 
-                        <!-- Tombol Upload -->
+                        <!-- Tombol Unggah -->
                         <button class="btn btn-primary btn-sm position-absolute bottom-0 end-0 rounded-circle"
                             style="width: 40px; height: 40px;" onclick="document.getElementById('photoInput').click()">
                             <i class="fas fa-camera"></i>
                         </button>
                     </div>
 
-                    <!-- Form Upload (Hidden) -->
+                    <!-- Form Unggah (Hidden) -->
                     <form id="photoForm" action="{{ route('profile.update_photo') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
@@ -74,7 +74,7 @@
                     </p>
                     <div class="mt-3">
                         <a href="{{ route('profile.change_password') }}" class="btn btn-warning btn-sm">
-                            <i class="fas fa-key"></i> Change Password
+                            <i class="fas fa-key"></i> Ubah Kata Sandi
                         </a>
                     </div>
 
@@ -91,7 +91,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Informasi Profile</h5>
+                    <h5 class="card-title">Informasi Profil</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -104,23 +104,23 @@
                             <td>{{ auth()->user()->email }}</td>
                         </tr>
                         <tr>
-                            <th>Role</th>
+                            <th>Peran</th>
                             <td>{{ auth()->user()->role }}</td>
                         </tr>
                         <tr>
-                            <th>Department</th>
+                            <th>Departemen</th>
                             <td>{{ auth()->user()->department->name ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Phone</th>
+                            <th>Telepon</th>
                             <td>{{ auth()->user()->phone ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Address</th>
+                            <th>Alamat</th>
                             <td>{{ auth()->user()->address ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Member Since</th>
+                            <th>Bergabung Sejak</th>
                             <td>{{ auth()->user()->created_at->format('d M Y H:i') }}</td>
                         </tr>
                     </table>

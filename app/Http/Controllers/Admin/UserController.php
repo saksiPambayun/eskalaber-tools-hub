@@ -43,7 +43,7 @@ class UserController extends Controller
             'address' => $request->address,
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan!');
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan!');
     }
 
     public function detail($id)
@@ -79,7 +79,7 @@ class UserController extends Controller
             'address' => $request->address,
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil diupdate!');
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil diperbarui!');
     }
 
     public function delete($id)
@@ -88,11 +88,11 @@ class UserController extends Controller
 
         if ($user->loans()->exists()) {
             return redirect()->route('admin.users.index')
-                ->with('error', 'Gagal menghapus! User ini memiliki riwayat peminjaman.');
+                ->with('error', 'Gagal menghapus! Pengguna ini memiliki riwayat peminjaman.');
         }
 
         $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus!');
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dihapus!');
     }
 }

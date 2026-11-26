@@ -38,7 +38,7 @@ class FineController extends Controller
         $fine = Fine::where('user_id', auth()->id())->findOrFail($id);
 
         if (!in_array($fine->status, ['unpaid', 'rejected'], true)) {
-            return back()->with('error', 'Denda ini tidak dapat dibayarkan pada status saat ini.');
+            return back()->with('error', 'Pembayaran ini tidak dapat dibayarkan pada status saat ini.');
         }
 
         $validated = $request->validate([
@@ -75,19 +75,19 @@ class FineController extends Controller
         ]);
 
         Notification::sendToAdmins(
-            'Bukti Pembayaran Denda',
-            auth()->user()->name . ' mengunggah bukti pembayaran denda #' . $fine->id . '.',
+            'Bukti Pembayaran',
+            auth()->user()->name . ' mengunggah bukti pembayaran #' . $fine->id . '.',
             'info',
             route('admin.fines.detail', $fine->id)
         );
         Notification::sendToToolsmans(
-            'Bukti Pembayaran Denda',
-            auth()->user()->name . ' mengunggah bukti pembayaran denda #' . $fine->id . '.',
+            'Bukti Pembayaran',
+            auth()->user()->name . ' mengunggah bukti pembayaran #' . $fine->id . '.',
             'info',
             route('toolsman.fines.detail', $fine->id)
         );
 
-        ActivityHelper::log('submit_fine_payment', 'Mengunggah bukti pembayaran denda #' . $fine->id);
+        ActivityHelper::log('submit_fine_payment', 'Mengunggah bukti pembayaran #' . $fine->id);
 
         return redirect()->route('user.fines.detail', $fine->id)
             ->with('success', 'Bukti pembayaran berhasil dikirim. Menunggu verifikasi petugas/admin.');

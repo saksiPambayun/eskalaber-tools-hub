@@ -7,7 +7,6 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ToolsmanController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\PlaceController;
-use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ToolController;
 use App\Http\Controllers\Admin\LoanController;
@@ -41,17 +40,16 @@ use Illuminate\Support\Facades\Route;
 // LANDING PAGE
 // ============================================
 Route::get('/', function () {
-    return view('landing');
-})->name('landing');
+    // Ambil data logo dari database
+    $logoSetting = \App\Models\LogoSetting::current();
 
-// Named dashboard untuk redirect scaffold Breeze.
-Route::middleware(['auth'])->get('/dashboard', function () {
-    return match (auth()->user()->role) {
-        'SUPERADMIN' => redirect()->route('admin.dashboard'),
-        'TOOLSMAN' => redirect()->route('toolsman.dashboard'),
-        default => redirect()->route('user.dashboard'),
-    };
-})->name('dashboard');
+    // Hitung statistik
+    $totalTools = \App\Models\Tool::count();
+    $totalUsers = \App\Models\User::whereIn('role', ['USER', 'TOOLSMAN'])->count();
+    $totalTransactions = \App\Models\Loan::count();
+
+    return view('landing', compact('totalTools', 'totalUsers', 'totalTransactions', 'logoSetting'));
+})->name('landing');
 
 // Password reset & verifikasi email (view Breeze yang sudah ada).
 Route::middleware('guest')->group(function () {
@@ -94,7 +92,7 @@ Route::post('/register', [AuthController::class, 'doRegister'])->name('register.
 // ============================================
 // PROFILE ROUTES
 // ============================================
-Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function () {    
+Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function () {
     Route::get('/', function () {
         return view('profile.index');
     })->name('index');
@@ -113,6 +111,15 @@ Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function
 });
 
 Route::middleware(['auth'])->put('/password', [PasswordController::class, 'update'])->name('password.update');
+
+// Named dashboard untuk redirect scaffold Breeze.
+Route::middleware(['auth'])->get('/dashboard', function () {
+    return match (auth()->user()->role) {
+        'SUPERADMIN' => redirect()->route('admin.dashboard'),
+        'TOOLSMAN' => redirect()->route('toolsman.dashboard'),
+        default => redirect()->route('user.dashboard'),
+    };
+})->name('dashboard');
 
 // ============================================
 // NOTIFICATION ROUTES  <-- TAMBAHKAN INI
@@ -173,16 +180,6 @@ Route::middleware(['auth', 'role:SUPERADMIN'])->prefix('admin')->name('admin.')-
         Route::delete('/delete/{id}', [PlaceController::class, 'delete'])->name('delete');
     });
 
-    // Types
-    Route::prefix('types')->name('types.')->group(function () {
-        Route::get('/', [TypeController::class, 'index'])->name('index');
-        Route::get('/add', [TypeController::class, 'add'])->name('add');
-        Route::post('/create', [TypeController::class, 'doCreate'])->name('create');
-        Route::get('/update/{id}', [TypeController::class, 'update'])->name('update');
-        Route::post('/update/{id}', [TypeController::class, 'doUpdate'])->name('doUpdate');
-        Route::delete('/delete/{id}', [TypeController::class, 'delete'])->name('delete');
-    });
-
     // Categories
     Route::prefix('categories')->name('categories.')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index');
@@ -202,6 +199,7 @@ Route::middleware(['auth', 'role:SUPERADMIN'])->prefix('admin')->name('admin.')-
         Route::get('/update/{id}', [ToolController::class, 'update'])->name('update');
         Route::post('/update/{id}', [ToolController::class, 'doUpdate'])->name('doUpdate');
         Route::delete('/delete/{id}', [ToolController::class, 'delete'])->name('delete');
+        Route::get('/export-csv', [ToolController::class, 'exportCSV'])->name('export-csv');
     });
 
     // Loans

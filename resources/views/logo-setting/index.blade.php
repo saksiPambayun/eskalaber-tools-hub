@@ -159,7 +159,7 @@
                 style="border-radius: 15px; box-shadow: 0 5px 20px rgba(232, 93, 4, 0.08); border: none; height: 100%;">
                 <div class="card-header" style="background: transparent; border-bottom: 2px solid #FFF3E8;">
                     <h3 class="card-title mb-0" style="font-weight: 700;">
-                        <i class="fas fa-eye mr-2" style="color: #E85D04;"></i> Live Preview
+                        <i class="fas fa-eye mr-2" style="color: #E85D04;"></i> Pratinjau Langsung
                     </h3>
                 </div>
                 <div class="card-body d-flex align-items-center justify-content-center" style="padding: 30px;">
@@ -181,9 +181,9 @@
     <script>
         // Script biar nama file yang dipilih muncul di input
         document.querySelector('.custom-file-input').addEventListener('change', function (e) {
-            var fileName = document.getElementById("image").files[0].name;
+            var fileNama = document.getElementById("image").files[0].name;
             var nextSibling = e.target.nextElementSibling;
-            nextSibling.innerText = fileName;
+            nextSibling.innerText = fileNama;
         });
     </script>
 @endpush

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Eskalaber Tools Hub - Management System</title>
+    <title>Eskalaber Tools Hub - Sistem Manajemen</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -741,12 +741,14 @@
             opacity: 0.25;
         }
 
-        /* Gambar Utama di Tengah */
+              /* Gambar Utama di Tengah */
         .main-image {
-            position: relative;
-            z-index: 10;
-            width: 250px;
-            height: 250px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 220px;
+            height: 220px;
             background: #fff;
             border-radius: 50%;
             display: flex;
@@ -755,16 +757,16 @@
             box-shadow: 0 30px 80px rgba(232, 93, 4, 0.25);
             border: 6px solid var(--primary-bg);
             padding: 15px;
-            animation: float 3s ease-in-out infinite;
+            z-index: 10;
+            overflow: hidden;
         }
 
         .main-image img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             border-radius: 50%;
         }
-
         /* Animasi Gear Berputar */
         @keyframes spinClockwise {
             from {
@@ -963,7 +965,7 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 <i class="fas fa-tools me-2" style="color: var(--primary);"></i>
-                Eskalaber<span>Tools</span>
+                Eskalaber<span>Alat</span>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -983,7 +985,7 @@
 
                     <!-- Tombol Dark Mode -->
                     <li class="nav-item">
-                        <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                        <button class="dark-mode-toggle" id="darkModeToggle" title="Ubah Mode Gelap">
                             <i class="fas fa-moon" id="darkModeIcon"></i>
                         </button>
                     </li>
@@ -991,23 +993,23 @@
                     <li class="nav-item ms-lg-2">
                         @auth
                             @php
-                                $role = strtolower(auth()->user()->role);
-                                $routeMap = ['superadmin' => 'admin', 'toolsman' => 'toolsman', 'user' => 'user'];
-                                $prefix = $routeMap[$role] ?? 'admin';
-                                $dashboardRoute = $prefix . '.dashboard';
+    $role = strtolower(auth()->user()->role);
+    $routeMap = ['superadmin' => 'admin', 'toolsman' => 'toolsman', 'user' => 'user'];
+    $prefix = $routeMap[$role] ?? 'admin';
+    $dashboardRoute = $prefix . '.dashboard';
                             @endphp
                             <a href="{{ route($dashboardRoute) }}" class="btn-orange">
-                                <i class="fas fa-th-large me-2"></i> Dashboard
+                                <i class="fas fa-th-large me-2"></i> Dasbor
                             </a>
                             <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn-outline-orange" style="border: none; cursor: pointer;">
-                                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    <i class="fas fa-sign-out-alt me-2"></i> Keluar
                                 </button>
                             </form>
                         @else
                             <a href="{{ route('login') }}" class="btn-orange">
-                                <i class="fas fa-sign-in-alt me-2"></i> Login
+                                <i class="fas fa-sign-in-alt me-2"></i> Masuk
                             </a>
                         @endauth
                     </li>
@@ -1043,14 +1045,20 @@
                         </a>
                     </div>
                     <div class="mt-4 d-flex gap-4">
-                        <div>
-                            <span class="fw-bold fs-4 stat-hero-number">100+</span>
+                        <a href="{{ route('catalog') }}" class="text-decoration-none" style="transition: 0.3s;"
+                            onmouseover="this.style.transform='translateY(-5px)'"
+                            onmouseout="this.style.transform='translateY(0)'">
+                            <span class="fw-bold fs-4 stat-hero-number"
+                                style="color: #E85D04;">{{ $totalTools }}+</span>
                             <span class="d-block stat-hero-label">Alat Terdaftar</span>
-                        </div>
-                        <div>
-                            <span class="fw-bold fs-4 stat-hero-number">50+</span>
-                            <span class="d-block stat-hero-label">User Aktif</span>
-                        </div>
+                        </a>
+                        <a href="{{ route('catalog') }}" class="text-decoration-none" style="transition: 0.3s;"
+                            onmouseover="this.style.transform='translateY(-5px)'"
+                            onmouseout="this.style.transform='translateY(0)'">
+                            <span class="fw-bold fs-4 stat-hero-number"
+                                style="color: #E85D04;">{{ $totalUsers }}+</span>
+                            <span class="d-block stat-hero-label">Pengguna Aktif</span>
+                        </a>
                         <div>
                             <span class="fw-bold fs-4 stat-hero-number">95%</span>
                             <span class="d-block stat-hero-label">Kepuasan</span>
@@ -1078,8 +1086,8 @@
 
                         <!-- Gambar Utama di Tengah -->
                         <div class="main-image">
-                            <img src="{{ asset('images/hero-tools.png') }}" alt="Eskalaber Tools"
-                                onerror="this.src='https://placehold.co/300x300/FFF3E8/E85D04?text=Eskalaber+Tools'">
+                            <img src="{{ $logoSetting->imageUrl() }}" alt="{{ $logoSetting->titleText() }}"
+                                onerror="this.src='https://placehold.co/300x300/FFF3E8/E85D04?text=Eskalaber+Alat'">
                         </div>
                     </div>
                 </div>
@@ -1089,24 +1097,32 @@
     <!-- ========================================== -->
     <!-- STATS -->
     <!-- ========================================== -->
-    <section class="stats-section">
+    <!-- BAGIAN STATISTIK BAWAH -->
+    <section class="py-5 bg-white">
         <div class="container">
             <div class="row text-center">
-                <div class="col-6 col-lg-3 stat-item">
-                    <div class="stat-number"><span>100+</span></div>
-                    <div class="stat-label">Total Alat</div>
+                <!-- Kotak 1: Total Alat -->
+                <div class="col-md-3 col-6 mb-4">
+                    <h1 class="fw-bold" style="color: #E85D04;">{{ $totalTools }}+</h1>
+                    <p class="text-muted fw-bold">Total Alat</p>
                 </div>
-                <div class="col-6 col-lg-3 stat-item">
-                    <div class="stat-number"><span>50+</span></div>
-                    <div class="stat-label">User Aktif</div>
+
+                <!-- Kotak 2: Pengguna Aktif -->
+                <div class="col-md-3 col-6 mb-4">
+                    <h1 class="fw-bold" style="color: #E85D04;">{{ $totalUsers }}+</h1>
+                    <p class="text-muted fw-bold">Pengguna Aktif</p>
                 </div>
-                <div class="col-6 col-lg-3 stat-item">
-                    <div class="stat-number"><span>300+</span></div>
-                    <div class="stat-label">Transaksi</div>
+
+                <!-- Kotak 3: Transaksi -->
+                <div class="col-md-3 col-6 mb-4">
+                    <h1 class="fw-bold" style="color: #E85D04;">{{ $totalTransactions }}+</h1>
+                    <p class="text-muted fw-bold">Transaksi</p>
                 </div>
-                <div class="col-6 col-lg-3 stat-item">
-                    <div class="stat-number"><span>95%</span></div>
-                    <div class="stat-label">Kepuasan</div>
+
+                <!-- Kotak 4: Kepuasan -->
+                <div class="col-md-3 col-6 mb-4">
+                    <h1 class="fw-bold" style="color: #E85D04;">95%</h1>
+                    <p class="text-muted fw-bold">Kepuasan</p>
                 </div>
             </div>
         </div>
@@ -1127,8 +1143,8 @@
                 <div class="col-md-4">
                     <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
-                        <h5 class="feature-title">QR Code Generator</h5>
-                        <p class="feature-desc">Generate QR Code untuk setiap alat, memudahkan tracking dan
+                        <h5 class="feature-title">Generator Kode QR</h5>
+                        <p class="feature-desc">Buat Kode QR untuk setiap alat, memudahkan tracking dan
                             identifikasi.</p>
                     </div>
                 </div>
@@ -1143,30 +1159,32 @@
                 <div class="col-md-4">
                     <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-money-bill-wave"></i></div>
-                        <h5 class="feature-title">Denda Otomatis</h5>
-                        <p class="feature-desc">Sistem denda otomatis untuk peminjaman yang melewati batas waktu.</p>
+                        <h5 class="feature-title">Pembayaran Otomatis</h5>
+                        <p class="feature-desc">Sistem pembayaran otomatis untuk peminjaman yang melewati batas waktu.
+                        </p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
-                        <h5 class="feature-title">Dashboard & Laporan</h5>
+                        <h5 class="feature-title">Dasbor & Laporan</h5>
                         <p class="feature-desc">Lihat statistik dan laporan lengkap tentang alat dan peminjaman.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-users-cog"></i></div>
-                        <h5 class="feature-title">Multi-Role Access</h5>
-                        <p class="feature-desc">Akses terpisah untuk Admin, Toolsman, dan User dengan hak akses berbeda.
+                        <h5 class="feature-title">Akses Multi-Peran</h5>
+                        <p class="feature-desc">Akses terpisah untuk Admin, Petugas Alat, dan Pengguna dengan hak akses
+                            berbeda.
                         </p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-file-export"></i></div>
-                        <h5 class="feature-title">Export Data</h5>
-                        <p class="feature-desc">Export data peminjaman dan denda ke format CSV untuk analisis lebih
+                        <h5 class="feature-title">Ekspor Data</h5>
+                        <p class="feature-desc">Ekspor data peminjaman dan pembayaran ke format CSV untuk analisis lebih
                             lanjut.</p>
                     </div>
                 </div>
@@ -1190,7 +1208,7 @@
                         <div class="why-icon"><i class="fas fa-shield-alt"></i></div>
                         <div class="why-text">
                             <h5>Keamanan Data Terjamin</h5>
-                            <p>Data Anda aman dengan sistem keamanan terbaik dan role-based access control.</p>
+                            <p>Data Anda aman dengan sistem keamanan terbaik dan kontrol akses berbasis peran.</p>
                         </div>
                     </div>
                     <div class="why-item">
@@ -1210,7 +1228,7 @@
                 </div>
                 <div class="col-lg-6 text-center">
                     <img src="{{ asset('images/why-us.svg') }}" alt="Why Us" class="img-fluid"
-                        onerror="this.src='https://placehold.co/500x400/FFF3E8/E85D04?text=Kenapa+Eskalaber+Tools%3F'">
+                        onerror="this.src='https://placehold.co/500x400/FFF3E8/E85D04?text=Kenapa+Eskalaber+Alat%3F'">
                 </div>
             </div>
         </div>
@@ -1254,7 +1272,7 @@
                             <i class="fas fa-star"></i>
                         </div>
                         <p class="testimonial-text">
-                            "Fitur QR Code sangat berguna untuk tracking alat.
+                            "Fitur Kode QR sangat berguna untuk tracking alat.
                             Sekarang kami tahu persis posisi setiap alat."
                         </p>
                         <div class="testimonial-author">
@@ -1274,7 +1292,7 @@
                             <i class="fas fa-star"></i>
                         </div>
                         <p class="testimonial-text">
-                            "Sistem denda otomatis membuat pengembalian alat menjadi tepat waktu.
+                            "Sistem pembayaran otomatis membuat pengembalian alat menjadi tepat waktu.
                             Sangat direkomendasikan!"
                         </p>
                         <div class="testimonial-author">
@@ -1317,7 +1335,7 @@
                 <div class="col-lg-4">
                     <div class="footer-brand">
                         <i class="fas fa-tools me-2" style="color: var(--primary);"></i>
-                        Eskalaber<span>Tools</span>
+                        Eskalaber<span>Alat</span>
                     </div>
                     <p class="footer-text mt-3">
                         Sistem manajemen alat yang memudahkan Anda mengelola inventaris,
@@ -1360,7 +1378,7 @@
                 </div>
             </div>
             <div class="footer-bottom text-center">
-                <p class="mb-0">&copy; {{ date('Y') }} Eskalaber Tools Hub. All rights reserved.</p>
+                <p class="mb-0">&copy; {{ date('Y') }} Eskalaber Tools Hub. Seluruh hak dilindungi.</p>
             </div>
         </div>
     </footer>

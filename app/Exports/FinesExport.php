@@ -33,14 +33,14 @@ class FinesExport implements FromCollection, WithHeadings, WithMapping, WithStyl
     {
         return [
             'No',
-            'User',
-            'Loan ID',
-            'Amount',
-            'Description',
-            'Late Days',
+            'Pengguna',
+            'ID Pinjaman',
+            'Jumlah',
+            'Deskripsi',
+            'Hari Keterlambatan',
             'Status',
-            'Payment Date',
-            'Payment Method',
+            'Tanggal Bayar',
+            'Metode Pembayaran',
         ];
     }
 
@@ -56,7 +56,7 @@ class FinesExport implements FromCollection, WithHeadings, WithMapping, WithStyl
             'Rp ' . number_format($fine->amount, 0, ',', '.'),
             $fine->description ?? '-',
             $fine->late_days . ' hari',
-            ucfirst($fine->status),
+            match($fine->status) { 'unpaid' => 'Belum Lunas', 'pending_verification' => 'Menunggu Verifikasi', 'paid' => 'Lunas', 'rejected' => 'Ditolak', default => $fine->status },
             $fine->payment_date ? $fine->payment_date->format('d-m-Y') : '-',
             $fine->payment_method ?? '-',
         ];

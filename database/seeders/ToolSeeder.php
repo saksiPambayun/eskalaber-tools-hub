@@ -5,27 +5,30 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Tool;
 use App\Models\Category;
-use App\Models\Type;
 use App\Models\Place;
 
 class ToolSeeder extends Seeder
 {
     public function run(): void
     {
-        // Ambil category, type, place yang sudah ada
+        // Ambil category dan place yang sudah ada
         $categories = Category::all();
-        $types = Type::all();
         $places = Place::all();
 
         // Jika belum ada, buat dummy
         if ($categories->isEmpty()) {
-            $categories = Category::factory()->count(3)->create();
-        }
-        if ($types->isEmpty()) {
-            $types = Type::factory()->count(3)->create();
+            $categories = collect([
+                Category::firstOrCreate(['name' => 'Kategori Umum']),
+                Category::firstOrCreate(['name' => 'Kategori Elektronik']),
+                Category::firstOrCreate(['name' => 'Kategori Mekanik']),
+            ]);
         }
         if ($places->isEmpty()) {
-            $places = Place::factory()->count(3)->create();
+            $places = collect([
+                Place::firstOrCreate(['name' => 'Gudang Utama']),
+                Place::firstOrCreate(['name' => 'Lab Utama']),
+                Place::firstOrCreate(['name' => 'Rak Alat']),
+            ]);
         }
 
         $tools = [
@@ -45,7 +48,6 @@ class ToolSeeder extends Seeder
                 'code' => $toolData['code'],
                 'description' => 'Alat ' . $toolData['name'],
                 'category_id' => $categories->random()->id,
-                'type_id' => $types->random()->id,
                 'place_id' => $places->random()->id,
                 'stock' => $toolData['stock'],
                 'status' => 'available',

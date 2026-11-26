@@ -53,7 +53,7 @@ class LoanController extends Controller
             return back()->with('error', collect($e->errors())->flatten()->first());
         }
 
-        return redirect()->route('admin.loans.index')->with('success', 'Status peminjaman berhasil diupdate!');
+        return redirect()->route('admin.loans.index')->with('success', 'Status peminjaman berhasil diperbarui!');
     }
 
     public function testReturn(Request $request, $id, LoanWorkflowService $workflow)
@@ -82,7 +82,7 @@ class LoanController extends Controller
         }
 
         if ($loan->fine) {
-            return back()->with('error', 'Peminjaman yang memiliki denda tidak bisa dihapus.');
+            return back()->with('error', 'Peminjaman yang memiliki pembayaran tidak bisa dihapus.');
         }
 
         $loan->delete();
@@ -115,7 +115,7 @@ class LoanController extends Controller
         $callback = function () use ($loans) {
             $file = fopen('php://output', 'w');
             fwrite($file, "\xEF\xBB\xBF");
-            fputcsv($file, ['No', 'User', 'Tool', 'Loan Date', 'Return Date', 'Actual Return Date', 'Status', 'Notes']);
+            fputcsv($file, ['No', 'Pengguna', 'Alat', 'Tanggal Pinjam', 'Tanggal Kembali', 'Tanggal Kembali Aktual', 'Status', 'Catatan']);
 
             foreach ($loans as $index => $loan) {
                 fputcsv($file, [
@@ -125,7 +125,7 @@ class LoanController extends Controller
                     $loan->loan_date ? $loan->loan_date->format('d-m-Y') : '-',
                     $loan->return_date ? $loan->return_date->format('d-m-Y') : '-',
                     $loan->actual_return_date ? $loan->actual_return_date->format('d-m-Y') : '-',
-                    $loan->status,
+                    match($loan->status) { 'pending' => 'Menunggu', 'approved' => 'Disetujui', 'borrowed' => 'Dipinjam', 'returned' => 'Dikembalikan', 'cancelled' => 'Dibatalkan', 'rejected' => 'Ditolak', default => $loan->status },
                     $loan->notes ?? '-',
                 ]);
             }

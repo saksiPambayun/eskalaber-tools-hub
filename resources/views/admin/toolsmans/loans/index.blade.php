@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Toolsman - Loans')
-@section('page-title', 'Loan Management')
+@section('title', 'Petugas Alat - Peminjaman')
+@section('page-title', 'Manajemen Peminjaman')
 
 @section('content')
     <div class="card">
@@ -20,10 +20,10 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>User</th>
-                        <th>Tool</th>
-                        <th>Loan Date</th>
-                        <th>Return Date</th>
+                        <th>Pengguna</th>
+                        <th>Alat</th>
+                        <th>Tanggal Pinjam</th>
+                        <th>Tanggal Kembali</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -39,7 +39,7 @@
                             <td>
                                 <span
                                     class="badge bg-{{ $item->status == 'pending' ? 'warning' : ($item->status == 'approved' ? 'primary' : ($item->status == 'borrowed' ? 'info' : ($item->status == 'returned' ? 'success' : 'danger'))) }}">
-                                    {{ ucfirst($item->status) }}
+                                    {{ match($item->status) { 'pending' => 'Menunggu', 'approved' => 'Disetujui', 'borrowed' => 'Dipinjam', 'returned' => 'Dikembalikan', 'cancelled' => 'Dibatalkan', 'rejected' => 'Ditolak', default => ucfirst($item->status) } }}
                                 </span>
                             </td>
                             <td>

@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Categories')
-@section('page-title', 'Categories Management')
+@section('title', 'Kategori')
+@section('page-title', 'Manajemen Kategori')
 
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Daftar Categories</h3>
+            <h3 class="card-title">Daftar Kategori</h3>
             <div class="card-tools">
                 <a href="{{ route('admin.categories.add') }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus"></i> Tambah Category
+                    <i class="fas fa-plus"></i> Tambah Kategori
                 </a>
             </div>
         </div>
@@ -22,8 +22,8 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Category</th>
-                        <th>Created At</th>
+                        <th>Nama Kategori</th>
+                        <th>Dibuat Pada</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>

@@ -41,16 +41,16 @@ class LoanController extends Controller
 
         $tool = Tool::findOrFail($request->tool_id);
         if ($tool->stock <= 0 || $tool->status !== 'available') {
-            return back()->withInput()->with('error', 'Stock tool tidak mencukupi atau tool tidak tersedia!');
+            return back()->withInput()->with('error', 'Stok alat tidak mencukupi atau alat tidak tersedia!');
         }
 
         // User boleh pinjam lagi (alat sama/berbeda, tidak dibatasi jumlahnya).
-        // Yang membatasi hanya stok alat dan denda unpaid/rejected.
+        // Yang membatasi hanya stok alat dan pembayaran belum lunas/ditolak.
         $blockingFine = Fine::where('user_id', auth()->id())
             ->whereIn('status', ['unpaid', 'rejected'])
             ->exists();
         if ($blockingFine) {
-            return back()->withInput()->with('error', 'Selesaikan denda unpaid/rejected terlebih dahulu sebelum mengajukan pinjaman baru.');
+            return back()->withInput()->with('error', 'Selesaikan pembayaran belum lunas/ditolak terlebih dahulu sebelum mengajukan pinjaman baru.');
         }
 
         $loan = Loan::create([

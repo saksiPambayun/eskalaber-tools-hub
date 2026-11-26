@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Sign Up - Eskalaber Tools Hub</title>
+    <title>Daftar - Eskalaber Tools Hub</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -225,7 +225,7 @@
     <div class="register-container">
         <!-- Header -->
         <div class="register-header">
-            <h2>Sign Up</h2>
+            <h2>Daftar</h2>
             <p>For Your Account</p>
         </div>
 
@@ -246,7 +246,7 @@
 
                 <div class="input-group-custom">
                     <i class="fas fa-user icon"></i>
-                    <input type="text" name="name" placeholder="Username"
+                    <input type="text" name="name" placeholder="Nama Pengguna"
                            value="{{ old('name') }}" required autofocus>
                 </div>
 
@@ -263,11 +263,11 @@
 
                 <div class="input-group-custom">
                     <i class="fas fa-lock icon"></i>
-                    <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" required>
+                    <input type="password" name="password_confirmation" placeholder="Konfirmasi Kata Sandi" required>
                 </div>
 
                 <button type="submit" class="btn-register">
-                    <i class="fas fa-user-plus me-2"></i> Sign Up
+                    <i class="fas fa-user-plus me-2"></i> Daftar
                 </button>
             </form>
         </div>
@@ -291,8 +291,8 @@
 
         <!-- Footer -->
         <div class="register-footer">
-            <p>Sudah punya akun? <a href="{{ route('login') }}">Login Sekarang</a></p>
-            <p class="mt-2"><a href="/" style="color: #888; font-size: 13px;"><i class="fas fa-arrow-left me-1"></i> Kembali ke Landing Page</a></p>
+            <p>Sudah punya akun? <a href="{{ route('login') }}">Masuk Sekarang</a></p>
+            <p class="mt-2"><a href="/" style="color: #888; font-size: 13px;"><i class="fas fa-arrow-left me-1"></i> Kembali ke Halaman Utama</a></p>
         </div>
     </div>
 

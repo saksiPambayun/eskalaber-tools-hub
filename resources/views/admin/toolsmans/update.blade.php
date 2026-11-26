@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Update Toolsman')
-@section('page-title', 'Update Toolsman')
+@section('title', 'Ubah Petugas Alat')
+@section('page-title', 'Ubah Petugas Alat')
 
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Form Update Toolsman</h5>
+                <h5 class="card-title">Form Ubah Petugas Alat</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('admin.toolsmans.doUpdate', $user->id) }}" method="POST">
@@ -33,10 +33,10 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="department_id" class="form-label">Department <span class="text-danger">*</span></label>
+                        <label for="department_id" class="form-label">Departemen <span class="text-danger">*</span></label>
                         <select class="form-control @error('department_id') is-invalid @enderror"
                                 id="department_id" name="department_id" required>
-                            <option value="">Pilih Department</option>
+                            <option value="">Pilih Departemen</option>
                             @foreach($departments as $dept)
                                 <option value="{{ $dept->id }}" {{ old('department_id', $user->department_id) == $dept->id ? 'selected' : '' }}>
                                     {{ $dept->name }}
@@ -60,7 +60,7 @@
 
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-2"></i> Update
+                            <i class="fas fa-save me-2"></i> Ubah
                         </button>
                         <a href="{{ route('admin.toolsmans.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left me-2"></i> Kembali

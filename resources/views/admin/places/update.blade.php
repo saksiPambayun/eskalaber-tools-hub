@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Update Place')
-@section('page-title', 'Update Place')
+@section('title', 'Ubah Lokasi')
+@section('page-title', 'Ubah Lokasi')
 
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Form Update Place</h5>
+                    <h5 class="card-title">Form Ubah Lokasi</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.places.doUpdate', $place->id) }}" method="POST">
                         @csrf
 
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nama Place <span class="text-danger">*</span></label>
+                            <label for="name" class="form-label">Nama Lokasi <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
                                 name="name" value="{{ old('name', $place->name) }}" required>
                             @error('name')
@@ -25,7 +25,7 @@
 
                         <div class="mt-3">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i> Update
+                                <i class="fas fa-save me-2"></i> Ubah
                             </button>
                             <a href="{{ route('admin.places.index') }}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-2"></i> Kembali

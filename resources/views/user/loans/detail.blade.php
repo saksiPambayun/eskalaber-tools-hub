@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Loan')
+@section('title', 'Detail Pinjaman')
 @section('page-title', 'Detail Peminjaman')
 
 @section('content')
@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <table class="table table-bordered">
                         <tr>
-                            <th style="width: 200px;">Tool</th>
+                            <th style="width: 200px;">Alat</th>
                             <td>{{ $loan->tool->name }}</td>
                         </tr>
                         <tr>
@@ -36,7 +36,7 @@
                                         default => 'secondary',
                                     };
                                 @endphp
-                                <span class="badge bg-{{ $badge }}">{{ ucfirst($loan->status) }}</span>
+                                <span class="badge bg-{{ $badge }}">{{ match($loan->status) { 'pending' => 'Menunggu', 'approved' => 'Disetujui', 'borrowed' => 'Dipinjam', 'returned' => 'Dikembalikan', 'cancelled' => 'Dibatalkan', 'rejected' => 'Ditolak', default => ucfirst($loan->status) } }}</span>
                             </td>
                         </tr>
                         <tr>

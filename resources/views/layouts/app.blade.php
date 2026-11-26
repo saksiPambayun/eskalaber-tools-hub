@@ -79,7 +79,7 @@
             font-weight: 700;
         }
 
-        /* User Panel */
+        /* Pengguna Panel */
         .user-panel {
             border-bottom: 1px solid rgba(232, 93, 4, 0.2) !important;
         }
@@ -495,13 +495,13 @@
                     </a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ url('/') }}" class="nav-link">Home</a>
+                    <a href="{{ url('/') }}" class="nav-link">Beranda</a>
                 </li>
             </ul>
 
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#" id="darkModeToggle" role="button" title="Toggle Dark Mode">
+                    <a class="nav-link" href="#" id="darkModeToggle" role="button" title="Ubah Mode Gelap">
                         <i class="fas fa-moon" id="darkModeIcon"></i>
                     </a>
                 </li>
@@ -521,13 +521,13 @@
                         </div>
                         <div id="notificationList">
                             <div class="text-center py-3 text-muted">
-                                <i class="fas fa-spinner fa-spin"></i> Loading...
+                                <i class="fas fa-spinner fa-spin"></i> Memuat...
                             </div>
                         </div>
                     </div>
                 </li>
 
-                <!-- Profile Dropdown -->
+                <!-- Profil Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
                         @if(auth()->user()->photo)
@@ -541,15 +541,15 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a href="{{ route('profile.index') }}" class="dropdown-item">
-                            <i class="fas fa-user"></i> My Profile
+                            <i class="fas fa-user"></i> Profil Saya
                         </a>
                         <a href="{{ route('profile.change_password') }}" class="dropdown-item">
-                            <i class="fas fa-key"></i> Change Password
+                            <i class="fas fa-key"></i> Ubah Kata Sandi
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-danger" href="#"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+                            <i class="fas fa-sign-out-alt"></i> Keluar
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
@@ -595,34 +595,34 @@
                                 <a href="{{ route('admin.dashboard') }}"
                                     class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>Dashboard</p>
+                                    <p>Dasbor</p>
                                 </a>
                             </li>
-                            <li class="nav-header">MANAGEMENT</li>
+                            <li class="nav-header">MANAJEMEN</li>
                             <li class="nav-item"><a href="{{ route('admin.users.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-users"></i>
-                                    <p>Users</p>
+                                    <p>Pengguna</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('admin.toolsmans.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.toolsmans.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-user-cog"></i>
-                                    <p>Toolsman</p>
+                                    <p>Petugas Alat</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('admin.loans.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.loans.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-hand-holding"></i>
-                                    <p>Loans</p>
+                                    <p>Pinjaman</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('admin.fines.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.fines.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-money-bill-wave"></i>
-                                    <p>Fines</p>
+                                    <p>Pembayaran</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('admin.activity_logs.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.activity_logs.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-history"></i>
-                                    <p>Activity Logs</p>
+                                    <p>Log Aktivitas</p>
                                 </a></li>
 
                             <li class="nav-item"><a href="{{ route('admin.payment-methods.index') }}"
@@ -633,7 +633,7 @@
                             <li class="nav-item"><a href="{{ route('admin.fine-setting.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.fine-setting.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-gavel"></i>
-                                    <p>Pengaturan Denda</p>
+                                    <p>Pengaturan Pembayaran</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('admin.logo-setting.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.logo-setting.*') ? 'active' : '' }}"><i
@@ -641,31 +641,26 @@
                                     <p>Pengaturan Logo</p>
                                 </a></li>
 
-                            <li class="nav-header">MASTER DATA</li>
+                            <li class="nav-header">DATA MASTER</li>
                             <li class="nav-item"><a href="{{ route('admin.departments.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.departments.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-building"></i>
-                                    <p>Departments</p>
+                                    <p>Departemen</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('admin.places.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.places.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-map-marker-alt"></i>
-                                    <p>Places</p>
-                                </a></li>
-                            <li class="nav-item"><a href="{{ route('admin.types.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.types.*') ? 'active' : '' }}"><i
-                                        class="nav-icon fas fa-tag"></i>
-                                    <p>Types</p>
+                                    <p>Lokasi</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('admin.categories.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-folder"></i>
-                                    <p>Categories</p>
+                                    <p>Kategori</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('admin.tools.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.tools.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-tools"></i>
-                                    <p>Tools</p>
+                                    <p>Alat</p>
                                 </a></li>
                         @endif
 
@@ -675,18 +670,18 @@
                                 <a href="{{ route('toolsman.dashboard') }}"
                                     class="nav-link {{ request()->routeIs('toolsman.dashboard') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>Dashboard</p>
+                                    <p>Dasbor</p>
                                 </a>
                             </li>
                             <li class="nav-item"><a href="{{ route('toolsman.loans.index') }}"
                                     class="nav-link {{ request()->routeIs('toolsman.loans.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-hand-holding"></i>
-                                    <p>Loans</p>
+                                    <p>Pinjaman</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('toolsman.fines.index') }}"
                                     class="nav-link {{ request()->routeIs('toolsman.fines.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-money-bill-wave"></i>
-                                    <p>Fines</p>
+                                    <p>Pembayaran</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('toolsman.payment-methods.index') }}"
                                     class="nav-link {{ request()->routeIs('toolsman.payment-methods.*') ? 'active' : '' }}"><i
@@ -696,7 +691,7 @@
                             <li class="nav-item"><a href="{{ route('toolsman.fine-setting.index') }}"
                                     class="nav-link {{ request()->routeIs('toolsman.fine-setting.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-gavel"></i>
-                                    <p>Pengaturan Denda</p>
+                                    <p>Pengaturan Pembayaran</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('toolsman.logo-setting.index') }}"
                                     class="nav-link {{ request()->routeIs('toolsman.logo-setting.*') ? 'active' : '' }}"><i
@@ -711,23 +706,23 @@
                                 <a href="{{ route('user.dashboard') }}"
                                     class="nav-link {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>Dashboard</p>
+                                    <p>Dasbor</p>
                                 </a>
                             </li>
                             <li class="nav-item"><a href="{{ route('user.tools.index') }}"
                                     class="nav-link {{ request()->routeIs('user.tools.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-tools"></i>
-                                    <p>Tools</p>
+                                    <p>Alat</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('user.loans.index') }}"
                                     class="nav-link {{ request()->routeIs('user.loans.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-hand-holding"></i>
-                                    <p>My Loans</p>
+                                    <p>Peminjaman Saya</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('user.fines.index') }}"
                                     class="nav-link {{ request()->routeIs('user.fines.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-money-bill-wave"></i>
-                                    <p>My Fines</p>
+                                    <p>Pembayaran Saya</p>
                                 </a></li>
                         @endif
 
@@ -742,7 +737,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">@yield('page-title', 'Dashboard')</h1>
+                            <h1 class="m-0">@yield('page-title', 'Dasbor')</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -763,9 +758,9 @@
         <!-- FOOTER -->
         <footer class="main-footer">
             <div class="float-right d-none d-sm-block">
-                <b>Version</b> 1.0
+                <b>Versi</b> 1.0
             </div>
-            <strong>&copy; {{ date('Y') }} Eskalaber Tools Hub.</strong> All rights reserved.
+            <strong>&copy; {{ date('Y') }} Eskalaber Tools Hub.</strong> Seluruh hak dilindungi.
         </footer>
     </div>
 

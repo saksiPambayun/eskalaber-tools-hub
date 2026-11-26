@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Loan Management')
-@section('page-title', 'Loan Management')
+@section('title', 'Manajemen Peminjaman')
+@section('page-title', 'Manajemen Peminjaman')
 
 @section('content')
     <div class="card">
@@ -10,23 +10,23 @@
             <div class="card-tools">
                 <div class="btn-group">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                        <i class="fas fa-file-excel"></i> Export
+                        <i class="fas fa-file-excel"></i> Ekspor
                     </button>
                     <div class="dropdown-menu">
                         <a href="{{ route('admin.loans.export-csv') }}" class="dropdown-item">
                             <i class="fas fa-file-csv"></i> Semua Data
                         </a>
                         <a href="{{ route('admin.loans.export-csv') }}?status=pending" class="dropdown-item">
-                            <i class="fas fa-file-csv"></i> Pending
+                            <i class="fas fa-file-csv"></i> Menunggu
                         </a>
                         <a href="{{ route('admin.loans.export-csv') }}?status=approved" class="dropdown-item">
-                            <i class="fas fa-file-csv"></i> Approved
+                            <i class="fas fa-file-csv"></i> Disetujui
                         </a>
                         <a href="{{ route('admin.loans.export-csv') }}?status=borrowed" class="dropdown-item">
-                            <i class="fas fa-file-csv"></i> Borrowed
+                            <i class="fas fa-file-csv"></i> Dipinjam
                         </a>
                         <a href="{{ route('admin.loans.export-csv') }}?status=returned" class="dropdown-item">
-                            <i class="fas fa-file-csv"></i> Returned
+                            <i class="fas fa-file-csv"></i> Dikembalikan
                         </a>
                     </div>
                 </div>
@@ -52,27 +52,27 @@
                     <div class="btn-group" role="group">
                         <a href="{{ route('admin.loans.index', ['status' => 'all']) }}"
                             class="btn btn-sm {{ $status == 'all' ? 'btn-primary' : 'btn-outline-primary' }}">
-                            <i class="fas fa-list"></i> All
+                            <i class="fas fa-list"></i> Semua
                         </a>
                         <a href="{{ route('admin.loans.index', ['status' => 'pending']) }}"
                             class="btn btn-sm {{ $status == 'pending' ? 'btn-warning' : 'btn-outline-warning' }}">
-                            <i class="fas fa-clock"></i> Pending
+                            <i class="fas fa-clock"></i> Menunggu
                         </a>
                         <a href="{{ route('admin.loans.index', ['status' => 'approved']) }}"
                             class="btn btn-sm {{ $status == 'approved' ? 'btn-primary' : 'btn-outline-primary' }}">
-                            <i class="fas fa-check"></i> Approved
+                            <i class="fas fa-check"></i> Disetujui
                         </a>
                         <a href="{{ route('admin.loans.index', ['status' => 'cancelled']) }}"
                             class="btn btn-sm {{ $status == 'cancelled' ? 'btn-secondary' : 'btn-outline-secondary' }}">
-                            <i class="fas fa-ban"></i> Cancelled
+                            <i class="fas fa-ban"></i> Dibatalkan
                         </a>
                         <a href="{{ route('admin.loans.index', ['status' => 'returned']) }}"
                             class="btn btn-sm {{ $status == 'returned' ? 'btn-success' : 'btn-outline-success' }}">
-                            <i class="fas fa-undo"></i> Returned
+                            <i class="fas fa-undo"></i> Dikembalikan
                         </a>
                         <a href="{{ route('admin.loans.index', ['status' => 'rejected']) }}"
                             class="btn btn-sm {{ $status == 'rejected' ? 'btn-danger' : 'btn-outline-danger' }}">
-                            <i class="fas fa-times"></i> Rejected
+                            <i class="fas fa-times"></i> Ditolak
                         </a>
                     </div>
                 </div>
@@ -87,10 +87,10 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>User</th>
-                            <th>Tool</th>
-                            <th>Loan Date</th>
-                            <th>Return Date</th>
+                            <th>Pengguna</th>
+                            <th>Alat</th>
+                            <th>Tanggal Pinjam</th>
+                            <th>Tanggal Kembali</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -113,7 +113,7 @@
                                             default => 'secondary',
                                         };
                                     @endphp
-                                    <span class="badge bg-{{ $badge }}">{{ ucfirst($loan->status) }}</span>
+                                    <span class="badge bg-{{ $badge }}">{{ match($loan->status) { 'pending' => 'Menunggu', 'approved' => 'Disetujui', 'borrowed' => 'Dipinjam', 'returned' => 'Dikembalikan', 'cancelled' => 'Dibatalkan', 'rejected' => 'Ditolak', default => ucfirst($loan->status) } }}</span>
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.loans.detail', $loan->id) }}" class="btn btn-info btn-sm">

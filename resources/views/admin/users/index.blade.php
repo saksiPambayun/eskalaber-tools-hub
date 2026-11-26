@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Users Management')
-@section('page-title', 'Users Management')
+@section('title', 'Manajemen Pengguna')
+@section('page-title', 'Manajemen Pengguna')
 
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Daftar Users</h3>
+            <h3 class="card-title">Daftar Pengguna</h3>
             <div class="card-tools">
                 <a href="{{ route('admin.users.add') }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus"></i> Tambah User
+                    <i class="fas fa-plus"></i> Tambah Pengguna
                 </a>
             </div>
         </div>
@@ -29,8 +29,8 @@
                             <th>No</th>
                             <th>Nama</th>
                             <th>Email</th>
-                            <th>Department</th>
-                            <th>Phone</th>
+                            <th>Departemen</th>
+                            <th>Telepon</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>

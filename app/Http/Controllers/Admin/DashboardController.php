@@ -14,7 +14,8 @@ class DashboardController extends Controller
     public function index()
     {
         $data = [
-            'totalUsers' => User::count(),
+            // Perbaikan: pakai koma (,) bukan titik koma (;)
+            'totalUsers' => User::where('role', 'USER')->count(),
             'totalTools' => Tool::count(),
             'totalLoans' => Loan::count(),
             'totalFines' => Fine::where('status', 'unpaid')->sum('amount'),

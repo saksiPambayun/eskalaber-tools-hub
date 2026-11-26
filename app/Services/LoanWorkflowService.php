@@ -44,7 +44,7 @@ class LoanWorkflowService
                 route('user.loans.detail', $loan->id)
             );
 
-            ActivityHelper::log('approve_loan', 'Menyetujui peminjaman #' . $loan->id . ' oleh ' . ($loan->user->name ?? 'User'));
+            ActivityHelper::log('approve_loan', 'Menyetujui peminjaman #' . $loan->id . ' oleh ' . ($loan->user->name ?? 'Pengguna'));
 
             return $loan->fresh(['user', 'tool', 'fine']);
         });
@@ -69,7 +69,7 @@ class LoanWorkflowService
                 route('user.loans.detail', $loan->id)
             );
 
-            ActivityHelper::log('reject_loan', 'Menolak peminjaman #' . $loan->id . ' oleh ' . ($loan->user->name ?? 'User'));
+            ActivityHelper::log('reject_loan', 'Menolak peminjaman #' . $loan->id . ' oleh ' . ($loan->user->name ?? 'Pengguna'));
 
             return $loan->fresh(['user', 'tool', 'fine']);
         });
@@ -129,7 +129,7 @@ class LoanWorkflowService
                     'loan_id' => $loan->id,
                     'user_id' => $loan->user_id,
                     'amount' => $fineAmount,
-                    'description' => 'Denda keterlambatan ' . $lateDays . ' hari (Rp ' . number_format($ratePerDay, 0, ',', '.') . '/hari)',
+                    'description' => 'Pembayaran keterlambatan ' . $lateDays . ' hari (Rp ' . number_format($ratePerDay, 0, ',', '.') . '/hari)',
                     'late_days' => $lateDays,
                     'status' => 'unpaid',
                 ]);
@@ -137,16 +137,16 @@ class LoanWorkflowService
 
                 Notification::send(
                     $loan->user_id,
-                    'Denda Keterlambatan',
-                    'Anda mendapat denda Rp ' . number_format($fineAmount, 0, ',', '.') . ' karena terlambat mengembalikan alat. Silakan unggah bukti pembayaran.',
+                    'Pembayaran Keterlambatan',
+                    'Anda mendapat pembayaran Rp ' . number_format($fineAmount, 0, ',', '.') . ' karena terlambat mengembalikan alat. Silakan unggah bukti pembayaran.',
                     'warning',
                     route('user.fines.index')
                 );
             }
 
-            $logMessage = 'Mengembalikan alat ' . ($loan->tool->name ?? 'Tool') . ' dari peminjaman #' . $loan->id;
+            $logMessage = 'Mengembalikan alat ' . ($loan->tool->name ?? 'Alat') . ' dari peminjaman #' . $loan->id;
             if ($fineCreated) {
-                $logMessage .= ' (Denda Rp ' . number_format($fineAmount, 0, ',', '.') . ' dibuat)';
+                $logMessage .= ' (Pembayaran Rp ' . number_format($fineAmount, 0, ',', '.') . ' dibuat)';
             }
             ActivityHelper::log('return_loan', $logMessage);
 

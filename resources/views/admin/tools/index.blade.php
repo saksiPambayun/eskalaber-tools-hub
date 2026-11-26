@@ -1,15 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Tools')
-@section('page-title', 'Tools Management')
+@section('title', 'Alat')
+@section('page-title', 'Manajemen Alat')
 
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Daftar Tools</h3>
+            <h3 class="card-title">Daftar Alat</h3>
             <div class="card-tools">
+                <!-- TOMBOL EXPORT CSV -->
+                <a href="{{ route('admin.tools.export-csv') }}" class="btn btn-success btn-sm mr-2">
+                    <i class="fas fa-file-excel"></i> Ekspor Excel
+                </a>
+                <!-- TOMBOL TAMBAH TOOL -->
                 <a href="{{ route('admin.tools.add') }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus"></i> Tambah Tool
+                    <i class="fas fa-plus"></i> Tambah Alat
                 </a>
             </div>
         </div>
@@ -26,11 +31,11 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Image</th>
+                            <th>Gambar</th>
                             <th>Kode</th>
                             <th>Nama</th>
-                            <th>Category</th>
-                            <th>Stock</th>
+                            <th>Kategori</th>
+                            <th>Stok</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -54,7 +59,7 @@
                                 <td>
                                     <span
                                         class="badge bg-{{ $tool->status == 'available' ? 'success' : ($tool->status == 'borrowed' ? 'warning' : 'danger') }}">
-                                        {{ ucfirst($tool->status) }}
+                                        {{ match($tool->status) { 'available' => 'Tersedia', 'borrowed' => 'Dipinjam', 'broken' => 'Rusak', 'maintenance' => 'Perawatan', default => ucfirst($tool->status) } }}
                                     </span>
                                 </td>
                                 <td>

@@ -9,7 +9,6 @@ use App\Models\Loan;
 use App\Models\PaymentMethod;
 use App\Models\Place;
 use App\Models\Tool;
-use App\Models\Type;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -278,14 +277,12 @@ class LoanFinePaymentFlowTest extends TestCase
     private function makeTool(array $attrs = []): Tool
     {
         $category = Category::create(['name' => 'Cat ' . uniqid()]);
-        $type = Type::create(['name' => 'Type ' . uniqid()]);
         $place = Place::create(['name' => 'Place ' . uniqid()]);
 
         return Tool::create(array_merge([
             'name' => 'Tool ' . uniqid(),
             'code' => 'T-' . uniqid(),
             'category_id' => $category->id,
-            'type_id' => $type->id,
             'place_id' => $place->id,
             'stock' => 2,
             'status' => 'available',

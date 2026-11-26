@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Loan')
+@section('title', 'Detail Pinjaman')
 @section('page-title', 'Detail Peminjaman')
 
 @section('content')
@@ -17,11 +17,11 @@
                     <div class="alert alert-danger">{{ session('error') }}</div>@endif
                     <table class="table table-bordered">
                         <tr>
-                            <th style="width: 200px;">User</th>
+                            <th style="width: 200px;">Pengguna</th>
                             <td>{{ $loan->user->name ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Tool</th>
+                            <th>Alat</th>
                             <td>{{ $loan->tool->name ?? '-' }}</td>
                         </tr>
                         <tr>
@@ -37,7 +37,7 @@
                             <td>
                                 <span
                                     class="badge bg-{{ $loan->status == 'pending' ? 'warning' : ($loan->status == 'approved' ? 'primary' : ($loan->status == 'borrowed' ? 'info' : ($loan->status == 'returned' ? 'success' : 'danger'))) }}">
-                                    {{ ucfirst($loan->status) }}
+                                    {{ match($loan->status) { 'pending' => 'Menunggu', 'approved' => 'Disetujui', 'borrowed' => 'Dipinjam', 'returned' => 'Dikembalikan', 'cancelled' => 'Dibatalkan', 'rejected' => 'Ditolak', default => ucfirst($loan->status) } }}
                                 </span>
                             </td>
                         </tr>
@@ -52,13 +52,13 @@
                             <form action="{{ route('toolsman.loans.approve', $loan->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-check me-2"></i> Approve
+                                    <i class="fas fa-check me-2"></i> Setujui
                                 </button>
                             </form>
                             <form action="{{ route('toolsman.loans.reject', $loan->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-times me-2"></i> Reject
+                                    <i class="fas fa-times me-2"></i> Tolak
                                 </button>
                             </form>
                         @endif
@@ -68,7 +68,7 @@
                                 @csrf
                                 <button type="submit" class="btn btn-warning"
                                     onclick="return confirm('Yakin alat sudah dikembalikan?')">
-                                    <i class="fas fa-undo me-2"></i> Returned
+                                    <i class="fas fa-undo me-2"></i> Dikembalikan
                                 </button>
                             </form>
 
@@ -82,8 +82,8 @@
                                             required>
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-danger"
-                                                onclick="return confirm('Anda yakin mendenda user ini?.')">
-                                                Denda
+                                                onclick="return confirm('Anda yakin membuat pembayaran untuk pengguna ini?')">
+                                                Pembayaran
                                             </button>
                                         </div>
                                     </div>

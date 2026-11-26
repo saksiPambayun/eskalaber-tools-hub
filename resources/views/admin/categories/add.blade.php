@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Add Category')
-@section('page-title', 'Tambah Category')
+@section('title', 'Tambah Kategori')
+@section('page-title', 'Tambah Kategori')
 
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Form Tambah Category</h5>
+                    <h5 class="card-title">Form Tambah Kategori</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.categories.create') }}" method="POST">
                         @csrf
 
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nama Category <span class="text-danger">*</span></label>
+                            <label for="name" class="form-label">Nama Kategori <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
                                 name="name" value="{{ old('name') }}" maxlength="255" required>
                             @error('name')

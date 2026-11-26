@@ -7,25 +7,25 @@
     <li class="nav-item">
         <a href="{{ route('user.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('user.tools.index') }}" class="nav-link">
             <i class="nav-icon fas fa-tools"></i>
-            <p>Tools</p>
+            <p>Alat</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('user.loans.index') }}" class="nav-link active">
             <i class="nav-icon fas fa-hand-holding"></i>
-            <p>My Loans</p>
+            <p>Peminjaman Saya</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('user.fines.index') }}" class="nav-link">
             <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>My Fines</p>
+            <p>Pembayaran Saya</p>
         </a>
     </li>
 @endsection
@@ -52,7 +52,7 @@
                                 <option value="">Pilih Alat</option>
                                 @foreach($tools as $tool)
                                     <option value="{{ $tool->id }}" {{ request('tool_id') == $tool->id ? 'selected' : '' }} {{ old('tool_id') == $tool->id ? 'selected' : '' }}>
-                                        {{ $tool->name }} (Stock: {{ $tool->stock }})
+                                        {{ $tool->name }} (Stok: {{ $tool->stock }})
                                     </option>
                                 @endforeach
                             </select>

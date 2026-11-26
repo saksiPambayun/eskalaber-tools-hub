@@ -1,25 +1,25 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Loan')
+@section('title', 'Detail Pinjaman')
 @section('page-title', 'Detail Peminjaman')
 
 @section('sidebar')
     <li class="nav-item">
         <a href="{{ route('toolsman.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('toolsman.loans.index') }}" class="nav-link">
             <i class="nav-icon fas fa-hand-holding"></i>
-            <p>Loans</p>
+            <p>Pinjaman</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('toolsman.fines.index') }}" class="nav-link">
             <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>Fines</p>
+            <p>Pembayaran</p>
         </a>
     </li>
 @endsection
@@ -34,11 +34,11 @@
                 <div class="card-body">
                     <table class="table table-bordered">
                         <tr>
-                            <th style="width: 200px;">User</th>
+                            <th style="width: 200px;">Pengguna</th>
                             <td>{{ $loan->user->name ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Tool</th>
+                            <th>Alat</th>
                             <td>{{ $loan->tool->name ?? '-' }}</td>
                         </tr>
                         <tr>
@@ -58,7 +58,7 @@
                             <td>
                                 <span
                                     class="badge bg-{{ $loan->status == 'pending' ? 'warning' : ($loan->status == 'approved' ? 'primary' : ($loan->status == 'borrowed' ? 'info' : ($loan->status == 'returned' ? 'success' : 'danger'))) }}">
-                                    {{ ucfirst($loan->status) }}
+                                    {{ match($loan->status) { 'pending' => 'Menunggu', 'approved' => 'Disetujui', 'borrowed' => 'Dipinjam', 'returned' => 'Dikembalikan', 'cancelled' => 'Dibatalkan', 'rejected' => 'Ditolak', default => ucfirst($loan->status) } }}
                                 </span>
                             </td>
                         </tr>
@@ -73,13 +73,13 @@
                             <form action="{{ route('toolsman.loans.approve', $loan->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-check me-2"></i> Approve
+                                    <i class="fas fa-check me-2"></i> Setujui
                                 </button>
                             </form>
                             <form action="{{ route('toolsman.loans.reject', $loan->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-times me-2"></i> Reject
+                                    <i class="fas fa-times me-2"></i> Tolak
                                 </button>
                             </form>
                         @endif
@@ -89,7 +89,7 @@
                                 @csrf
                                 <button type="submit" class="btn btn-warning"
                                     onclick="return confirm('Yakin alat sudah dikembalikan?')">
-                                    <i class="fas fa-undo me-2"></i> Returned
+                                    <i class="fas fa-undo me-2"></i> Dikembalikan
                                 </button>
                             </form>
                         @endif

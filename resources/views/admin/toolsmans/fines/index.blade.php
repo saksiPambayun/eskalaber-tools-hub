@@ -1,27 +1,27 @@
 @extends('layouts.app')
 
-@section('title', 'Fine Management')
-@section('page-title', 'Fine Management')
+@section('title', 'Manajemen Pembayaran')
+@section('page-title', 'Manajemen Pembayaran')
 
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Daftar Denda</h3>
+            <h3 class="card-title">Daftar Pembayaran</h3>
             <div class="card-tools">
-                <!-- Tombol Export -->
+                <!-- Tombol Ekspor -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                        <i class="fas fa-file-excel"></i> Export
+                        <i class="fas fa-file-excel"></i> Ekspor
                     </button>
                     <div class="dropdown-menu">
                         <a href="{{ route('admin.fines.export-csv') }}" class="dropdown-item">
                             <i class="fas fa-file-csv"></i> Semua Data
                         </a>
                         <a href="{{ route('admin.fines.export-csv') }}?status=unpaid" class="dropdown-item">
-                            <i class="fas fa-file-csv"></i> Unpaid
+                            <i class="fas fa-file-csv"></i> Belum Lunas
                         </a>
                         <a href="{{ route('admin.fines.export-csv') }}?status=paid" class="dropdown-item">
-                            <i class="fas fa-file-csv"></i> Paid
+                            <i class="fas fa-file-csv"></i> Lunas
                         </a>
                     </div>
                 </div>
@@ -41,15 +41,15 @@
                     <div class="btn-group" role="group">
                         <a href="{{ route('admin.fines.index', ['status' => 'all']) }}"
                             class="btn btn-sm {{ $status == 'all' ? 'btn-primary' : 'btn-outline-primary' }}">
-                            <i class="fas fa-list"></i> All
+                            <i class="fas fa-list"></i> Semua
                         </a>
                         <a href="{{ route('admin.fines.index', ['status' => 'unpaid']) }}"
                             class="btn btn-sm {{ $status == 'unpaid' ? 'btn-danger' : 'btn-outline-danger' }}">
-                            <i class="fas fa-clock"></i> Unpaid
+                            <i class="fas fa-clock"></i> Belum Lunas
                         </a>
                         <a href="{{ route('admin.fines.index', ['status' => 'paid']) }}"
                             class="btn btn-sm {{ $status == 'paid' ? 'btn-success' : 'btn-outline-success' }}">
-                            <i class="fas fa-check"></i> Paid
+                            <i class="fas fa-check"></i> Lunas
                         </a>
                     </div>
                 </div>
@@ -64,11 +64,11 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>User</th>
-                            <th>Loan</th>
-                            <th>Amount</th>
+                            <th>Pengguna</th>
+                            <th>Pinjaman</th>
+                            <th>Jumlah</th>
                             <th>Status</th>
-                            <th>Payment Date</th>
+                            <th>Tanggal Bayar</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -81,7 +81,7 @@
                                 <td>Rp {{ number_format($fine->amount, 0, ',', '.') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $fine->status == 'unpaid' ? 'danger' : 'success' }}">
-                                        {{ ucfirst($fine->status) }}
+                                        {{ match($fine->status) { 'unpaid' => 'Belum Lunas', 'pending_verification' => 'Menunggu Verifikasi', 'paid' => 'Lunas', 'rejected' => 'Ditolak', default => $fine->status } }}
                                     </span>
                                 </td>
                                 <td>{{ $fine->payment_date ? $fine->payment_date->format('d M Y') : '-' }}</td>
@@ -111,7 +111,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center">Belum ada data denda</td>
+                                <td colspan="7" class="text-center">Belum ada data pembayaran</td>
                             </tr>
                         @endforelse
                     </tbody>

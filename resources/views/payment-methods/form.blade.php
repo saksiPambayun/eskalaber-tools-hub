@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', $isEdit ? 'Edit Metode Pembayaran' : 'Tambah Metode Pembayaran')
-@section('page-title', $isEdit ? 'Edit Metode Pembayaran' : 'Tambah Metode Pembayaran')
+@section('title', $isEdit ? 'Ubah Metode Pembayaran' : 'Tambah Metode Pembayaran')
+@section('page-title', $isEdit ? 'Ubah Metode Pembayaran' : 'Tambah Metode Pembayaran')
 
 @if($panel === 'toolsman')
     @section('sidebar')
-        <li class="nav-item"><a href="/" class="nav-link" target="_blank"><i class="nav-icon fas fa-globe"></i><p>Landing Page</p></a></li>
-        <li class="nav-item"><a href="{{ route('toolsman.dashboard') }}" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>
-        <li class="nav-item"><a href="{{ route('toolsman.loans.index') }}" class="nav-link"><i class="nav-icon fas fa-hand-holding"></i><p>Loans</p></a></li>
-        <li class="nav-item"><a href="{{ route('toolsman.fines.index') }}" class="nav-link"><i class="nav-icon fas fa-money-bill-wave"></i><p>Fines</p></a></li>
+        <li class="nav-item"><a href="/" class="nav-link" target="_blank"><i class="nav-icon fas fa-globe"></i><p>Halaman Utama</p></a></li>
+        <li class="nav-item"><a href="{{ route('toolsman.dashboard') }}" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dasbor</p></a></li>
+        <li class="nav-item"><a href="{{ route('toolsman.loans.index') }}" class="nav-link"><i class="nav-icon fas fa-hand-holding"></i><p>Pinjaman</p></a></li>
+        <li class="nav-item"><a href="{{ route('toolsman.fines.index') }}" class="nav-link"><i class="nav-icon fas fa-money-bill-wave"></i><p>Pembayaran</p></a></li>
         <li class="nav-item"><a href="{{ route('toolsman.payment-methods.index') }}" class="nav-link active"><i class="nav-icon fas fa-credit-card"></i><p>Metode Pembayaran</p></a></li>
         <li class="nav-item"><a href="{{ route('toolsman.logo-setting.index') }}" class="nav-link"><i class="nav-icon fas fa-image"></i><p>Pengaturan Logo</p></a></li>
     @endsection
@@ -32,7 +32,7 @@
                 <div class="form-group mb-3">
                     <label>Tipe</label>
                     <select name="type" class="form-control @error('type') is-invalid @enderror" required>
-                        @foreach(['bank' => 'Bank', 'ewallet' => 'E-Wallet', 'qris' => 'QRIS', 'other' => 'Lainnya'] as $value => $label)
+                        @foreach(['bank' => 'Bank', 'ewallet' => 'Dompet Digital', 'qris' => 'QRIS', 'other' => 'Lainnya'] as $value => $label)
                             <option value="{{ $value }}" {{ old('type', $method->type) === $value ? 'selected' : '' }}>{{ $label }}</option>
                         @endforeach
                     </select>
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <label>QR Image (opsional)</label>
+                    <label>Gambar QR (opsional)</label>
                     <input type="file" name="qr_image" class="form-control-file @error('qr_image') is-invalid @enderror" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp">
                     @error('qr_image')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                     @if($method->qr_image)

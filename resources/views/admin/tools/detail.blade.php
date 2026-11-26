@@ -1,69 +1,63 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Tool')
-@section('page-title', 'Detail Tool')
+@section('title', 'Detail Alat')
+@section('page-title', 'Detail Alat')
 
 @section('sidebar')
     <li class="nav-item">
         <a href="{{ route('admin.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
-    <li class="nav-header">MANAGEMENT</li>
+    <li class="nav-header">MANAJEMEN</li>
     <li class="nav-item">
         <a href="{{ route('admin.users.index') }}" class="nav-link">
             <i class="nav-icon fas fa-users"></i>
-            <p>Users</p>
+            <p>Pengguna</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.toolsmans.index') }}" class="nav-link">
             <i class="nav-icon fas fa-user-cog"></i>
-            <p>Toolsman</p>
+            <p>Petugas Alat</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.loans.index') }}" class="nav-link">
             <i class="nav-icon fas fa-hand-holding"></i>
-            <p>Loans</p>
+            <p>Pinjaman</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.fines.index') }}" class="nav-link">
             <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>Fines</p>
+            <p>Pembayaran</p>
         </a>
     </li>
-    <li class="nav-header">MASTER DATA</li>
+    <li class="nav-header">DATA MASTER</li>
     <li class="nav-item">
         <a href="{{ route('admin.departments.index') }}" class="nav-link">
             <i class="nav-icon fas fa-building"></i>
-            <p>Departments</p>
+            <p>Departemen</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.places.index') }}" class="nav-link">
             <i class="nav-icon fas fa-map-marker-alt"></i>
-            <p>Places</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin.types.index') }}" class="nav-link">
-            <i class="nav-icon fas fa-tag"></i>
-            <p>Types</p>
+            <p>Lokasi</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.categories.index') }}" class="nav-link">
             <i class="nav-icon fas fa-folder"></i>
-            <p>Categories</p>
+            <p>Kategori</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.tools.index') }}" class="nav-link active">
             <i class="nav-icon fas fa-tools"></i>
-            <p>Tools</p>
+            <p>Alat</p>
         </a>
     </li>
 @endsection
@@ -86,7 +80,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Detail Tool</h5>
+                    <h5 class="card-title">Detail Alat</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -103,19 +97,15 @@
                             <td>{{ $tool->description ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Category</th>
+                            <th>Kategori</th>
                             <td>{{ $tool->category->name ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Type</th>
-                            <td>{{ $tool->type->name ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Place</th>
+                            <th>Lokasi</th>
                             <td>{{ $tool->place->name ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Stock</th>
+                            <th>Stok</th>
                             <td>{{ $tool->stock }}</td>
                         </tr>
                         <tr>
@@ -123,19 +113,19 @@
                             <td>
                                 <span
                                     class="badge bg-{{ $tool->status == 'available' ? 'success' : ($tool->status == 'borrowed' ? 'warning' : 'danger') }}">
-                                    {{ ucfirst($tool->status) }}
+                                    {{ match($tool->status) { 'available' => 'Tersedia', 'borrowed' => 'Dipinjam', 'broken' => 'Rusak', 'maintenance' => 'Perawatan', default => ucfirst($tool->status) } }}
                                 </span>
                             </td>
                         </tr>
                         <tr>
-                            <th>Created At</th>
+                            <th>Dibuat Pada</th>
                             <td>{{ $tool->created_at->format('d M Y H:i') }}</td>
                         </tr>
                     </table>
 
                     <div class="mt-3">
                         <a href="{{ route('admin.tools.update', $tool->id) }}" class="btn btn-warning">
-                            <i class="fas fa-edit me-2"></i> Edit
+                            <i class="fas fa-edit me-2"></i> Ubah
                         </a>
                         <a href="{{ route('admin.tools.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left me-2"></i> Kembali

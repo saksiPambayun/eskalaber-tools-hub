@@ -27,7 +27,7 @@ class CategoryController extends Controller
 
         Category::create(['name' => $request->name]);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category berhasil ditambahkan!');
+        return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
     public function update($id)
@@ -45,7 +45,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->update(['name' => $request->name]);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category berhasil diupdate!');
+        return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil diperbarui!');
     }
 
     public function delete($id)
@@ -54,11 +54,11 @@ class CategoryController extends Controller
 
         if ($category->tools()->exists()) {
             return redirect()->route('admin.categories.index')
-                ->with('error', 'Gagal menghapus! Category ini masih digunakan oleh alat.');
+                ->with('error', 'Gagal menghapus! Kategori ini masih digunakan oleh alat.');
         }
 
         $category->delete();
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category berhasil dihapus!');
+        return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil dihapus!');
     }
 }

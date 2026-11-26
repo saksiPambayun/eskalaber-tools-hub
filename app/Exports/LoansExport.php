@@ -33,13 +33,13 @@ class LoansExport implements FromCollection, WithHeadings, WithMapping, WithStyl
     {
         return [
             'No',
-            'User',
-            'Tool',
-            'Loan Date',
-            'Return Date',
-            'Actual Return Date',
+            'Pengguna',
+            'Alat',
+            'Tanggal Pinjam',
+            'Tanggal Kembali',
+            'Tanggal Kembali Aktual',
             'Status',
-            'Notes'
+            'Catatan'
         ];
     }
 
@@ -55,7 +55,7 @@ class LoansExport implements FromCollection, WithHeadings, WithMapping, WithStyl
             $loan->loan_date ? $loan->loan_date->format('d-m-Y') : '-',
             $loan->return_date ? $loan->return_date->format('d-m-Y') : '-',
             $loan->actual_return_date ? $loan->actual_return_date->format('d-m-Y') : '-',
-            ucfirst($loan->status),
+            match($loan->status) { 'pending' => 'Menunggu', 'approved' => 'Disetujui', 'borrowed' => 'Dipinjam', 'returned' => 'Dikembalikan', 'cancelled' => 'Dibatalkan', 'rejected' => 'Ditolak', default => $loan->status },
             $loan->notes ?? '-',
         ];
     }

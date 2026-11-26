@@ -25,8 +25,8 @@ class FineSettingController extends Controller
         $validated = $request->validate([
             'rate_per_day' => 'required|integer|min:0|max:1000000',
         ], [
-            'rate_per_day.min' => 'Tarif denda tidak boleh negatif.',
-            'rate_per_day.max' => 'Tarif denda maksimal Rp 1.000.000 per hari.',
+            'rate_per_day.min' => 'Tarif pembayaran tidak boleh negatif.',
+            'rate_per_day.max' => 'Tarif pembayaran maksimal Rp 1.000.000 per hari.',
         ]);
 
         $setting = FineSetting::current();
@@ -36,13 +36,13 @@ class FineSettingController extends Controller
         if ($changed) {
             ActivityHelper::log(
                 'update_fine_rate',
-                'Mengubah tarif denda dari Rp ' . number_format($oldRate, 0, ',', '.')
+                'Mengubah tarif pembayaran dari Rp ' . number_format($oldRate, 0, ',', '.')
                     . ' menjadi Rp ' . number_format((int) $validated['rate_per_day'], 0, ',', '.') . ' per hari'
             );
         }
 
         return back()->with('success', $changed
-            ? 'Tarif denda berhasil diperbarui. Berlaku untuk denda baru.'
-            : 'Tarif denda tidak berubah.');
+            ? 'Tarif pembayaran berhasil diperbarui. Berlaku untuk pembayaran baru.'
+            : 'Tarif pembayaran tidak berubah.');
     }
 }

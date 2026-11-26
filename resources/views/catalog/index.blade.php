@@ -489,6 +489,57 @@
                 font-size: 14px;
             }
         }
+
+        /* --- STYLING PAGINATION KATALOG --- */
+        .pagination {
+            margin-bottom: 0;
+        }
+
+        .page-item .page-link {
+            color: var(--primary);
+            border: 1px solid #f0f0f0;
+            margin: 0 3px;
+            border-radius: 8px !important;
+            font-weight: 600;
+            padding: 10px 16px;
+            transition: all 0.3s ease;
+        }
+
+        .page-item.active .page-link {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(232, 93, 4, 0.3);
+        }
+
+        .page-item .page-link:hover {
+            background: var(--primary-bg);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .page-item.disabled .page-link {
+            color: #ccc;
+            border-color: #f0f0f0;
+            background: #fafafa;
+        }
+
+        /* Dark Mode */
+        body.dark-mode .page-item .page-link {
+            background: #1a1a2e;
+            border-color: #2d2d44;
+            color: var(--primary);
+        }
+
+        body.dark-mode .page-item.active .page-link {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        body.dark-mode .page-item.disabled .page-link {
+            background: #0f0f1a;
+            color: #555;
+        }
     </style>
 </head>
 
@@ -499,20 +550,29 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 <i class="fas fa-tools me-2" style="color: var(--primary);"></i>
-                Eskalaber<span>Tools</span>
+                Eskalaber<span>Alat</span>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
-                    <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('catalog') }}">Katalog</a></li>
+                    <!-- Menu disamakan dengan Landing Page -->
+                    <li class="nav-item"><a class="nav-link" href="/">Fitur</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Tentang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Testimoni</a></li>
+
+                    <!-- Menu Katalog tetap ada -->
+                    <li class="nav-item"><a class="nav-link active fw-bold" href="{{ route('catalog') }}"><i
+                                class="fas fa-th-large me-1"></i> Katalog</a></li>
+
+                    <!-- Tombol Dark Mode -->
                     <li class="nav-item">
                         <button class="btn btn-link nav-link" id="darkModeToggle" title="Toggle Dark Mode">
                             <i class="fas fa-moon" id="darkModeIcon"></i>
                         </button>
                     </li>
+
                     @auth
                         @php
                             $role = strtolower(auth()->user()->role);
@@ -522,13 +582,23 @@
                         @endphp
                         <li class="nav-item ms-lg-2">
                             <a href="{{ route($dashboardRoute) }}" class="btn-orange">
-                                <i class="fas fa-th-large me-2"></i> Dashboard
+                                <i class="fas fa-th-large me-2"></i> Dasbor
                             </a>
+                        </li>
+                        <!-- Tombol Keluar -->
+                        <li class="nav-item ms-lg-2">
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-link nav-link text-danger fw-bold"
+                                    style="text-decoration: none;">
+                                    <i class="fas fa-sign-out-alt me-1"></i> Keluar
+                                </button>
+                            </form>
                         </li>
                     @else
                         <li class="nav-item ms-lg-2">
                             <a href="{{ route('login') }}" class="btn-orange">
-                                <i class="fas fa-sign-in-alt me-2"></i> Login
+                                <i class="fas fa-sign-in-alt me-2"></i> Masuk
                             </a>
                         </li>
                     @endauth
@@ -569,6 +639,7 @@
                         <i class="fas fa-folder"></i> {{ $categoryItem->name }}
                         <span class="count">{{ $categoryItem->tools_count }}</span>
                     </a>
+
                 @endforeach
             </div>
         </div>
@@ -622,9 +693,9 @@
                 @endforelse
             </div>
 
-            <!-- Pagination -->
-            <div class="d-flex justify-content-center mt-4">
-                {{ $tools->appends(request()->query())->links() }}
+            <!-- PAGINATION (TOMBOL PINDAH HALAMAN) -->
+            <div class="d-flex justify-content-center mt-5">
+                {{ $tools->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </section>
@@ -684,7 +755,7 @@
         const searchClear = document.getElementById('searchClear');
         const toolsGrid = document.getElementById('toolsGrid');
 
-        // Pertahankan filter kategori/tipe yang sedang aktif saat mencari.
+        // Pertahankan filter kategori yang sedang aktif saat mencari.
         const activeFilters = new URLSearchParams(window.location.search);
 
         if (searchInput?.value.length > 0) {
@@ -703,7 +774,7 @@
             if (query.length >= 2) {
                 const params = new URLSearchParams({ q: query });
 
-                ['category', 'type'].forEach(key => {
+                ['category'].forEach(key => {
                     const value = activeFilters.get(key);
                     if (value) {
                         params.set(key, value);

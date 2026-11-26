@@ -14,7 +14,6 @@ class Tool extends Model
         'code',
         'description',
         'category_id',
-        'type_id',
         'place_id',
         'stock',
         'status',
@@ -25,11 +24,6 @@ class Tool extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
-    }
-
-    public function type()
-    {
-        return $this->belongsTo(Type::class);
     }
 
     public function place()

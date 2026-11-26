@@ -10,7 +10,6 @@ use App\Models\Loan;
 use App\Models\PaymentMethod;
 use App\Models\Place;
 use App\Models\Tool;
-use App\Models\Type;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
@@ -25,7 +24,6 @@ class DemoDataSeeder extends Seeder
 
         $dept = Department::firstOrCreate(['name' => 'Teknik'], ['name' => 'Teknik']);
         $cat = Category::firstOrCreate(['name' => 'Elektronik']);
-        $type = Type::firstOrCreate(['name' => 'Multimeter']);
         $place = Place::firstOrCreate(['name' => 'Lab Utama']);
 
         $admin = User::updateOrCreate(
@@ -42,11 +40,11 @@ class DemoDataSeeder extends Seeder
         );
 
         $tool1 = Tool::updateOrCreate(['code' => 'DEMO-001'], [
-            'name' => 'Multimeter Digital', 'category_id' => $cat->id, 'type_id' => $type->id,
+            'name' => 'Multimeter Digital', 'category_id' => $cat->id,
             'place_id' => $place->id, 'stock' => 5, 'status' => 'available', 'description' => 'Alat demo',
         ]);
         $tool2 = Tool::updateOrCreate(['code' => 'DEMO-002'], [
-            'name' => 'Oscilloscope', 'category_id' => $cat->id, 'type_id' => $type->id,
+            'name' => 'Oscilloscope', 'category_id' => $cat->id,
             'place_id' => $place->id, 'stock' => 2, 'status' => 'available', 'description' => 'Alat demo',
         ]);
 

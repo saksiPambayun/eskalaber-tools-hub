@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Profile')
-@section('page-title', 'My Profile')
+@section('title', 'Profil')
+@section('page-title', 'Profil Saya')
 
 @section('sidebar')
     <li class="nav-item">
         <a href="{{ route('admin.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
 @endsection
@@ -17,7 +17,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Profile Saya</h3>
+                    <h3 class="card-title">Profil Saya</h3>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -30,15 +30,15 @@
                             <td>{{ auth()->user()->email }}</td>
                         </tr>
                         <tr>
-                            <th>Role</th>
+                            <th>Peran</th>
                             <td><span class="badge bg-primary">{{ auth()->user()->role }}</span></td>
                         </tr>
                         <tr>
-                            <th>Department</th>
+                            <th>Departemen</th>
                             <td>{{ auth()->user()->department->name ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Phone</th>
+                            <th>Telepon</th>
                             <td>{{ auth()->user()->phone ?? '-' }}</td>
                         </tr>
                     </table>

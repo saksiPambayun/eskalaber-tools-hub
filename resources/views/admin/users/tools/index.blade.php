@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Tools')
-@section('page-title', 'Daftar Tools')
+@section('title', 'Alat')
+@section('page-title', 'Daftar Alat')
 
 @section('sidebar')
     <li class="nav-item">
         <a href="{{ route('admin.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.tools.index') }}" class="nav-link active">
             <i class="nav-icon fas fa-tools"></i>
-            <p>Tools</p>
+            <p>Alat</p>
         </a>
     </li>
 @endsection
@@ -21,7 +21,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Daftar Tools</h3>
+            <h3 class="card-title">Daftar Alat</h3>
         </div>
         <div class="card-body">
             <div class="row">
@@ -36,10 +36,10 @@
                                     <i class="fas fa-tools fa-4x text-muted"></i>
                                 @endif
                                 <h6 class="mt-2">{{ $tool->name }}</h6>
-                                <small class="text-muted">Stock: {{ $tool->stock }}</small>
+                                <small class="text-muted">Stok: {{ $tool->stock }}</small>
                                 <br>
                                 <span class="badge bg-{{ $tool->status == 'available' ? 'success' : 'warning' }}">
-                                    {{ ucfirst($tool->status) }}
+                                    {{ match($tool->status) { 'available' => 'Tersedia', 'borrowed' => 'Dipinjam', 'broken' => 'Rusak', 'maintenance' => 'Perawatan', default => ucfirst($tool->status) } }}
                                 </span>
                             </div>
                             <div class="card-footer text-center">

@@ -1,25 +1,25 @@
 @extends('layouts.app')
 
-@section('title', 'Toolsman - Loans')
-@section('page-title', 'Loan Management')
+@section('title', 'Petugas Alat - Peminjaman')
+@section('page-title', 'Manajemen Peminjaman')
 
 @section('sidebar')
     <li class="nav-item">
         <a href="{{ route('toolsman.dashboard') }}" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('toolsman.loans.index') }}" class="nav-link active">
             <i class="nav-icon fas fa-hand-holding"></i>
-            <p>Loans</p>
+            <p>Pinjaman</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('toolsman.fines.index') }}" class="nav-link">
             <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>Fines</p>
+            <p>Pembayaran</p>
         </a>
     </li>
     <li class="nav-item">
@@ -31,7 +31,7 @@
     <li class="nav-item">
         <a href="{{ route('toolsman.fine-setting.index') }}" class="nav-link {{ request()->routeIs('toolsman.fine-setting.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-gavel"></i>
-            <p>Pengaturan Denda</p>
+            <p>Pengaturan Pembayaran</p>
         </a>
     </li>
     <li class="nav-item">
@@ -67,23 +67,23 @@
                     <div class="btn-group" role="group">
                         <a href="{{ route('toolsman.loans.index', ['status' => 'all']) }}"
                             class="btn btn-sm {{ $status == 'all' ? 'btn-primary' : 'btn-outline-primary' }}">
-                            <i class="fas fa-list"></i> All
+                            <i class="fas fa-list"></i> Semua
                         </a>
                         <a href="{{ route('toolsman.loans.index', ['status' => 'pending']) }}"
                             class="btn btn-sm {{ $status == 'pending' ? 'btn-warning' : 'btn-outline-warning' }}">
-                            <i class="fas fa-clock"></i> Pending
+                            <i class="fas fa-clock"></i> Menunggu
                         </a>
                         <a href="{{ route('toolsman.loans.index', ['status' => 'approved']) }}"
                             class="btn btn-sm {{ $status == 'approved' ? 'btn-primary' : 'btn-outline-primary' }}">
-                            <i class="fas fa-check"></i> Approved
+                            <i class="fas fa-check"></i> Disetujui
                         </a>
                         <a href="{{ route('toolsman.loans.index', ['status' => 'cancelled']) }}"
                             class="btn btn-sm {{ $status == 'cancelled' ? 'btn-secondary' : 'btn-outline-secondary' }}">
-                            <i class="fas fa-ban"></i> Cancelled
+                            <i class="fas fa-ban"></i> Dibatalkan
                         </a>
                         <a href="{{ route('toolsman.loans.index', ['status' => 'returned']) }}"
                             class="btn btn-sm {{ $status == 'returned' ? 'btn-success' : 'btn-outline-success' }}">
-                            <i class="fas fa-undo"></i> Returned
+                            <i class="fas fa-undo"></i> Dikembalikan
                         </a>
                     </div>
                 </div>
@@ -97,10 +97,10 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>User</th>
-                            <th>Tool</th>
-                            <th>Loan Date</th>
-                            <th>Return Date</th>
+                            <th>Pengguna</th>
+                            <th>Alat</th>
+                            <th>Tanggal Pinjam</th>
+                            <th>Tanggal Kembali</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -123,7 +123,7 @@
                                             default => 'secondary',
                                         };
                                     @endphp
-                                    <span class="badge bg-{{ $badge }}">{{ ucfirst($loan->status) }}</span>
+                                    <span class="badge bg-{{ $badge }}">{{ match($loan->status) { 'pending' => 'Menunggu', 'approved' => 'Disetujui', 'borrowed' => 'Dipinjam', 'returned' => 'Dikembalikan', 'cancelled' => 'Dibatalkan', 'rejected' => 'Ditolak', default => ucfirst($loan->status) } }}</span>
                                 </td>
                                 <td>
                                     <a href="{{ route('toolsman.loans.detail', $loan->id) }}" class="btn btn-info btn-sm">

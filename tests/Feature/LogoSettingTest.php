@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\LogoSetting;
 use App\Models\Place;
 use App\Models\Tool;
-use App\Models\Type;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -125,7 +124,6 @@ class LogoSettingTest extends TestCase
             'name' => 'Alat Uji',
             'code' => 'TEST-' . uniqid(),
             'category_id' => Category::create(['name' => 'Kategori Uji'])->id,
-            'type_id' => Type::create(['name' => 'Tipe Uji'])->id,
             'place_id' => Place::create(['name' => 'Gudang Uji'])->id,
             'stock' => 3,
             'status' => 'available',

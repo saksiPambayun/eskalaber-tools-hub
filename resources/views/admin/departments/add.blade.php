@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Add Department')
-@section('page-title', 'Tambah Department')
+@section('title', 'Tambah Departemen')
+@section('page-title', 'Tambah Departemen')
 
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Form Tambah Department</h5>
+                    <h5 class="card-title">Form Tambah Departemen</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.departments.create') }}" method="POST">
                         @csrf
 
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nama Department <span class="text-danger">*</span></label>
+                            <label for="name" class="form-label">Nama Departemen <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
                                 name="name" value="{{ old('name') }}" required>
                             @error('name')

@@ -1,31 +1,31 @@
 @extends('layouts.app')
 
-@section('title', 'Toolsman Dashboard')
-@section('page-title', 'Dashboard')
+@section('title', 'Dasbor Petugas Alat')
+@section('page-title', 'Dasbor')
 
 @section('sidebar')
     <li class="nav-item">
         <a href="/" class="nav-link" target="_blank">
             <i class="nav-icon fas fa-globe"></i>
-            <p>Landing Page</p>
+            <p>Halaman Utama</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('toolsman.dashboard') }}" class="nav-link active">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>Dasbor</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('toolsman.loans.index') }}" class="nav-link">
             <i class="nav-icon fas fa-hand-holding"></i>
-            <p>Loans</p>
+            <p>Pinjaman</p>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('toolsman.fines.index') }}" class="nav-link">
             <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>Fines</p>
+            <p>Pembayaran</p>
         </a>
     </li>
     <li class="nav-item">
@@ -39,7 +39,7 @@
         <a href="{{ route('toolsman.fine-setting.index') }}"
             class="nav-link {{ request()->routeIs('toolsman.fine-setting.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-gavel"></i>
-            <p>Pengaturan Denda</p>
+            <p>Pengaturan Pembayaran</p>
         </a>
     </li>
     <li class="nav-item">
@@ -58,7 +58,7 @@
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ $totalTools ?? 0 }}</h3>
-                    <p>Total Tools</p>
+                    <p>Total Alat</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-tools"></i>
@@ -70,7 +70,7 @@
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3>{{ $totalLoans ?? 0 }}</h3>
-                    <p>Total Loans</p>
+                    <p>Total Pinjaman</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-hand-holding"></i>
@@ -82,7 +82,7 @@
             <div class="small-box bg-primary">
                 <div class="inner">
                     <h3>{{ $pendingLoans ?? 0 }}</h3>
-                    <p>Pending Loans</p>
+                    <p>Peminjaman Menunggu</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-clock"></i>
@@ -94,7 +94,7 @@
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3>Rp {{ number_format($totalFines ?? 0, 0, ',', '.') }}</h3>
-                    <p>Total Fines</p>
+                    <p>Total Pembayaran</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-money-bill-wave"></i>
@@ -105,11 +105,11 @@
 
     <!-- Baris Bawah: Tarif & Welcome -->
     <div class="row">
-        <!-- Tarif Denda -->
+        <!-- Tarif Pembayaran -->
         <div class="col-md-5">
             <div class="card card-outline card-danger d-flex flex-column" style="height: 100%;">
                 <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-gavel mr-2"></i>Tarif Denda Global</h3>
+                    <h3 class="card-title"><i class="fas fa-gavel mr-2"></i>Tarif Pembayaran Global</h3>
                 </div>
                 <div class="card-body d-flex flex-column">
                     @if(session('success'))
@@ -129,7 +129,7 @@
                                 <button class="btn btn-danger font-weight-bold">Simpan</button>
                             </div>
                         </div>
-                        <small class="text-muted d-block mt-2">Berlaku untuk semua alat & hanya denda baru. Batas Rp
+                        <small class="text-muted d-block mt-2">Berlaku untuk semua alat & hanya pembayaran baru. Batas Rp
                             0–1.000.000/hari.</small>
                     </form>
 
@@ -146,7 +146,7 @@
         <div class="col-md-7">
             <div class="card d-flex flex-column" style="height: 100%;">
                 <div class="card-header">
-                    <h3 class="card-title">Welcome Toolsman</h3>
+                    <h3 class="card-title">Selamat Datang, Petugas Alat</h3>
                 </div>
                 <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                     <div

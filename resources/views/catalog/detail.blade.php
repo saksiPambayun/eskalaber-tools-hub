@@ -542,7 +542,7 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 <i class="fas fa-tools me-2" style="color: var(--primary);"></i>
-                Eskalaber<span>Tools</span>
+                Eskalaber<span>Alat</span>
             </a>
             <div class="ms-auto">
                 <a href="{{ route('catalog') }}" class="btn-back">
@@ -577,7 +577,7 @@
                         </p>
                     </div>
 
-                    <!-- 3. Mini Dashboard (Lokasi & Stok) -->
+                    <!-- 3. Mini Dasbor (Lokasi & Stok) -->
                     <div class="mini-dashboard-grid">
                         <div class="mini-card">
                             <i class="fas fa-map-marker-alt bg-icon"></i>
@@ -639,10 +639,6 @@
                                     <span class="spec-value">{{ $tool->category->name ?? '-' }}</span>
                                 </div>
                                 <div class="spec-item">
-                                    <span class="spec-label">Tipe</span>
-                                    <span class="spec-value">{{ $tool->type->name ?? '-' }}</span>
-                                </div>
-                                <div class="spec-item">
                                     <span class="spec-label">Lokasi</span>
                                     <span class="spec-value">{{ $tool->place->name ?? '-' }}</span>
                                 </div>
@@ -678,12 +674,12 @@
                                     </div>
                                     <a href="{{ route('admin.dashboard') }}" class="btn-login-to-borrow"
                                         style="background: #6c757d;">
-                                        <i class="fas fa-arrow-left me-2"></i> Kembali ke Dashboard
+                                        <i class="fas fa-arrow-left me-2"></i> Kembali ke Dasbor
                                     </a>
                                 @endif
                             @else
                                 <a href="{{ route('login') }}" class="btn-login-to-borrow">
-                                    <i class="fas fa-sign-in-alt me-2"></i> Login untuk Meminjam
+                                    <i class="fas fa-sign-in-alt me-2"></i> Masuk untuk Meminjam
                                 </a>
                             @endauth
 
@@ -745,7 +741,7 @@
     <footer class="footer-catalog"
         style="background: var(--dark); padding: 30px 0; margin-top: 50px; color: rgba(255, 255, 255, 0.7);">
         <div class="container text-center">
-            <p class="mb-0">&copy; {{ date('Y') }} Eskalaber Tools Hub. All rights reserved.</p>
+            <p class="mb-0">&copy; {{ date('Y') }} Eskalaber Tools Hub. Seluruh hak dilindungi.</p>
         </div>
     </footer>
 

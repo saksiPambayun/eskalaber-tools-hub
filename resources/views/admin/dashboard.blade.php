@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Dashboard')
-@section('page-title', 'Dashboard')
+@section('title', 'Dasbor Admin')
+@section('page-title', 'Dasbor')
 
 @section('content')
     <!-- Statistik Cards -->
@@ -10,7 +10,7 @@
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ $totalUsers ?? 0 }}</h3>
-                    <p>Total Users</p>
+                    <p>Total Pengguna</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-users"></i>
@@ -25,7 +25,7 @@
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3>{{ $totalTools ?? 0 }}</h3>
-                    <p>Total Tools</p>
+                    <p>Total Alat</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-tools"></i>
@@ -40,7 +40,7 @@
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3>{{ $totalLoans ?? 0 }}</h3>
-                    <p>Total Loans</p>
+                    <p>Total Pinjaman</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-hand-holding"></i>
@@ -55,7 +55,7 @@
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3>Rp {{ number_format($totalFines ?? 0, 0, ',', '.') }}</h3>
-                    <p>Total Fines</p>
+                    <p>Total Pembayaran</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-money-bill-wave"></i>
@@ -97,12 +97,12 @@
         </div>
     </div>
 
-    <!-- Fine Rate + Welcome -->
+    <!-- Pembayaran Rate + Welcome -->
     <div class="row mt-3">
         <div class="col-md-5">
             <div class="card card-outline card-danger">
                 <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-gavel mr-2"></i>Tarif Denda Global</h3>
+                    <h3 class="card-title"><i class="fas fa-gavel mr-2"></i>Tarif Pembayaran Global</h3>
                 </div>
                 <div class="card-body">
                     @if(session('success'))
@@ -120,7 +120,7 @@
                                 <button class="btn btn-danger">Simpan</button>
                             </div>
                         </div>
-                        <small class="text-muted">Berlaku untuk semua alat & hanya denda baru. Batas Rp
+                        <small class="text-muted">Berlaku untuk semua alat & hanya pembayaran baru. Batas Rp
                             0–1.000.000/hari.</small>
                     </form>
                     <a href="{{ route('admin.fine-setting.index') }}" class="btn btn-sm btn-outline-secondary">
@@ -132,7 +132,7 @@
         <div class="col-md-7">
             <div class="card" style="height: 100%;">
                 <div class="card-header">
-                    <h3 class="card-title">Welcome to Admin Dashboard</h3>
+                    <h3 class="card-title">Selamat Datang di Dasbor Admin</h3>
                 </div>
                 <div class="card-body">
                     <p>Selamat datang di sistem manajemen alat Eskalaber Tools Hub.</p>
@@ -154,7 +154,7 @@
                 new Chart(ctx1, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Pending', 'Approved', 'Borrowed', 'Returned', 'Rejected'],
+                        labels: ['Menunggu', 'Disetujui', 'Dipinjam', 'Dikembalikan', 'Ditolak'],
                         datasets: [{
                             label: 'Jumlah',
                             data: [

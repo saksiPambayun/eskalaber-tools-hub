@@ -27,7 +27,7 @@ class DepartmentController extends Controller
 
         Department::create(['name' => $request->name]);
 
-        return redirect()->route('admin.departments.index')->with('success', 'Department berhasil ditambahkan!');
+        return redirect()->route('admin.departments.index')->with('success', 'Departemen berhasil ditambahkan!');
     }
 
     public function update($id)
@@ -45,12 +45,12 @@ class DepartmentController extends Controller
         $department = Department::findOrFail($id);
         $department->update(['name' => $request->name]);
 
-        return redirect()->route('admin.departments.index')->with('success', 'Department berhasil diupdate!');
+        return redirect()->route('admin.departments.index')->with('success', 'Departemen berhasil diperbarui!');
     }
 
     public function delete($id)
     {
         Department::findOrFail($id)->delete();
-        return redirect()->route('admin.departments.index')->with('success', 'Department berhasil dihapus!');
+        return redirect()->route('admin.departments.index')->with('success', 'Departemen berhasil dihapus!');
     }
 }

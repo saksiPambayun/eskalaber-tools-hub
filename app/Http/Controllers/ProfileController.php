@@ -63,14 +63,14 @@ class ProfileController extends Controller
         $user = auth()->user();
 
         if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'Password saat ini salah.']);
+            return back()->withErrors(['current_password' => 'Kata sandi saat ini salah.']);
         }
 
         $user->update([
             'password' => Hash::make($request->new_password)
         ]);
 
-        return back()->with('success', 'Password berhasil diubah!');
+        return back()->with('success', 'Kata sandi berhasil diubah!');
     }
 
     public function updatePhoto(Request $request)
@@ -95,7 +95,7 @@ class ProfileController extends Controller
             'photo' => 'uploads/profile/' . $fileName
         ]);
 
-        return back()->with('success', 'Foto profile berhasil diupdate!');
+        return back()->with('success', 'Foto profil berhasil diperbarui!');
     }
     public function deletePhoto()
 {
