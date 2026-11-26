@@ -537,7 +537,6 @@
                             <i class="fas fa-user-circle fa-lg"></i>
                         @endif
                         <span class="ml-2">{{ auth()->user()->name }}</span>
-                        <span class="badge badge-warning ml-2">{{ auth()->user()->role }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a href="{{ route('profile.index') }}" class="dropdown-item">
@@ -569,7 +568,6 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="info">
                         <a href="#" class="d-block">{{ auth()->user()->name }}</a>
-                        <small class="text-muted">{{ auth()->user()->role }}</small>
                     </div>
                 </div>
 
@@ -619,8 +617,8 @@
                                         class="nav-icon fas fa-money-bill-wave"></i>
                                     <p>Pembayaran</p>
                                 </a></li>
-                            <li class="nav-item"><a href="{{ route('admin.activity_logs.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.activity_logs.*') ? 'active' : '' }}"><i
+                            <li class="nav-item"><a href="{{ route('activity_logs.index') }}"
+                                    class="nav-link {{ request()->routeIs('activity_logs.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-history"></i>
                                     <p>Log Aktivitas</p>
                                 </a></li>
@@ -682,6 +680,11 @@
                                     class="nav-link {{ request()->routeIs('toolsman.fines.*') ? 'active' : '' }}"><i
                                         class="nav-icon fas fa-money-bill-wave"></i>
                                     <p>Pembayaran</p>
+                                </a></li>
+                            <li class="nav-item"><a href="{{ route('activity_logs.index') }}"
+                                    class="nav-link {{ request()->routeIs('activity_logs.*') ? 'active' : '' }}"><i
+                                        class="nav-icon fas fa-history"></i>
+                                    <p>Log Aktivitas</p>
                                 </a></li>
                             <li class="nav-item"><a href="{{ route('toolsman.payment-methods.index') }}"
                                     class="nav-link {{ request()->routeIs('toolsman.payment-methods.*') ? 'active' : '' }}"><i

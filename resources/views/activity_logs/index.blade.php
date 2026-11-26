@@ -12,6 +12,29 @@
             </div>
         </div>
         <div class="card-body">
+            <form method="GET" action="{{ route('activity_logs.index') }}" class="form-inline mb-3">
+                <div class="form-group mr-2 mb-2">
+                    <label for="from" class="mr-2">Dari</label>
+                    <input type="date" name="from" id="from" class="form-control form-control-sm"
+                        value="{{ $from }}">
+                </div>
+                <div class="form-group mr-2 mb-2">
+                    <label for="to" class="mr-2">Sampai</label>
+                    <input type="date" name="to" id="to" class="form-control form-control-sm"
+                        value="{{ $to }}">
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary mr-2 mb-2">
+                    <i class="fas fa-search mr-1"></i> Terapkan
+                </button>
+                <a href="{{ route('activity_logs.index') }}" class="btn btn-sm btn-secondary mr-2 mb-2">
+                    Atur Ulang
+                </a>
+                <a href="{{ route('activity_logs.export-csv', ['from' => $from, 'to' => $to]) }}"
+                    class="btn btn-sm btn-success mb-2">
+                    <i class="fas fa-file-csv mr-1"></i> Ekspor CSV
+                </a>
+            </form>
+
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead>
@@ -33,7 +56,7 @@
                                     {{ $log->user->name ?? '-' }}
                                 </td>
                                 <td>
-                                    <span class="badge badge-info">{{ match($log->action) { 'approve_loan' => 'Setujui Pinjaman', 'reject_loan' => 'Tolak Pinjaman', 'cancel_loan' => 'Batalkan Pinjaman', 'return_loan' => 'Kembalikan Alat', 'create_loan' => 'Ajukan Pinjaman', 'submit_fine_payment' => 'Unggah Pembayaran', 'verify_fine' => 'Verifikasi Pembayaran', 'pay_fine' => 'Tandai Lunas', 'update_fine_rate' => 'Ubah Tarif Pembayaran', 'UPDATE_LOGO_SETTING' => 'Ubah Pengaturan Logo', 'update_logo_setting' => 'Ubah Pengaturan Logo', default => str_replace('_', ' ', ucfirst($log->action)) } }}</span>
+                                    <span class="badge badge-info">{{ $log->actionLabel() }}</span>
                                 </td>
                                 <td>{{ $log->description ?? '-' }}</td>
                                 <td>
@@ -54,7 +77,6 @@
             </div>
         </div>
 
-        <!-- PAGINATION YANG SUDAH DIRAPIKAN -->
         <div class="card-footer clearfix">
             <div class="float-left">
                 <small class="text-muted">
@@ -63,7 +85,6 @@
                 </small>
             </div>
             <div class="float-right">
-                {{-- Paksa pagination pakai desain Bootstrap 4 bawaan AdminLTE --}}
                 {{ $logs->links('pagination::bootstrap-4') }}
             </div>
         </div>

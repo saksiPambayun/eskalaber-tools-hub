@@ -40,7 +40,7 @@
                             <th>Status</th>
                             <td>
                                 @php
-                                    $badge = match($loan->status) {
+                                    $badge = match ($loan->status) {
                                         'pending' => 'warning',
                                         'approved', 'borrowed' => 'primary',
                                         'returned' => 'success',
@@ -49,7 +49,8 @@
                                         default => 'secondary',
                                     };
                                 @endphp
-                                <span class="badge bg-{{ $badge }}">{{ match($loan->status) { 'pending' => 'Menunggu', 'approved' => 'Disetujui', 'borrowed' => 'Dipinjam', 'returned' => 'Dikembalikan', 'cancelled' => 'Dibatalkan', 'rejected' => 'Ditolak', default => ucfirst($loan->status) } }}</span>
+                                <span
+                                    class="badge bg-{{ $badge }}">{{ match ($loan->status) { 'pending' => 'Menunggu', 'approved' => 'Disetujui', 'borrowed' => 'Dipinjam', 'returned' => 'Dikembalikan', 'cancelled' => 'Dibatalkan', 'rejected' => 'Ditolak', default => ucfirst($loan->status)} }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -80,20 +81,24 @@
                             <form action="{{ route('admin.loans.update-status', $loan->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 <input type="hidden" name="status" value="returned">
-                                <button type="submit" class="btn btn-warning" onclick="return confirm('Yakin alat sudah dikembalikan?')">
+                                <button type="submit" class="btn btn-warning"
+                                    onclick="return confirm('Yakin alat sudah dikembalikan?')">
                                     <i class="fas fa-undo me-2"></i> Dikembalikan
                                 </button>
                             </form>
 
                             @if(app()->environment(['local', 'testing']))
-                                <form action="{{ route('admin.loans.test-return', $loan->id) }}" method="POST" class="d-inline-block ml-2">
+                                <form action="{{ route('admin.loans.test-return', $loan->id) }}" method="POST"
+                                    class="d-inline-block ml-2">
                                     @csrf
                                     <div class="input-group input-group-sm" style="width: 320px;">
                                         <input type="date" name="actual_return_date" class="form-control"
-                                            value="{{ optional($loan->return_date)->copy()->addDays(2)?->toDateString() }}" required>
+                                            value="{{ optional($loan->return_date)->copy()->addDays(2)?->toDateString() }}"
+                                            required>
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-danger" onclick="return confirm('Simulasikan pengembalian pada tanggal ini? Pembayaran akan dibuat otomatis jika terlambat.')">
-                                                Simulasi Pengembalian + Pembayaran
+                                            <button class="btn btn-outline-danger"
+                                                onclick="return confirm('Apakah anda ingin mendeda user ini?')">
+                                                Denda
                                             </button>
                                         </div>
                                     </div>

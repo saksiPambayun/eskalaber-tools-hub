@@ -570,7 +570,9 @@
 
                     <!-- 2. Animasi Logo -->
                     <div class="logo-sarpras-container">
-                        <h6 class="fw-bold mb-1" style="font-size: 14px;">{{ $logoSetting->titleText() }}</h6>
+                        <h6 class="fw-bold mb-1" style="font-size: 16px; color: var(--primary);">
+                            {{ $logoSetting->titleText() }}
+                        </h6>
                         <img src="{{ $logoSetting->imageUrl() }}" alt="{{ $logoSetting->titleText() }}">
                         <p class="text-muted mt-1 mb-0" style="font-size: 12px; font-weight: 600;">
                             {{ $logoSetting->subtitleText() }}
@@ -689,7 +691,8 @@
                                 </div>
                                 <div class="info-text">
                                     <h6 class="mb-1 fw-bold" style="font-size: 14px;">Siap Digunakan</h6>
-                                    <small class="text-muted" style="font-size: 12px;">Alat ini terawat dan siap untuk
+                                    <!-- Hapus class text-muted, ganti pakai style warna khusus -->
+                                    <small style="font-size: 12px; color: #b0b0b0;">Alat ini terawat dan siap untuk
                                         dipinjam.</small>
                                 </div>
                                 <div class="pulse-dot"></div>

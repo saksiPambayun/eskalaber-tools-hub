@@ -40,14 +40,24 @@ use Illuminate\Support\Facades\Route;
 // LANDING PAGE
 // ============================================
 Route::get('/', function () {
-    // Ambil data logo dari database
-    $logoSetting = \App\Models\LogoSetting::current();
+    // Halaman publik tetap bisa dibuka sebelum migrasi dijalankan.
+    $logoSetting = \Illuminate\Support\Facades\Schema::hasTable('logo_settings')
+        ? \App\Models\LogoSetting::current()
+        : new \App\Models\LogoSetting([
+            'image' => \App\Models\LogoSetting::DEFAULT_IMAGE,
+            'title' => \App\Models\LogoSetting::DEFAULT_TITLE,
+            'subtitle' => \App\Models\LogoSetting::DEFAULT_SUBTITLE,
+        ]);
 
-    // Hitung statistik
-    $totalTools = \App\Models\Tool::count();
-    $totalUsers = \App\Models\User::whereIn('role', ['USER', 'TOOLSMAN'])->count();
-    $totalTransactions = \App\Models\Loan::count();
-
+    $totalTools = \Illuminate\Support\Facades\Schema::hasTable('tools')
+    ? \App\Models\Tool::where('status', 'available')->where('stock', '>', 0)->count()
+    : 0;
+    $totalUsers = \Illuminate\Support\Facades\Schema::hasTable('users')
+        ? \App\Models\User::whereIn('role', ['USER', 'TOOLSMAN'])->count()
+        : 0;
+  $totalTransactions = \Illuminate\Support\Facades\Schema::hasTable('loans')
+    ? \App\Models\Loan::whereIn('status', ['approved', 'borrowed', 'returned'])->count()
+    : 0;
     return view('landing', compact('totalTools', 'totalUsers', 'totalTransactions', 'logoSetting'));
 })->name('landing');
 
@@ -129,6 +139,14 @@ Route::middleware(['auth'])->prefix('notifications')->name('notifications.')->gr
     Route::get('/unread-count', [App\Http\Controllers\NotificationController::class, 'unreadCount'])->name('unread-count');
     Route::post('/mark-as-read/{id}', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('mark-as-read');
     Route::post('/mark-all-as-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
+});
+
+// ============================================
+// LOG AKTIVITAS (ADMIN & TOOLSMAN)
+// ============================================
+Route::middleware(['auth', 'role:SUPERADMIN,TOOLSMAN'])->prefix('activity-logs')->name('activity_logs.')->group(function () {
+    Route::get('/', [ActivityLogController::class, 'index'])->name('index');
+    Route::get('/export-csv', [ActivityLogController::class, 'exportCsv'])->name('export-csv');
 });
 
 // ============================================
@@ -220,11 +238,6 @@ Route::middleware(['auth', 'role:SUPERADMIN'])->prefix('admin')->name('admin.')-
         Route::post('/verify/{id}', [FineController::class, 'verify'])->name('verify');
         Route::delete('/delete/{id}', [FineController::class, 'delete'])->name('delete');
         Route::get('/export-csv', [FineController::class, 'exportCSV'])->name('export-csv');
-    });
-
-    // Activity Logs
-    Route::prefix('activity_logs')->name('activity_logs.')->group(function () {
-        Route::get('/', [ActivityLogController::class, 'index'])->name('index');
     });
 
     // Logo Setting (global)

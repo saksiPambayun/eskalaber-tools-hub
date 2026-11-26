@@ -19,7 +19,7 @@ class CatalogController extends Controller
             ->where('status', 'available')
             ->where('stock', '>', 0);
 
-        $totalAvailable = (clone $baseQuery)->count();
+      $totalAvailable = Tool::count();
 
         $tools = (clone $baseQuery)->with(['category', 'place']);
 
